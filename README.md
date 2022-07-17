@@ -30,15 +30,15 @@ sort based on low NVAR(normalized standard deviation of control samples)
 
 with 23 columns : 
 
-GeneID : A/B
+- GeneID : A/B
 
-Ratio : Median(P1n:P10n)/Median(C1n:C10n)
+- Ratio : Median(P1n:P10n)/Median(C1n:C10n)
 
-NVAR : STDEV(C1n:C10n)/AVERAGE(C1n:C10n)
+- NVAR : STDEV(C1n:C10n)/AVERAGE(C1n:C10n)
 
-P1n to P10n
+- P1n to P10n : p1 of A / p1 of B ~ p10 of A / p10 of B
 
-C1n to C10n
+C1n to C10n :  c1 of A / c1 of B ~ c10 of A / c10 of B
 
 ![1.png](1.png)
 
