@@ -1,0 +1,3 @@
+수정사항을 저장하고 VS Code에서 좌측 Source Control에서 파일별 Change가 나오는데, 
+'+' 버튼으로 Add(Staging)할 수 있다.
+Message 란에 내용 입력하고, 'v'체크로 Commit할 수 있다.
