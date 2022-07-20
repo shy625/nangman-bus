@@ -21,4 +21,4 @@
 
 # 2022-07-18 8일차
 기능 정의서 작성 및 ERD 설계
-![image.png](./image.png)
+![image.png](../낭만ERD.png)
