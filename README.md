@@ -132,3 +132,10 @@
 - ERD 작성
 
 ![04](./img/낭만ERD.png)
+
+### 0721
+
+- JWT 토큰 공부
+(https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-jwt)
+- 레디스 공부
+(https://www.youtube.com/watch?v=OTie93UA0A0)
