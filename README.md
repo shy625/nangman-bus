@@ -139,3 +139,11 @@
 (https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-jwt)
 - 레디스 공부
 (https://www.youtube.com/watch?v=OTie93UA0A0)
+
+
+### 0722
+
+- 레디스 공부
+- 레디스 적용하여 ERD 새로 작성
+
+![04](./img/낭만.png)
