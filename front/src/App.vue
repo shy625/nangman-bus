@@ -1,11 +1,18 @@
-<script setup>
-
-</script>
-
 <template>
-  <h1>낭 만 버 스</h1>
+  <router-view></router-view>
 </template>
 
-<style scoped>
+<script>
 
-</style>
+export default {
+  name: 'App',
+
+  components: {
+    
+  },
+
+  data: () => ({
+
+  }),
+}
+</script>
