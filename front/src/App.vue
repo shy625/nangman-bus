@@ -28,4 +28,8 @@ export default {
   src: url('./assets/fonts/BMHANNAPro.ttf') format('woff');
   font-weight: normal;
 }
+body {
+  margin: 0;
+  font-family: BMHANNAAir, BMHANNAPro;
+}
 </style>

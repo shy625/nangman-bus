@@ -1,30 +1,65 @@
 <template>
-  <el-carousel indicator-position="outside">
-    <el-carousel-item v-for="item in 4" :key="item">
-      <h3 text="2xl" justify="center">{{ item }}</h3>
+  <header>
+    <div class="chat-header">
+      <div class="chat-header-back">&lt; 1</div>
+      <div class="chat-header-title">5006번 버스</div>
+    </div>
+    <hr class="chat-header-hr">
+  </header>
+
+  <el-carousel 
+  height="100vh"
+  indicator-position="none" 
+  :initial-index="1"
+  arrow="always"
+  :autoplay="false"
+  :loop="false"
+  >
+    <el-carousel-item>
+      <BoardList></BoardList>
+    </el-carousel-item>
+    <el-carousel-item>
+      <ChatRoom></ChatRoom>
+    </el-carousel-item>
+    <el-carousel-item>
+      <UserList></UserList>
     </el-carousel-item>
   </el-carousel>
 </template>
 
 <script setup>
+  import BoardList from './components/BoardList.vue'
+  import ChatRoom from './components/ChatRoom.vue'
+  import UserList from './components/UserList.vue';
 
 </script>
 
 <style>
-  .el-carousel__item h3 {
+.el-carousel__arrow {
+  top: 75% !important;
+  opacity: 0.3;
+  background-color: #FFD96A !important;
+}
+.el-carousel__arrow:hover {
+  opacity: 1;
+}
+.chat-header {
   display: flex;
-  color: #475669;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
+  padding: 20px 0px;
+  margin: 0px 20px;
+  position: relative;
   justify-content: center;
-  }
+  font-size: 1.5rem;
+}
+.chat-header-back {
+  position: absolute;
+  left: 12px;
+}
+.chat-header-title {
+  color: #F34949;
+}
+.chat-header-hr {
+  margin: 0px 32px;
+}
 
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-
-  .el-carousel__item:nth-child(2n + 1) {
-    background-color: #d3dce6;
-  }
 </style>
