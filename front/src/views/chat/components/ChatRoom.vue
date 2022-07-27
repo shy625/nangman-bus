@@ -1,9 +1,8 @@
 <template>
-  <div class="collapse">
+  <!-- <div class="collapse">
     <el-collapse>
       <el-collapse-item>
         <template #title>
-          <!-- flex -->
           <BusStops></BusStops>
         </template>
         <div>
@@ -16,8 +15,8 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-  </div>
-
+  </div> -->
+  <BusStops></BusStops>
 
 
 
@@ -32,14 +31,13 @@
 import BusStops from './BusStops.vue'
 </script>
 <style>
-.collapse {
+/* .collapse {
   margin: 12px 32px;
-  /* background-color: #FF9090 !important; */
 }
 .el-collapse {
   border-radius: 10px !important;
   --el-collapse-border-color: #FF9090 !important;
-  /* --el-collapse-header-bg-color: #FF9090 !important; */
+  --el-collapse-header-bg-color: #FF9090 !important;
   --el-collapse-content-bg-color: #FF9090 !important
-}
+} */
 </style>
