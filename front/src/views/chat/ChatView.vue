@@ -35,9 +35,12 @@
 </template>
 
 <script setup>
+<<<<<<< HEAD
   import BoardList from './components/BoardList.vue'
   import ChatRoom from './components/ChatRoom.vue'
   import UserList from './components/UserList.vue';
+=======
+>>>>>>> 804d654b0bdf0ecef66ebdee6eee6556d0954838
 
 </script>
 
