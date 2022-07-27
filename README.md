@@ -161,3 +161,9 @@
 - Redis 명령어 공부
 - Redis Stream 공부
 - 실사용 Redis 명령어 구축
+
+### 0727
+
+- Redis Stream 제외 명령어 마스터
+- 서버 연동 완료
+- 서버의 Linux 환경에 Redis 설치해서 했음
