@@ -10,7 +10,7 @@
   <el-carousel 
   height="100vh"
   indicator-position="none" 
-  initial-index="1"
+  :initial-index="1"
   arrow="always"
   :autoplay="false"
   :loop="false"
@@ -35,11 +35,6 @@
 </script>
 
 <style>
-/* body App.vue로 옮기기 */
-body {
-  margin: 0;
-  font-family: BMHANNAAir;
-}
 .el-carousel__arrow {
   top: 75% !important;
   opacity: 0.3;
