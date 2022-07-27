@@ -33,13 +33,14 @@ public class User extends BaseEntity {
     @JoinColumn(name = "nickname_id")
     private Nickname userNickname;
 
+    @Column(columnDefinition = "TINYINT", length = 1)
     private boolean isDeleted;
 
-    private String deletedDate;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime deletedDate;
 
+    @Column(columnDefinition = "TINYINT", length = 1)
     private boolean isRouletted;
-
-    private LocalDateTime createdDate;
 
     @OneToMany(mappedBy = "user")
     private List<Board> boards = new ArrayList<>();
