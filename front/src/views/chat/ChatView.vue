@@ -6,10 +6,8 @@
   </el-carousel>
 </template>
 
-<script>
-export default {
-  name: 'ChatView',
-}
+<script setup>
+
 </script>
 
 <style>
