@@ -2,6 +2,9 @@ package com.nangman.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -20,8 +23,10 @@ public class BaseEntity {
     private Long id = null;
 
     @CreatedDate
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime lastModifiedDate;
 }

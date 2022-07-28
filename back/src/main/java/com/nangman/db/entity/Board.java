@@ -16,6 +16,7 @@ public class Board extends BaseEntity{
 
     private String content;
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedDate;
 
     @ManyToOne
