@@ -11,6 +11,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("api")
 public class RedisController {
 
     private final RedisCrudService redisCrudService;
