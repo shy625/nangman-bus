@@ -49,6 +49,7 @@ import { ref, onMounted } from 'vue'
 
 let data = ref({ isToggled: false })
 
+// 더미데이터
 const busstops = [
   {
     content: 'Event start',
@@ -173,7 +174,7 @@ onMounted(() => {
   width: 100%;
   overflow: hidden;
   max-height: 30vh;
-  opacity: 0.95;
+  opacity: 0.97;
   /* -webkit-transition: max-height 0.3s; 
   -moz-transition: max-height 0.3s; 
   -ms-transition: max-height 0.3s; 

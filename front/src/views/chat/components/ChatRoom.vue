@@ -61,8 +61,13 @@
       </div>
     </div>
     <div class="chat-input">
-      <div class="input-state">O</div>
-      <div class="input-content">입력</div>
+      <div class="input-state">
+        <div>기쁨!</div>
+        <!-- <div>2</div>
+        <div>3</div>
+        <div>4</div> -->
+      </div>
+      <input class="input-content" type="text" placeholder="낭만 >_<">
     </div>
   </div>
 </template>
@@ -71,12 +76,15 @@ import BusStops from './BusStops.vue'
 </script>
 <style>
 .chatroom {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   margin: 0px 32px;
-  height: 100%;
+  height: 720px;
 }
 .chat-list {
   padding: 1px;
-  height: 85%;
+  height: 95%;
   background-color: #F5F5F5;
   border-radius: 0px 0px 20px 20px;
 
@@ -136,12 +144,18 @@ import BusStops from './BusStops.vue'
   font-size: 0.6rem;
 }
 .chat-input {
-  height: 100%;
-}
-.chat-input {
   display: flex;
+  flex-grow: 1;
   background-color: #FFD96A;
 }
-
-
+.input-content {
+  margin: 4px 8px;
+  padding: 0px;
+  border: 2px solid #F5F5F5;
+  border-radius: 10px;
+  flex-grow: 1;
+}
+.input-content:focus {
+  outline: 0;
+}
 </style>

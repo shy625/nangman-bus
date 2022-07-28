@@ -47,6 +47,10 @@
 .el-carousel__container {
   height: 100% !important;
 }
+.el-carousel__item {
+  display: flex !important;
+  flex-direction: column;
+}
 .el-carousel__arrow {
   top: 80% !important;
   opacity: 0.3;
