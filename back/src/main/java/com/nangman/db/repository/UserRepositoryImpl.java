@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @RequiredArgsConstructor
-public class UserRepositorySupport {
+public class UserRepositoryImpl {
     private final JPAQueryFactory jpaQueryFactory;
     QUser qUser = QUser.user;
 
