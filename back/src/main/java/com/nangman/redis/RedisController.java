@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -38,5 +39,11 @@ public class RedisController {
     @GetMapping("/redis/get/{id}")
     public RedisCrudResponseDto get(@PathVariable Long id) {
         return redisCrudService.get(id);
+    }
+
+    @RequestMapping("/redis/test")
+    public String test1(HttpSession session) {
+        session.setAttribute("email", "test");
+        return "test";
     }
 }
