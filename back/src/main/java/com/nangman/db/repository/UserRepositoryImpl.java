@@ -17,10 +17,18 @@ public class UserRepositoryImpl {
     private final JPAQueryFactory jpaQueryFactory;
     QUser qUser = QUser.user;
 
-    public Optional<User> findUserByUseremail(String useremail) {
+    public Optional<User> findUserByUserId(long userId) {
         User user = jpaQueryFactory.select(qUser).from(qUser)
-                .where(qUser.useremail.eq(useremail)).fetchOne();
+                .where(qUser.id.eq(userId)).where(qUser.isDeleted.eq(false)).fetchOne();
         if(user == null) return Optional.empty();
         return Optional.ofNullable(user);
     }
+
+    public Optional<User> findUserByUseremail(String useremail) {
+        User user = jpaQueryFactory.select(qUser).from(qUser)
+                .where(qUser.useremail.eq(useremail)).where(qUser.isDeleted.eq(false)).fetchOne();
+        if(user == null) return Optional.empty();
+        return Optional.ofNullable(user);
+    }
+
 }
