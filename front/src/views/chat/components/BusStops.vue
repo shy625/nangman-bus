@@ -137,7 +137,7 @@ onMounted(() => {
 </script>
 <style>
 .busstop {
-  margin: 32px;
+  margin: 12px 32px 0px 32px;
   position: relative;
 }
 .bus-toggle {
@@ -150,6 +150,7 @@ onMounted(() => {
   padding: 8px 0px;
   border-radius: 6px 6px 0px 0px;
   background-color: #FF9090;
+  /* opacity: 0.95; */
 
 }
 .busstop-mini-above {
@@ -172,6 +173,7 @@ onMounted(() => {
   width: 100%;
   overflow: hidden;
   max-height: 30vh;
+  opacity: 0.95;
   /* -webkit-transition: max-height 0.3s; 
   -moz-transition: max-height 0.3s; 
   -ms-transition: max-height 0.3s; 

@@ -1,4 +1,5 @@
 <template>
+<div class="chat-body">
   <header>
     <div class="chat-header">
       <div class="chat-header-back">&lt; 1</div>
@@ -8,7 +9,6 @@
   </header>
 
   <el-carousel 
-  height="100vh"
   indicator-position="none" 
   :initial-index="1"
   arrow="always"
@@ -25,6 +25,7 @@
       <UserList></UserList>
     </el-carousel-item>
   </el-carousel>
+</div>
 </template>
 
 <script setup>
@@ -35,10 +36,22 @@
 </script>
 
 <style>
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.el-carousel {
+  height: 100%;
+}
+.el-carousel__container {
+  height: 100% !important;
+}
 .el-carousel__arrow {
-  top: 75% !important;
+  top: 80% !important;
   opacity: 0.3;
   background-color: #FFD96A !important;
+  box-shadow: 1.5px 1.5px 4px rgba(0, 0, 0, 0.25);
 }
 .el-carousel__arrow:hover {
   opacity: 1;
