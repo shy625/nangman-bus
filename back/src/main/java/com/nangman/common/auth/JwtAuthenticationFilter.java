@@ -18,7 +18,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.nangman.api.service.UserService;
 import com.nangman.common.util.JwtTokenUtil;
-import com.nangman.common.util.ResponseBodyWriteUtil;
 import com.nangman.db.entity.User;
 
 /**
@@ -51,7 +50,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             // jwt 토큰으로 부터 획득한 인증 정보(authentication) 설정.
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception ex) {
-            ResponseBodyWriteUtil.sendError(request, response, ex);
+            logger.debug("request : " + request + ", response : " + response+", message: " + ex);
             return;
         }
         
@@ -73,7 +72,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
             if (userId != null) {
                     // jwt 토큰에 포함된 계정 정보(userId) 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
-            		User user = userService.getUserByUserId(userId);
+            		User user = userService.getUserByUseremail(userId);
                 if(user != null) {
                         // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
                 		NangmanUserDetails userDetails = new NangmanUserDetails(user);
