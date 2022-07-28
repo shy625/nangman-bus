@@ -7,8 +7,8 @@
   </div>
   <form @submit.prevent="login(credentials)">
     <div>
-      <label for="email">이메일</label><br>
-      <input v-model="credentials.email" id="email" type="email" autofocus placeholder="이메일을 입력해주세요" required />
+      <label for="useremail">이메일</label><br>
+      <input v-model="credentials.email" id="useremail" type="useremail" autofocus placeholder="이메일을 입력해주세요" required />
     </div>
     <div>
       <label for="password">비밀번호</label><br>
