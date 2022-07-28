@@ -1,30 +1,13 @@
 <template>
-  <!-- <div class="collapse">
-    <el-collapse>
-      <el-collapse-item>
-        <template #title>
-          <BusStops></BusStops>
-        </template>
-        <div>
-          Consistent with real life: in line with the process and logic of real
-          life, and comply with languages and habits that the users are used to;
-        </div>
-        <div>
-          Consistent within interface: all elements should be consistent, such
-          as: design style, icons and texts, position of elements, etc.
-        </div>
-      </el-collapse-item>
-    </el-collapse>
-  </div> -->
   <BusStops></BusStops>
-
-
-
+  <!-- 채팅창 -->
   <div>
-    채팅창
-  </div>
-  <div>
-    입력
+    <div>
+      채팅
+    </div>
+    <div>
+      입력
+    </div>
   </div>
 </template>
 <script setup>
