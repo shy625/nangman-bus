@@ -1,4 +1,4 @@
-package com.nangman.api.Service;
+package com.nangman.api.service;
 
 import com.nangman.api.dto.UserDto;
 import com.nangman.db.entity.User;
