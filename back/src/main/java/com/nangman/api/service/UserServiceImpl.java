@@ -1,4 +1,4 @@
-package com.nangman.api.Service;
+package com.nangman.api.service;
 
 import com.nangman.api.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;

@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.nangman.api.Service.UserService;
+import com.nangman.api.service.UserService;
 import com.nangman.db.entity.User;
 
 import io.swagger.annotations.Api;

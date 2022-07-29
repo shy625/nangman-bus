@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.nangman.api.Service.UserService;
+import com.nangman.api.service.UserService;
 import com.nangman.db.entity.User;
 
 

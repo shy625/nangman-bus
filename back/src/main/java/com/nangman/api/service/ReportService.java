@@ -1,10 +1,11 @@
 package com.nangman.api.service;
 
+import com.nangman.api.dto.ReportDto;
 import com.nangman.db.entity.Report;
-import com.nangman.db.entity.User;
 
 import java.util.List;
 
 public interface ReportService {
-    List<Report> getReportsByUserId(Long userId);
+    List<Report> getReportsByUserId(long userId);
+    ReportDto.Info getReportByIds(ReportDto.DetailRequest detailRequest);
 }
