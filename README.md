@@ -22,6 +22,7 @@
 | 7/26 | 16일차 | - Git 규칙 관련 문서 작성<br>- AWS EC2 백엔드 관련 환경 설정 및 백엔드 배포 |
 | 7/27 | 17일차 | - AWS EC2 프론트 관련 환경 설정 및 프론트 배포<br>- SockJS + STOMP 학습 |
 | 7/28 | 18일차 | - AWS EC2 Redis 설정<br>- SockJS + STOMP 학습<br>- Socket Server 기본 구현 |
+| 7/29 | 19일차 | - 1차 발표자료 준비<br>- Socket 서버 클라이언트 연결 테스트 |
 
 ## 개인 과제 구현 내용
 
