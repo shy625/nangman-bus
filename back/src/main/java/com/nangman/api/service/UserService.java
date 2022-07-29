@@ -1,12 +1,25 @@
-package com.nangman.api.service;
+package com.nangman.api.Service;
 
 import com.nangman.api.dto.UserDto;
 import com.nangman.db.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
  */
 public interface UserService {
-	User createUser(UserDto userRegisterInfo);
+	@Transactional
+	User createUser(UserDto.RegisterRequest userRegisterInfo);
+
+	@Transactional(readOnly = true)
+	User getUserByUserId(long userId);
+
+	@Transactional(readOnly = true)
 	User getUserByUseremail(String useremail);
+
+	@Transactional
+	User deleteuser(long userId);
+
+	@Transactional
+	User updateUser(UserDto.RegisterRequest userInfo);
 }

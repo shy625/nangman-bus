@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.nangman.api.service.UserService;
+import com.nangman.api.Service.UserService;
 import com.nangman.common.util.JwtTokenUtil;
 import com.nangman.db.entity.User;
 

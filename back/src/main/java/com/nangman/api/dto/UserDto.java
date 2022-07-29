@@ -1,40 +1,65 @@
 package com.nangman.api.dto;
 
+import com.nangman.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 
 /**
- *  유저 request, response DTO 클래스를 하나로 묶어 InnerStaticClass로 한 번에 관리
+ *  InnerStaticClass UserDto 한 번에 관리하는 클래스
  */
-@Getter
-@Setter
-@RequiredArgsConstructor
-@ApiModel("User model")
+
+@ApiModel("User Model")
 public class UserDto {
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Info {
 
-    @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
-    String useremail;
+        @ApiModelProperty(name="유저 id(식별자)", example="1")
+        private long id;
 
-    @ApiModelProperty(name="유저 패스워드", example="yourpassword")
-    String password;
+        @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
+        private String useremail;
 
-    @ApiModelProperty(name="유저 생일", example="1995-11-15")
-    String birthday;
+        @ApiModelProperty(name="유저 패스워드", example="yourpassword")
+        private String password;
 
-    public UserDto(String useremail, String password, String birthday) {
-        this.useremail = useremail;
-        this.password = password;
-        this.birthday = birthday;
+        @ApiModelProperty(name="유저 생일", example="1995-11-15")
+        private String userBirthday;
+
+        public Info(User user){
+            this.id = user.getId();
+            this.password = null;
+            this.useremail = user.getUseremail();
+            this.userBirthday = user.getUserBirthday();
+        }
     }
 
-    public UserDto(String useremail, String birthday) {
-        this.useremail = useremail;
-        this.birthday = birthday;
+    @Getter
+    @Setter
+    public static class LoginRequest {
+        @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
+        String useremail;
+
+        @ApiModelProperty(name="유저 패스워드", example="yourpassword")
+        String password;
     }
 
+    @Getter
+    @Setter
+    public static class RegisterRequest {
+        @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
+        String useremail;
+
+        @ApiModelProperty(name="유저 패스워드", example="yourpassword")
+        String password;
+
+        @ApiModelProperty(name="유저 생일", example="1995-11-15")
+        String userBirthday;
+    }
 
 }
