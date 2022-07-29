@@ -14,10 +14,8 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @ApiModel("Jwt Model")
 public class JwtDto {
+
     @ApiModelProperty(name="JWT 인증 토큰", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN...")
     String accessToken;
 
-    public JwtDto(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }
