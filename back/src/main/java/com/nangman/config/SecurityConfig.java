@@ -1,6 +1,6 @@
 package com.nangman.config;
 
-import com.nangman.api.Service.UserService;
+import com.nangman.api.service.UserService;
 import com.nangman.common.auth.JwtAuthenticationFilter;
 import com.nangman.common.auth.NangmanUserDetailService;
 import lombok.RequiredArgsConstructor;

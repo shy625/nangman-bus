@@ -1,4 +1,4 @@
-package com.nangman.api.Service;
+package com.nangman.api.service;
 
 import com.nangman.api.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
@@ -37,23 +37,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByUserId(long userId) {
-		log.debug(userRepository.findUserByUserId(userId).get().toString());
-		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-		return userRepository.findUserByUserId(userId).get();
+
+		// 디비에 유저 정보 조회 (userId를 통한 조회).
+		return userRepository.findByIdAndIsDeletedFalse(userId).get();
 	}
 
 	@Override
 	public User getUserByUseremail(String useremail) {
-		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-		return userRepository.findUserByUseremail(useremail).get();
+		// 디비에 유저 정보 조회 (useremail을 통한 조회).
+		return userRepository.findByUseremailAndIsDeletedFalse(useremail).get();
 	}
 
 	@Override
 	public User deleteuser(long userId) {
-		User user = userRepository.findUserByUserId(userId).get();
+		User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
 		user.setDeleted(true);
 		userRepository.save(user);
-
 		return user;
 	}
 
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
 	public User updateUser(UserDto.RegisterRequest userInfo) {
 		log.info(userInfo.getUseremail());
 
-		User user = userRepository.findUserByUseremail(userInfo.getUseremail()).get();
+		User user = userRepository.findByUseremailAndIsDeletedFalse(userInfo.getUseremail()).get();
 
 
 		// 생일 값 추가일 경우에만 수행
@@ -71,6 +70,7 @@ public class UserServiceImpl implements UserService {
 		if(!passwordEncoder.matches(userInfo.getPassword(), user.getPassword())) user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
 
 		userRepository.save(user);
+
 
 		return user;
 	}

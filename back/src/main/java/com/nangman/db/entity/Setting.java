@@ -16,7 +16,7 @@ public class Setting extends BaseEntity {
     /*
     Boolean값은 TINYINT(1)로 지정
      */
-    @Column(columnDefinition = "TINYINT", length = 1)
+    @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private boolean whisperMode;
 
     @OneToOne

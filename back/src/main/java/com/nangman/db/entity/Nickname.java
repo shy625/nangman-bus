@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 public class Nickname extends BaseEntity {
 
+    @Column(nullable = false)
     private String nickname;
 
     @OneToMany
