@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-
+      <!-- 내 채팅 -->
       <div class="my-chat-wrapper">
             <div class="chatting-side">
               <div class="chatting-like">따봉3</div>
@@ -61,18 +61,14 @@
       </div>
     </div>
     <div class="chat-input">
-      <div class="input-state">
-        <div>기쁨!</div>
-        <!-- <div>2</div>
-        <div>3</div>
-        <div>4</div> -->
-      </div>
-      <input class="input-content" type="text" placeholder="낭만 >_<">
+      <ChatEmos></ChatEmos>
+      <input class="input-content" type="text" placeholder="낭만! >_<">
     </div>
   </div>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
+import ChatEmos from './ChatEmos.vue'
 </script>
 <style>
 .chatroom {
@@ -86,7 +82,7 @@ import BusStops from './BusStops.vue'
   padding: 1px;
   height: 95%;
   background-color: #F5F5F5;
-  border-radius: 0px 0px 20px 20px;
+  /* border-radius: 0px 0px 20px 20px; */
 
 }
 .other-chat-wrapper {
@@ -157,5 +153,8 @@ import BusStops from './BusStops.vue'
 }
 .input-content:focus {
   outline: 0;
+}
+.input-content::placeholder {
+  text-align: center;
 }
 </style>
