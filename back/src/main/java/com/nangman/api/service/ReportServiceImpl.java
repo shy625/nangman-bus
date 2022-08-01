@@ -41,11 +41,11 @@ public class ReportServiceImpl implements ReportService{
         ChatInOutRecord chatInOutRecord = chatInOutRecordRepository.findChatInOutRecordByUserIdAndRoomId(
                 detailRequest.getUserId(),
                 roomRepository.findRoomByReport(report).getId());
-        accessTime += (chatInOutRecord.getInTime().getYear() - chatInOutRecord.getOutTime().getYear()) * 31536000;
-        accessTime += (chatInOutRecord.getInTime().getDayOfYear() - chatInOutRecord.getOutTime().getDayOfYear()) * 86400;
-        accessTime += (chatInOutRecord.getInTime().getHour() - chatInOutRecord.getOutTime().getHour()) * 3600;
-        accessTime += (chatInOutRecord.getInTime().getMinute() - chatInOutRecord.getOutTime().getMinute()) * 60;
-        accessTime += (chatInOutRecord.getInTime().getSecond() - chatInOutRecord.getOutTime().getSecond());
+        accessTime += (chatInOutRecord.getOutTime().getYear() - chatInOutRecord.getInTime().getYear()) * 31536000;
+        accessTime += (chatInOutRecord.getOutTime().getDayOfYear() - chatInOutRecord.getInTime().getDayOfYear()) * 86400;
+        accessTime += (chatInOutRecord.getOutTime().getHour() - chatInOutRecord.getInTime().getHour()) * 3600;
+        accessTime += (chatInOutRecord.getOutTime().getMinute() - chatInOutRecord.getInTime().getMinute()) * 60;
+        accessTime += (chatInOutRecord.getOutTime().getSecond() - chatInOutRecord.getInTime().getSecond());
         return new ReportDto.Info(report.getId(), report.getContent(), report.getAverageTime(), report.getTotalChatCount(),
                 report.getTotalUserCount(), accessTime);
     }
