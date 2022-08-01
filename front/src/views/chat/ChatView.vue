@@ -29,9 +29,9 @@
 </template>
 
 <script setup>
-  import BoardList from './components/BoardList.vue'
-  import ChatRoom from './components/ChatRoom.vue'
-  import UserList from './components/UserList.vue';
+  import BoardList from './components/BoardList/BoardList.vue'
+  import ChatRoom from './components/CharRoom/ChatRoom.vue'
+  import UserList from './components/UserList/UserList.vue'
 
 </script>
 
