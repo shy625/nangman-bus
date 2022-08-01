@@ -80,7 +80,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   margin: 12px 32px 0px 32px;
-  flex: 1;
+  flex-grow: 1;
 }
 .board-title {
   display: flex;
