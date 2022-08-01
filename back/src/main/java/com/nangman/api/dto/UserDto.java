@@ -10,14 +10,18 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 
 /**
  *  InnerStaticClass UserDto 한 번에 관리하는 클래스
  */
 
+// session에 필요한 객체는 Serializable implements하기!(사사갤 참조)
 @ApiModel("User Model")
-public class UserDto {
+public class UserDto implements Serializable {
+
+
     @Getter
     @Setter
     @AllArgsConstructor

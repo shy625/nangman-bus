@@ -14,8 +14,7 @@ public enum ErrorCode {
     REPORT_NOT_FOUND(404, "존재하지 않는 낭만 보고서 ID"),
     USER_NOT_FOUND(404, "존재하지 않는 사용자 ID"),
 
-    REVIEW_INFO_NOT_MATCHED(404, "전송된 정보와 일치 하지 않는 DB상 리뷰 정보"),
-    ATTACHED_PHOTO_INFO_NOT_MATCHED(404, "전송된 정보와 일치 하지 않는 DB상 첨부사진 정보"),
+    REPORT_INFO_NOT_MATCHED(404, "전송된 정보와 일치 하지 않는 DB상 정보"),
 
     //409 CONFLICT 중복된 리소스
     USER_ALREADY_EXISTED(409, "이미 저장되어 있는 첨부사진 ID"),
