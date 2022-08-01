@@ -5,10 +5,13 @@
   <div>
     <h3>이메일을 입력해주세요.</h3>
   </div>
+
+  <account-error-list v-if="authError"></account-error-list>
+
   <form @submit.prevent="signup(credentials)">
     <div>
       <label for="useremail">이메일</label><br>
-      <input v-model="credentials.email" id="useremail" type="useremail" autofocus placeholder="이메일을 입력하세요" required /><button>인증요청</button>
+      <input v-model="credentials.useremail" id="useremail" type="email" autofocus placeholder="이메일을 입력하세요" required /><button>인증요청</button>
     </div>
     <div>
       <label for="password1">비밀번호</label><br>
@@ -26,17 +29,18 @@
   </form>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import AccountErrorList from './AccountErrorList.vue'
 // element-plus에 Form, Input, Datepicker로 CSS
 export default {
   name: 'SignupView',
   components: {
-    
+    AccountErrorList
   },
   data() {
     return {
       credentials: {
-        email: '',
+        useremail: '',
         password1: '',
         password2: '',
         userbirthday: '',
@@ -55,8 +59,11 @@ export default {
   unmounted() {
     
   },
+  computed: {
+    ...mapGetters(['authError'])
+  },
   methods: {
-    mapActions(['signup'])
+    ...mapActions(['signup'])
   }
 }
 </script>

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainView from '../views/main/MainView.vue'
 import ChatView from '../views/chat/ChatView.vue'
 import LoginView from '../views/accounts/LoginView.vue'
-// import SignupView from '../views/accounts/SignupView.vue'
+import SignupView from '../views/accounts/SignupView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -10,7 +10,7 @@ const router = createRouter({
     { name: 'main', path: '/', component: MainView },
     // { name: 'welcome', path: '/welcome', component: WelcomeView },
     { name: 'login', path: '/login', component: LoginView },
-    // { name: 'signup', path: '/signup', component: SignupView },
+    { name: 'signup', path: '/signup', component: SignupView },
     // { name: 'accounts', path: '/accounts/:userId', component: AccountsView },
     // { name: 'reports', path: '/reports/:userId', component: ReportsView },
     // { name: 'reportDetail', path: '/reports/:userId/reportId', component: ReportDetailView },

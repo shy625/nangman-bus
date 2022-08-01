@@ -5,6 +5,9 @@
   <div>
     <h3>이메일을 입력해주세요.</h3>
   </div>
+
+  <account-error-list v-if="authError"></account-error-list>
+
   <form @submit.prevent="login(credentials)">
     <div>
       <label for="useremail">이메일</label><br>
@@ -20,12 +23,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import AccountErrorList from './AccountErrorList.vue'
 
 export default {
-  name: '',
+  name: 'LoginView',
   components: {
-    
+    AccountErrorList,
   },
   data() {
     return {
@@ -42,13 +46,16 @@ export default {
     
   },
   mounted() {
-    mapActions(['login'])
+    
   },
   unmounted() {
     
   },
+  computed: {
+    ...mapGetters(['authError'])
+  },
   methods: {
-    
+    ...mapActions(['login'])
   }
 }
 </script>
