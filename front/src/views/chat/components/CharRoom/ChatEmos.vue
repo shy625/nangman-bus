@@ -49,7 +49,7 @@ onMounted(() => {
   bottom: 40px;
   overflow: hidden;
   height: 70px;
-  transition: all 1s;
+  transition: all 0.2s;
 }
 .emo-list.collapsed {
   height: 0;

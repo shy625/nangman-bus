@@ -179,7 +179,7 @@ onMounted(() => {
   -moz-transition: max-height 0.3s; 
   -ms-transition: max-height 0.3s; 
   -o-transition: max-height 0.3s;  */
-  transition: max-height 0.3s;
+  transition: max-height 0.25s;
 }
 .busstop-list.collapsed {
   max-height: 0;
