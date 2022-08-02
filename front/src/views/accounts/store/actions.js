@@ -31,12 +31,18 @@ export function login({ commit, dispatch }, credentials) {
 }
 
 export function signup({ commit, dispatch }, credentials) {
+  credentials = {
+    useremail: credentials.useremail,
+    password: credentials.password1, // 1, 2 확인하고 보내주김
+    userBirthday: credentials.userbirthday,
+  }
   axios({
     url: api.accounts.signup(),
     method: 'post',
-    data: credentials,
+    data: credentials, // 가공해서
   })
     .then(res => {
+      console.log(res.data)
       const token = res.data.key
       dispatch('setToken', token)
       dispatch('fetchCurrentUser')

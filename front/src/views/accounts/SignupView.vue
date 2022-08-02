@@ -5,10 +5,11 @@
   <div>
     <h3>이메일을 입력해주세요.</h3>
   </div>
+  <button @click="signup">사인업</button>
+  <!-- <account-error-list v-if="store.getters['accounts/authError']"></account-error-list> -->
 
-  <account-error-list v-if="authError"></account-error-list>
-
-  <form @submit.prevent="signup(credentials)">
+  <!-- <form @submit.prevent="store.dispatch('accounts/signup', credentials)"> -->
+  <form>
     <div>
       <label for="useremail">이메일</label><br>
       <input v-model="credentials.useremail" id="useremail" type="email" autofocus placeholder="이메일을 입력하세요" required /><button>인증요청</button>
@@ -29,7 +30,9 @@
   </form>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex'
+// import { mapActions, mapGetters } from 'vuex'
+import { useStore } from 'vuex'
+import { ref, onMounted } from 'vue'
 import AccountErrorList from './AccountErrorList.vue'
 // element-plus에 Form, Input, Datepicker로 CSS
 export default {
@@ -48,22 +51,33 @@ export default {
     }
   },
   setup() {
+    const store = useStore()
+    onMounted(() => {
+      // console.log(store.dispatch['accounts/login'])
+    })
+    const signup = function (event) {
+      // event.preventDefault()
+      console.log(event.target)
+
     
+      // store.dispatch('accounts/signup')
+    }
   },
-  created() {
+  // created() {
     
-  },
-  mounted() {
+  // },
+  // mounted() {
     
-  },
-  unmounted() {
+  // },
+  // unmounted() {
     
-  },
-  computed: {
-    ...mapGetters(['authError'])
-  },
-  methods: {
-    ...mapActions(['signup'])
-  }
+  // },
+  // computed: {
+  //   // ...mapGetters(['authError'])
+  // },
+  // methods: {
+  //   // ...mapActions(['signup'])
+    
+  // }
 }
 </script>

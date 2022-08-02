@@ -1,4 +1,4 @@
-const HOST = 'http://localhost:8000/'
+const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
 
 const USER = 'user/'
 // const ARTICLES = 'articles/'
