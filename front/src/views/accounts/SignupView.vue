@@ -5,79 +5,48 @@
   <div>
     <h3>이메일을 입력해주세요.</h3>
   </div>
-  <button @click="signup">사인업</button>
   <!-- <account-error-list v-if="store.getters['accounts/authError']"></account-error-list> -->
 
   <!-- <form @submit.prevent="store.dispatch('accounts/signup', credentials)"> -->
-  <form>
-    <div>
-      <label for="useremail">이메일</label><br>
-      <input v-model="credentials.useremail" id="useremail" type="email" autofocus placeholder="이메일을 입력하세요" required /><button>인증요청</button>
-    </div>
-    <div>
-      <label for="password1">비밀번호</label><br>
+  <form @submit="signup">
+    <label for="useremail">이메일
+      <input v-model="credentials.useremail" id="useremail" type="email" autofocus placeholder="이메일을 입력하세요" required /><button disabled>인증요청</button>
+    </label>
+    <label for="password1">비밀번호
       <input v-model="credentials.password1" id="password1" type="password" placeholder="비밀번호를 입력하세요" required />
-    </div>
-    <div>
-      <label for="password2">비밀번호 확인</label><br>
+    </label>
+    <label for="password2">비밀번호 확인
       <input v-model="credentials.password2" id="password2" type="password" placeholder="비밀번호를 다시 입력하세요" required />
-    </div>
-    <div>
-      <label for="userbirthday">생년월일 (선택)</label><br>
+    </label>
+    <label for="userbirthday">생년월일 (선택)
       <input v-model="credentials.userbirthday" id="userbirthday" type="date" />
-    </div>
+    </label>
     <button>시작하기</button>
   </form>
 </template>
-<script>
-// import { mapActions, mapGetters } from 'vuex'
+<script setup>
 import { useStore } from 'vuex'
 import { ref, onMounted } from 'vue'
-import AccountErrorList from './AccountErrorList.vue'
+// import AccountErrorList from './AccountErrorList.vue.js'
 // element-plus에 Form, Input, Datepicker로 CSS
-export default {
-  name: 'SignupView',
-  components: {
-    AccountErrorList
-  },
-  data() {
-    return {
-      credentials: {
-        useremail: '',
-        password1: '',
-        password2: '',
-        userbirthday: '',
-      }
-    }
-  },
-  setup() {
-    const store = useStore()
-    onMounted(() => {
-      // console.log(store.dispatch['accounts/login'])
-    })
-    const signup = function (event) {
-      // event.preventDefault()
-      console.log(event.target)
-
-    
-      // store.dispatch('accounts/signup')
-    }
-  },
-  // created() {
-    
-  // },
-  // mounted() {
-    
-  // },
-  // unmounted() {
-    
-  // },
-  // computed: {
-  //   // ...mapGetters(['authError'])
-  // },
-  // methods: {
-  //   // ...mapActions(['signup'])
-    
-  // }
+const store = useStore()
+onMounted(() => {
+})
+const credentials = ref({
+    useremail: '',
+    password1: '',
+    password2: '',
+    userbirthday: '',
+})
+const signup = function (event) {
+  event.preventDefault()
+  const credentials = {
+    useremail: event.target.useremail.value,
+    password1: event.target.password1.value,
+    password2: event.target.password2.value,
+    userbirthday: event.target.userbirthday.value,
+  }
+  // console.log(event.target.useremail.value)
+  store.dispatch('accounts/signup', credentials)
 }
 </script>
