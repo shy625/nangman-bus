@@ -31,15 +31,16 @@ export function login({ commit, dispatch }, credentials) {
 }
 
 export function signup({ commit, dispatch }, credentials) {
+  // data 가공과정 : back에서 받는 정보대로
   credentials = {
     useremail: credentials.useremail,
-    password: credentials.password1, // 1, 2 확인하고 보내주김
+    password: (credentials.password1 === credentials.password2) ? credentials.password1 : null, // 1, 2 확인하고 보내주김
     userBirthday: credentials.userbirthday,
   }
   axios({
     url: api.accounts.signup(),
     method: 'post',
-    data: credentials, // 가공해서
+    data: credentials,
   })
     .then(res => {
       console.log(res.data)
