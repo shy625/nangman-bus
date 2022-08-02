@@ -6,12 +6,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.nio.charset.StandardCharsets;
 
 @SpringBootApplication
+<<<<<<< HEAD
 @EnableRedisRepositories
+=======
+@EnableRedisHttpSession
+>>>>>>> 23f6d10134fcee29bc55ac3ae24812f55ff34112
 public class NangmanApplication {
 	public static void main(String[] args) {
         SpringApplication.run(NangmanApplication.class, args);
