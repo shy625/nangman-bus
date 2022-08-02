@@ -1,5 +1,5 @@
 <template>
-  <div class="users">
+  <div id="users" class="users">
     <div class="users-title">
       <div class="user-count">
         승객 {{ countUsers.countUsers }}명
@@ -11,7 +11,7 @@
     </div>
     <div class="user-list">
       <el-scrollbar height="80vh">
-        <div class="user">
+        <div id="me" class="user">
           <div class="icon">
             O
           </div>
@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <div class="user">
+        <div id="one" class="user">
           <div class="icon">
             O
           </div>
@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-        <div class="user">
+        <div id="two" class="user">
           <div class="icon">
             O
           </div>
@@ -303,10 +303,36 @@
       </el-scrollbar>
     </div>
   </div>
+  <ProfileModal></ProfileModal>
 </template>
 <script setup>
-  import { ref, } from 'vue'
-  const countUsers = ref({ countUsers: 21 })
+import { ref, onMounted } from 'vue'
+import ProfileModal from './ProfileModal.vue'
+
+const countUsers = ref({ countUsers: 21 })
+
+onMounted(() => {
+  // 유저 프로필 모달 구현
+  const user = document.querySelectorAll('.user')
+  const profileContainer = document.querySelector('#profileContainer')
+  const users = document.querySelector('#users')
+  const body = document.querySelector('body')
+
+  user.forEach(u => {
+    u.addEventListener('click', () => {
+      profileContainer.removeAttribute('class')
+      profileContainer.classList.add('profile-container')
+      users.removeAttribute('class')
+      users.classList.add('users')
+      body.classList.add('profile-active')
+    })
+  })
+  profileContainer.addEventListener('click', () => {
+    profileContainer.classList.add('out')
+    users.classList.add('out')
+    body.classList.remove('profile-active')
+  })
+})
 </script>
 <style>
 .users {
@@ -314,6 +340,8 @@
   flex-grow: 1;
   flex-direction: column;
   margin: 12px 32px 0px 32px;
+  position: relative;
+  z-index: 0;
 }
 .users-title {
   display: flex;
@@ -361,5 +389,10 @@
 }
 .profile-me {
   margin-left: 4px;
+}
+
+/* 모달 */
+.profile-active {
+  overflow: hidden;
 }
 </style>
