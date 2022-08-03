@@ -20,9 +20,12 @@ public class DefaultDataPopulator implements ApplicationRunner {
         meeting.setStartAt(new Date());
         meetingRepository.save(meeting);
 
+
         meetingRepository.findAll().forEach(m -> {
             System.out.println("============");
             System.out.println(m.getTitle() + " " + m.getStartAt());
         });
+
+        meetingRepository.deleteAll();
     }
 }
