@@ -1,5 +1,5 @@
 <template>
-  <div class="busstop">
+  <div id="busstop" class="busstop">
     <div id="busToggle" class="bus-toggle">
       <div class="busstop-mini">
         <div class="busstop-mini-above">
