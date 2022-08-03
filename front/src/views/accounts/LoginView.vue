@@ -35,7 +35,7 @@ const login = function (event) {
   event.preventDefault()
   const credentials = {
     useremail: event.target.useremail.value,
-    password: '',
+    password: event.target.password.value,
   }
   store.dispatch('accounts/login', credentials)
 }
