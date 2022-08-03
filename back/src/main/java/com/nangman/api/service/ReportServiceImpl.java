@@ -1,6 +1,8 @@
 package com.nangman.api.service;
 
 import com.nangman.api.dto.ReportDto;
+import com.nangman.common.constants.ErrorCode;
+import com.nangman.common.exception.CustomException;
 import com.nangman.db.entity.ChatInOutRecord;
 import com.nangman.db.entity.Report;
 import com.nangman.db.entity.UserReport;
@@ -9,7 +11,7 @@ import com.nangman.db.repository.ReportRepository;
 import com.nangman.db.repository.RoomRepository;
 import com.nangman.db.repository.UserReportRepository;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.dynamic.scaffold.MethodGraph;
+
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -41,6 +43,17 @@ public class ReportServiceImpl implements ReportService{
         ChatInOutRecord chatInOutRecord = chatInOutRecordRepository.findChatInOutRecordByUserIdAndRoomId(
                 detailRequest.getUserId(),
                 roomRepository.findRoomByReport(report).getId());
+
+        boolean isInReport = false;
+        List<UserReport> checkList = report.getUsers();
+        for (UserReport userReport: checkList){
+            if (userReport.getUser().getId() == detailRequest.getUserId()){
+                isInReport = true;
+                break;
+            }
+        }
+        if (!isInReport) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
+
         accessTime += (chatInOutRecord.getOutTime().getYear() - chatInOutRecord.getInTime().getYear()) * 31536000;
         accessTime += (chatInOutRecord.getOutTime().getDayOfYear() - chatInOutRecord.getInTime().getDayOfYear()) * 86400;
         accessTime += (chatInOutRecord.getOutTime().getHour() - chatInOutRecord.getInTime().getHour()) * 3600;
