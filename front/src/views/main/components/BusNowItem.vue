@@ -1,6 +1,12 @@
 <template>
-  도로위 낭만버스 ㅡㅡㅡ
-  <!-- BusBowItem에 내용 채워서 3개 가져옴 -->
+  <div>
+    지금
+    <!-- '양재IC' -->
+    <!-- 앞 정류장명 마지막 글자가 받침이 있는지 없는지 -->을 지나는
+    <!-- '5100' -->번
+    버스는
+    <!-- '아주 시끌벅적하네요!' -->
+  </div>
 </template>
 <script setup>
   import { useStore } from 'vuex'

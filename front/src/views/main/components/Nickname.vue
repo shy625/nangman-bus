@@ -5,7 +5,10 @@
   store에 닉네임을 저장...
  -->
 <template>
-  
+  <!-- 닉네임 진한 글씨체(볼드X) -->
+  님
+  <!-- 환영 문구 -->
+  <!-- NangmanBus.vue 컴포넌트 -->
 </template>
 <script>
  export default {

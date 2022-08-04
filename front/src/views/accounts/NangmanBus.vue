@@ -1,6 +1,8 @@
 <template>
-  도로위 낭만버스 ㅡㅡㅡ
-  <!-- BusBowItem에 내용 채워서 3개 가져옴 -->
+  <!-- v-if router now 여부 -->
+  <img src="@/assets/bus-unclicked.png" alt="bus-icon-unclicked">
+  <!-- v-if router now === true -->
+  <!-- <img src="@/assets/bus-clicked.png" alt="bus-icon-clicked"> -->
 </template>
 <script setup>
   import { useStore } from 'vuex'

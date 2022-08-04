@@ -2,7 +2,7 @@
   <a href="https://127.0.0.1:8000/">
     <img src="@/assets/logo.png" alt="낭만버스 로고">
   </a>
-  <a href="">
+  <a href="https://127.0.0.1:8000/">
     <font-awesome-icon icon="fa-solid fa-circle-user" />
   </a>
 </template>
