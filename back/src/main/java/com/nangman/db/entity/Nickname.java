@@ -22,7 +22,7 @@ public class Nickname extends BaseEntity {
 
     public void addUser(User user) {
         this.users.add(user);
-        if (user.getUserNickname() != this) {
+        if (user.getNickname() != this) {
             user.setNickname(this);
         }
     }
