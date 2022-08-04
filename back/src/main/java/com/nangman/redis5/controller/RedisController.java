@@ -20,6 +20,7 @@ public class RedisController {
 
     @GetMapping("/")
     public String ok() {
+
         return "ok";
     }
 
