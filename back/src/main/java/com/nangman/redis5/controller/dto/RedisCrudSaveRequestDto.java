@@ -11,22 +11,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RedisCrudSaveRequestDto {
 
-    private Long id;
-    private String description;
-    private String updateAt;
+    private String key;
+    private String subKey;
+    private String value;
 
     @Builder
-    public RedisCrudSaveRequestDto(Long id, String description, String updateAt) {
-        this.id = id;
-        this.description = description;
-        this.updateAt = updateAt;
+    public RedisCrudSaveRequestDto(String key, String subKey, String value) {
+        this.key = key;
+        this.subKey = subKey;
+        this.value = value;
     }
 
     public RedisCrud toRedisHash() {
         return RedisCrud.builder()
-                .id(id)
-                .description(description)
-                .updatedAt(updateAt)
+                .key(key)
+                .subKey(subKey)
+                .value(value)
                 .build();
     }
 }

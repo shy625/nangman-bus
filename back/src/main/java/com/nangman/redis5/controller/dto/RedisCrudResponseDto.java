@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 
 @Getter
 public class RedisCrudResponseDto {
-    private Long id;
-    private String description;
-    private String updateAt;
+    private String key;
+    private String subKey;
+    private String value;
 
     public RedisCrudResponseDto(RedisCrud redisHash) {
-        this.id = redisHash.getId();
-        this.description = redisHash.getDescription();
-        this.updateAt = redisHash.getUpdatedAt();
+        this.key = redisHash.getKey();
+        this.subKey = redisHash.getSubKey();
+        this.value = redisHash.getValue();
 
     }
 }

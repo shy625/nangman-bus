@@ -39,7 +39,7 @@ public class RedisController {
     @PostMapping("/save")
     public Long save(@RequestBody RedisCrudSaveRequestDto requestDto) {
         log.info(">>>>>>>>>>>>>>>>>>>>>> [save] redisCrud={}", requestDto);
-        redisTemplate.opsForHash().put(requestDto.getId().toString(), requestDto.getDescription(), requestDto.getUpdateAt());
+        redisTemplate.opsForHash().put(requestDto.getKey(), requestDto.getSubKey(), requestDto.getValue());
         return redisCrudService.save(requestDto);
     }
 

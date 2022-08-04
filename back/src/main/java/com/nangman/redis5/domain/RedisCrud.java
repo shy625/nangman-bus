@@ -15,15 +15,15 @@ import java.time.LocalDateTime;
 public class RedisCrud implements Serializable {
 
     @Id
-    private Long id;
-    private String description;
-    private String updatedAt;
+    private String key;
+    private String subKey;
+    private String value;
 
     @Builder
-    public RedisCrud(Long id, String description, String updatedAt) {
-        this.id = id;
-        this.description = description;
-        this.updatedAt = updatedAt;
+    public RedisCrud(String key, String subKey, String value) {
+        this.key = key;
+        this.subKey = subKey;
+        this.value = value;
     }
 
 //    public void update(String description, String updatedAt) {
