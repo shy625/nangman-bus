@@ -38,7 +38,7 @@ public class User extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "nickname_id")
-    private Nickname userNickname;
+    private Nickname nickname;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
     private boolean isDeleted;
@@ -48,6 +48,17 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
     private boolean isRouletted;
+
+/*
+
+    public String isRouletted() {
+        return isRouletted ? "Y" : "N" ;
+    }
+
+    public String isDeleted() {
+        return isDeleted ? "Y" : "N";
+    }
+*/
 
     @OneToMany(mappedBy = "user")
     private List<Board> boards = new ArrayList<>();
@@ -61,7 +72,7 @@ public class User extends BaseEntity {
 
     // 무한루프 빠지지 않도록 체크
     public void setNickname(Nickname nickname) {
-        this.userNickname = nickname;
+        this.nickname = nickname;
 
         if (!nickname.getUsers().contains(this)) {
             nickname.getUsers().add(this);

@@ -18,8 +18,10 @@ public interface UserService {
 	User getUserByUseremail(String useremail);
 
 	@Transactional
-	User deleteuser(long userId);
+	User deleteUser(long userId);
 
 	@Transactional
 	User updateUser(UserDto.RegisterRequest userInfo);
+
+	User updateUserIsRouletted(long userId);
 }

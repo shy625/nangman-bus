@@ -46,11 +46,21 @@ public class UserDto implements Serializable {
         @ApiModelProperty(name="유저 생일", example="1995-11-15")
         private String userBirthday;
 
+        private String is_rouletted;
+
+//        private String nickname;
+
+        private String whiperMode;
+
+
         public Info(User user){
             this.id = user.getId();
             this.password = null;
             this.useremail = user.getUseremail();
             this.userBirthday = user.getUserBirthday();
+            this.is_rouletted = user.isRouletted() ? "Y" : "N";
+//            this.nickname = user.getNickname().getNickname();
+            this.whiperMode = user.getSetting().isWhisperMode() ? "Y" : "N";
         }
     }
 
