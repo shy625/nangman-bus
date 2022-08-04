@@ -26,7 +26,7 @@ public class RedisCrudSaveRequestDto {
         return RedisCrud.builder()
                 .id(id)
                 .description(description)
-                .updatedAt("LocalDateTime.now()")
+                .updatedAt(updateAt)
                 .build();
     }
 }

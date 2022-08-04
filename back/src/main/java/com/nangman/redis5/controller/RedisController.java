@@ -23,15 +23,14 @@ public class RedisController {
 
     @GetMapping("/")
     public String ok() {
-
         return "ok";
     }
 
     @GetMapping("/keys")
     public String keys() {
 //        Set<String> keys = redisTemplate.opsForSet().members("*");
-        Set<String> keys = redisCrudService.getAll();
-
+//        Set<String> keys = redisCrudService.getAll();
+        Set<String> keys = redisTemplate.keys("*");
 //        Set<String> keys = repositoryConfig.redisTemplate().opsForSet().members();
         assert keys != null;
         return Arrays.toString(keys.toArray());
@@ -40,12 +39,18 @@ public class RedisController {
     @PostMapping("/save")
     public Long save(@RequestBody RedisCrudSaveRequestDto requestDto) {
         log.info(">>>>>>>>>>>>>>>>>>>>>> [save] redisCrud={}", requestDto);
+        redisTemplate.opsForHash().put(requestDto.getId().toString(), requestDto.getDescription(), requestDto.getUpdateAt());
         return redisCrudService.save(requestDto);
     }
 
     @GetMapping("/get/{id}")
     public RedisCrudResponseDto get(@PathVariable Long id) {
         return redisCrudService.get(id);
+    }
+
+    @GetMapping("/delete/{key}")
+    public void delete(@PathVariable String key) {
+        redisTemplate.delete(key);
     }
 
 }
