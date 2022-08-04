@@ -19,6 +19,7 @@ public class ReportDto {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class DetailRequest{
         @ApiModelProperty(name="유저 id(식별자)", example="1")
         private Long userId;
