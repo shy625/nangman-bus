@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
+
 @RequiredArgsConstructor
 @Service
 public class RedisCrudService {
@@ -22,4 +25,14 @@ public class RedisCrudService {
         RedisCrud redisCrud = redisCrudRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Nothing saved id=" +id));
         return new RedisCrudResponseDto(redisCrud);
     }
+
+    public Set<String> getAll() {
+        Iterable<RedisCrud> list = redisCrudRepository.findAll();
+        Set<String> keys = null;
+        for(RedisCrud str : list) {
+            keys.add(str.getId().toString());
+        }
+        return keys;
+    }
+
 }

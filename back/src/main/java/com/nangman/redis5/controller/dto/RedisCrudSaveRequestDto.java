@@ -13,10 +13,10 @@ public class RedisCrudSaveRequestDto {
 
     private Long id;
     private String description;
-    private LocalDateTime updateAt;
+    private String updateAt;
 
     @Builder
-    public RedisCrudSaveRequestDto(Long id, String description, LocalDateTime updateAt) {
+    public RedisCrudSaveRequestDto(Long id, String description, String updateAt) {
         this.id = id;
         this.description = description;
         this.updateAt = updateAt;
@@ -26,7 +26,7 @@ public class RedisCrudSaveRequestDto {
         return RedisCrud.builder()
                 .id(id)
                 .description(description)
-                .updatedAt(LocalDateTime.now())
+                .updatedAt("LocalDateTime.now()")
                 .build();
     }
 }

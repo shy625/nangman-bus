@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class RedisCrudResponseDto {
     private Long id;
     private String description;
-    private LocalDateTime updateAt;
+    private String updateAt;
 
     public RedisCrudResponseDto(RedisCrud redisHash) {
         this.id = redisHash.getId();

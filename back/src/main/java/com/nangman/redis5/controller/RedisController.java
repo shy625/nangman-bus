@@ -1,5 +1,7 @@
 package com.nangman.redis5.controller;
 
+import com.nangman.redis5.config.RedisProperties;
+import com.nangman.redis5.config.RedisRepositoryConfig;
 import com.nangman.redis5.controller.dto.RedisCrudResponseDto;
 import com.nangman.redis5.controller.dto.RedisCrudSaveRequestDto;
 import com.nangman.redis5.service.RedisCrudService;
@@ -17,6 +19,7 @@ import java.util.Set;
 public class RedisController {
     private final RedisCrudService redisCrudService;
     private final StringRedisTemplate redisTemplate;
+//    private final RedisRepositoryConfig repositoryConfig;
 
     @GetMapping("/")
     public String ok() {
@@ -26,7 +29,10 @@ public class RedisController {
 
     @GetMapping("/keys")
     public String keys() {
-        Set<String> keys = redisTemplate.opsForSet().members("*");
+//        Set<String> keys = redisTemplate.opsForSet().members("*");
+        Set<String> keys = redisCrudService.getAll();
+
+//        Set<String> keys = repositoryConfig.redisTemplate().opsForSet().members();
         assert keys != null;
         return Arrays.toString(keys.toArray());
     }
