@@ -65,21 +65,26 @@
     </div>
   </div>
   <BanModal></BanModal>
+  <EnterModal></EnterModal>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 import BanModal from './BanModal.vue'
+import EnterModal from './EnterModal.vue'
 import { ref, onMounted } from 'vue'
 
 onMounted(() => {
   // 나중에 조건걸어서 ban-active할 수 있도록!
   const banModal = document.querySelector('#banModal')
   const chatRoom = document.querySelector('#chatRoom')
-  const busstop = document.querySelector('#busstop')
+  // const busstop = document.querySelector('#busstop')
+  const enterModal = document.querySelector('#enterModal')
+
   banModal.classList.add('ban')
   chatRoom.classList.add('ban-active')
-  busstop.classList.add('ban-active')
+  enterModal.classList.add('enter')
+  // busstop.classList.add('ban-active')
 })
 </script>
 <style>
@@ -89,6 +94,7 @@ onMounted(() => {
   flex-direction: column;
   margin: 0px 32px;
   height: 720px;
+  /* position: relative; */
 }
 .chat-list {
   padding: 1px;
