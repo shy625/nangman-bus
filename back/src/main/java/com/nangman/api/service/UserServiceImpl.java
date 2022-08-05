@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.nangman.db.entity.User;
 import com.nangman.db.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
+import java.util.List;
+
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -28,7 +30,6 @@ public class UserServiceImpl implements UserService {
 
 	private SettingRepository settingRepository;
 	private PasswordEncoder passwordEncoder;
-
 	public UserServiceImpl(@Lazy UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder, @Lazy SettingRepository settingRepository, @Lazy NicknameRepository nicknameRepository) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public User createUser(UserDto.RegisterRequest userRegisterInfo) {
 		User user = new User();
 		user.setUseremail(userRegisterInfo.getUseremail());
@@ -60,6 +62,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public User getUserByUserId(long userId) {
 
 		// 디비에 유저 정보 조회 (userId를 통한 조회).
@@ -67,12 +70,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public User getUserByUseremail(String useremail) {
 		// 디비에 유저 정보 조회 (useremail을 통한 조회).
 		return userRepository.findByUseremailAndIsDeletedFalse(useremail).get();
 	}
 
 	@Override
+	@Transactional
 	public User deleteUser(long userId) {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
 		user.setDeleted(true);
@@ -81,6 +86,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public User updateUser(UserDto.RegisterRequest userInfo) {
 		log.info(userInfo.getUseremail());
 
@@ -100,12 +106,31 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public User updateUserIsRouletted(long userId) {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
 		user.setRouletted(user.isRouletted() ? false : true);
 		userRepository.save(user);
 
 		return user;
+	}
+
+	@Override
+	public void updateUserNickname() {
+		List<User> userList = userRepository.findByIsDeletedFalse();
+		List<Nickname> nicknameList = nicknameRepository.findAll();
+
+		long totalUser = userList.size();
+		long totalNickname = nicknameList.size();
+
+		for(int i = 0; i < totalUser; i++){
+			User curUser = userList.get(i);
+			int randomNumber = (int) (Math.random() * totalNickname);
+			Nickname selectedNickname = nicknameList.get(randomNumber);
+			curUser.setNickname(selectedNickname);
+			userRepository.save(curUser);
+			nicknameRepository.save(selectedNickname);
+		}
 	}
 
 }

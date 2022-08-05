@@ -4,6 +4,7 @@ import com.nangman.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ public class UserDto implements Serializable {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     public static class Info {
 
@@ -42,8 +44,7 @@ public class UserDto implements Serializable {
         private String password;
 
 
-        @Pattern(regexp = "^((19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)$")
-        @ApiModelProperty(name="유저 생일", example="1995-11-15")
+        @Pattern(regexp = "^((19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)$") @ApiModelProperty(name="유저 생일", example="1995-11-15")
         private String userBirthday;
 
         private String is_rouletted;
@@ -66,6 +67,8 @@ public class UserDto implements Serializable {
 
     @Getter
     @Setter
+    @Builder
+    @AllArgsConstructor
     public static class LoginRequest {
         @Email
         @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
@@ -80,6 +83,8 @@ public class UserDto implements Serializable {
 
     @Getter
     @Setter
+    @Builder
+    @AllArgsConstructor
     public static class RegisterRequest {
         @Email
         @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
@@ -96,5 +101,7 @@ public class UserDto implements Serializable {
         @ApiModelProperty(name="유저 생일", example="1995-11-15")
         private String userBirthday;
     }
+
+
 
 }
