@@ -29,10 +29,32 @@
 </template>
 
 <script setup>
-  import BoardList from './components/BoardList/BoardList.vue'
-  import ChatRoom from './components/CharRoom/ChatRoom.vue'
-  import UserList from './components/UserList/UserList.vue'
-
+import BoardList from './components/BoardList/BoardList.vue'
+import ChatRoom from './components/CharRoom/ChatRoom.vue'
+import UserList from './components/UserList/UserList.vue'
+import { ref, onMounted } from 'vue'
+// console.log(navigator.geolocation)
+onMounted(() => {
+  function getLocation() {
+    if (navigator.geolocation) { // GPS를 지원하면
+      navigator.geolocation.getCurrentPosition(function(position) {
+        alert(position.coords.latitude + ' ' + position.coords.longitude)
+      }, function(error) {
+        console.error(error)
+      }, {
+        enableHighAccuracy: false,
+        maximumAge: 0,
+        timeout: Infinity
+      })
+    } else {
+      alert('GPS를 지원하지 않습니다.');
+    }
+  }
+  getLocation()
+})
+let watchId = navigator.geolocation.watchPosition(function(position) {
+  console.log(position.coords)
+})
 </script>
 
 <style>
