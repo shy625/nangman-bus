@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 public class Nickname extends BaseEntity {
 
+    @Column(nullable = false)
     private String nickname;
 
     @OneToMany
@@ -21,7 +22,7 @@ public class Nickname extends BaseEntity {
 
     public void addUser(User user) {
         this.users.add(user);
-        if (user.getUserNickname() != this) {
+        if (user.getNickname() != this) {
             user.setNickname(this);
         }
     }

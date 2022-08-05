@@ -2,6 +2,8 @@ package com.nangman.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,8 +14,11 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@DynamicInsert
+@DynamicUpdate
 public class Board extends BaseEntity{
 
+    @Column(nullable = false)
     private String content;
 
     @Column(columnDefinition = "TIMESTAMP")
@@ -42,7 +47,5 @@ public class Board extends BaseEntity{
             bus.getBoards().add(this);
         }
     }
-
-
 
 }

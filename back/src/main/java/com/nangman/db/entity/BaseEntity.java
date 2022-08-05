@@ -5,8 +5,10 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,13 +19,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseEntity {
+@EntityListeners(AuditingEntityListener.class)
+public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false)
     private Long id = null;
 
     @CreatedDate
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
