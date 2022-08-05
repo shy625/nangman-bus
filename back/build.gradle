@@ -150,11 +150,21 @@ dependencies {
     implementation 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.6.RELEASE'
     // https://mvnrepository.com/artifact/org.springframework.restdocs/spring-restdocs-core
     implementation 'org.springframework.restdocs:spring-restdocs-core:2.0.6.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: "com.vaadin.external.google", module: "android-json"
     }
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // Redis
+    implementation 'org.springframework.session:spring-session-data-redis'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    compile('org.springframework.boot:spring-boot-starter-data-redis:2.3.1.RELEASE')
+    compile group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
+//    testImplementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.1'
+
+    // Jedis
+    // https://mvnrepository.com/artifact/redis.clients/jedis
+//    implementation group: 'redis.clients', name: 'jedis', version: '2.8.0'
 }
 
 test {
