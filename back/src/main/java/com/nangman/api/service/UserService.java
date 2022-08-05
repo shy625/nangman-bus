@@ -24,4 +24,6 @@ public interface UserService {
 	User updateUser(UserDto.RegisterRequest userInfo);
 
 	User updateUserIsRouletted(long userId);
+
+	void updateUserNickname();
 }
