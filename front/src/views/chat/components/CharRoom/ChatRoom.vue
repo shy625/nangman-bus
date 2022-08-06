@@ -65,7 +65,7 @@
     </div>
   </div>
   <BanModal></BanModal>
-  <EnterModal></EnterModal>
+  <!-- <EnterModal></EnterModal> -->
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
@@ -79,11 +79,11 @@ onMounted(() => {
   const banModal = document.querySelector('#banModal')
   const chatRoom = document.querySelector('#chatRoom')
   // const busstop = document.querySelector('#busstop')
-  const enterModal = document.querySelector('#enterModal')
+  // const enterModal = document.querySelector('#enterModal')
 
   banModal.classList.add('ban')
   chatRoom.classList.add('ban-active')
-  enterModal.classList.add('enter')
+  // enterModal.classList.add('enter')
   // busstop.classList.add('ban-active')
 })
 </script>
@@ -174,6 +174,7 @@ onMounted(() => {
 }
 .input-content::placeholder {
   text-align: center;
+  font-family: BMHANNAAir;
 }
 .ban-active {
   overflow: hidden;
