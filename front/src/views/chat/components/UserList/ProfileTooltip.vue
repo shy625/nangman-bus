@@ -8,19 +8,18 @@
 </script>
 <style>
 .profile-tooltip {
-  /* display: hidden; */
   padding: 0;
-  max-height: 0;
+  height: 0;
   position: absolute;
-  top: -56px;
+  bottom: 130%;
   left: 16px;
-  font-size: .8rem;
+  font-size: .65rem;
   background-color: black;
   color: white;
   text-align: left;
   border-radius: 5px;
-  /* padding: 4px; */
   max-width: 65%;
+  z-index: -1;
   transition: all .25s;
 }
 .profile-tooltip::after {
@@ -34,10 +33,11 @@
   border-color: black transparent transparent transparent;
 }
 .tooltip-active {
-  /* display: block; */
   padding: 4px;
-  max-height: 100px;
-  transition: max-height .3s ;
+  z-index: 1;
+  /* width: 65%; */
+  height: 30px;
+  transition: all .3s ;
 }
 .tooltip-active.profile-tooltip::after {
   display: block;
