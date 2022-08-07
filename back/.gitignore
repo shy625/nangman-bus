@@ -79,3 +79,7 @@ Temporary Items
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
 
+### properties ###
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
+src/test/resources/application.properties
