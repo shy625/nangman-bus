@@ -45,7 +45,6 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   position: absolute;
-  /* top: -200%; */
   bottom: 40px;
   overflow: hidden;
   height: 70px;
