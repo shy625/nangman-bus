@@ -7,6 +7,7 @@ build/
 !**/src/main/resources/application.properties
 
 *.log
+*.gz
 
 ### STS ###
 .apt_generated
