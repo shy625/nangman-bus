@@ -16,12 +16,14 @@ public class ChatController {
     //"/pub/chat/enter"
     @MessageMapping(value = "/chat/enter")
     public void enter(ChatMessageDto message){
+        System.out.println("ChatController - enter");
         message.setMessage(message.getWriter() + "님이 채팅방에 참여하였습니다.");
-        template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+        template.convertAndSend("/sub/chat/room/" + message.getRoomName(), message);
     }
 
     @MessageMapping(value = "/chat/message")
     public void message(ChatMessageDto message){
-        template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+        System.out.println("ChatController - message");
+        template.convertAndSend("/sub/chat/room/" + message.getRoomName(), message);
     }
 }

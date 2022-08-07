@@ -1,21 +1,18 @@
-package com.nangman.socket;
+package com.nangman.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
 
-@EnableWebSocket
-@RequiredArgsConstructor
+@EnableWebSocketMessageBroker
 @Configuration
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-
-//    private final ChatHandler chatHandler;
+public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        // TODO 소켓 연결 url 적절한 url path로 변경
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOrigins("*")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 
@@ -25,11 +22,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/sub");
     }
 
-    //    @Override
-//    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-//        registry.addHandler(chatHandler, "ws/chat")
-////                .setAllowedOrigins("*")
-//                .setAllowedOriginPatterns("*")
-//                .withSockJS();
-//    }
 }
