@@ -65,13 +65,15 @@
     </div>
   </div>
   <BanModal></BanModal>
-  <EnterModal></EnterModal>
+  <!-- <EnterModal></EnterModal> -->
+  <Roulette></Roulette>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
+import Roulette from './Roulette.vue'
 import { ref, onMounted } from 'vue'
 
 onMounted(() => {
@@ -79,11 +81,11 @@ onMounted(() => {
   const banModal = document.querySelector('#banModal')
   const chatRoom = document.querySelector('#chatRoom')
   // const busstop = document.querySelector('#busstop')
-  const enterModal = document.querySelector('#enterModal')
+  // const enterModal = document.querySelector('#enterModal')
 
   banModal.classList.add('ban')
   chatRoom.classList.add('ban-active')
-  enterModal.classList.add('enter')
+  // enterModal.classList.add('enter')
   // busstop.classList.add('ban-active')
 })
 </script>
@@ -94,14 +96,11 @@ onMounted(() => {
   flex-direction: column;
   margin: 0px 32px;
   height: 720px;
-  /* position: relative; */
 }
 .chat-list {
   padding: 1px;
   height: 95%;
   background-color: #F5F5F5;
-  /* border-radius: 0px 0px 20px 20px; */
-
 }
 .other-chat-wrapper {
   display: flex;
@@ -112,15 +111,12 @@ onMounted(() => {
   margin: 12px;
   justify-content: end;
 }
-/* .chat-icon {
-
-} */
 .chat-content{
   display: flex;
   flex-direction: column;
 }
 .chat-nick {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-bottom: 4px;
 }
 .chat-chatting {
@@ -132,7 +128,8 @@ onMounted(() => {
   align-items: center;
   padding: 4px;
   border-radius: 5px;
-  font-size: 1.2rem;
+  font-size: .85rem;
+  font-family: Pretendard;
 }
 .other-chat-wrapper .chatting {
   background-color: white;
@@ -174,6 +171,7 @@ onMounted(() => {
 }
 .input-content::placeholder {
   text-align: center;
+  font-family: BMHANNAAir;
 }
 .ban-active {
   overflow: hidden;
