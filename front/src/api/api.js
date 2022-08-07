@@ -1,6 +1,7 @@
 const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
 
 const USER = 'user/'
+const HOME = 'home/'
 // const ARTICLES = 'articles/'
 // const COMMENTS = 'comments/'
 
@@ -15,6 +16,11 @@ export default {
     // username으로 프로필 제공
     profile: userid => HOST + USER + 'profile/' + userid,
   },
+
+  // 홈 화면에서 보여줄 실시간 버스 데이터 3대
+  home: {
+    realTimeData: () => HOST + HOME + 'realtimedata/',
+  }
 //   articles: {
 //     // /articles/
 //     articles: () => HOST + ARTICLES,
