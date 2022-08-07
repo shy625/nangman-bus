@@ -120,7 +120,6 @@ const busstops = [
 ]
 
 onMounted(() => {
-  // 버스노선 collapse 구현
   const busstopList = document.querySelector('#busstopList')
   const busToggle = document.querySelector('#busToggle')
   busstopList.classList.add('collapsed')
@@ -151,8 +150,6 @@ onMounted(() => {
   padding: 8px 0px;
   border-radius: 6px 6px 0px 0px;
   background-color: #FF9090;
-  /* opacity: 0.95; */
-
 }
 .busstop-mini-above {
   display: flex;

@@ -2,6 +2,7 @@
   <div id="profileContainer">
     <div class="modal-profile-background">
       <div class="modal-profile">
+        <div class="profile-exit">X</div>
         <div class="modal-profile-title">
           <div class="modal-profile-icon">O</div>
           <div class="modal-profile-nick">
@@ -10,30 +11,36 @@
           </div>
         </div>
         <div class="modal-profile-content">
-          <div class="profile-hint">?</div>
-          <div class="modal-profile-detail">
-            <div class="profile-detail-title">나와 함께한 시간</div>
-            <div>
-              <span class="profile-detail-content">10</span><span>회</span>
-            </div>
+          <div class="profile-hint">
+            ?
           </div>
           <div class="modal-profile-detail">
             <div class="profile-detail-title">나와 함께한 시간</div>
             <div>
               <span class="profile-detail-content">10</span><span>회</span>
             </div>
+            <ProfileTooltip></ProfileTooltip>
           </div>
           <div class="modal-profile-detail">
             <div class="profile-detail-title">나와 함께한 시간</div>
             <div>
               <span class="profile-detail-content">10</span><span>회</span>
             </div>
+            <ProfileTooltip></ProfileTooltip>
           </div>
           <div class="modal-profile-detail">
             <div class="profile-detail-title">나와 함께한 시간</div>
             <div>
               <span class="profile-detail-content">10</span><span>회</span>
             </div>
+            <ProfileTooltip></ProfileTooltip>
+          </div>
+          <div class="modal-profile-detail">
+            <div class="profile-detail-title">나와 함께한 시간</div>
+            <div>
+              <span class="profile-detail-content">10</span><span>회</span>
+            </div>
+            <ProfileTooltip></ProfileTooltip>
           </div>
         </div>
       </div>
@@ -42,7 +49,25 @@
 </template>
 
 <script setup>
+import ProfileTooltip from './ProfileTooltip.vue'
+import { ref, onMounted } from 'vue'
 
+onMounted(() => {
+  const profileHint = document.querySelector('.profile-hint')
+  const profileTooltips = document.querySelectorAll('.profile-tooltip')
+  profileHint.addEventListener('click', () => {
+    profileTooltips.forEach(tooltip => {
+      tooltip.classList.toggle('tooltip-active')
+    })
+  })
+  profileTooltips.forEach(tooltip => {
+    tooltip.addEventListener('click', () => {
+      profileTooltips.forEach(tooltip => {
+        tooltip.classList.toggle('tooltip-active')
+      })
+    })
+  })
+})
 </script>
 <style>
 #profileContainer {
@@ -52,7 +77,7 @@
 	display: table;
 	height: 100%;
 	width: 100%;
-	z-index: 1;
+	z-index: 2;
 	transform: scale(0);
 }
 .modal-profile-background {
@@ -154,7 +179,7 @@
   padding: 64px 32px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  row-gap: 40px;
+  row-gap: 80px;
   font-size: 1.1rem;
   position: relative;
 }
@@ -170,5 +195,20 @@
   border-radius: 50%;
   width: 18px;
   height: 18px;
+}
+.modal-profile-detail {
+  position: relative;
+}
+.profile-exit {
+  position: fixed;
+  bottom: -80px;
+  left: 50%;
+  background-color: black;
+  color: #f5f5f5;
+  padding: 8px;
+  border-radius: 5px;
+}
+.profile-exit:hover {
+  cursor: pointer;
 }
 </style>
