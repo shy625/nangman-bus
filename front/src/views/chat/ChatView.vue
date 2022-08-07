@@ -2,11 +2,9 @@
 <div class="chat-body">
   <header>
     <div class="chat-header">
-      <!-- <transition name="slide-fade" mode="out-in"> -->
-        <router-link :to="{ name: 'main' }" class="chat-header-back">
-          &lt;
-        </router-link>
-      <!-- </transition> -->
+      <router-link :to="{ name: 'main' }" class="chat-header-back">
+        &lt;
+      </router-link>
       <div class="chat-header-title">5006번 버스</div>
     </div>
     <hr class="chat-header-hr">
@@ -55,6 +53,7 @@ function getLocation() {
   }
 }
 getLocation()
+// 위치바뀌면 감지
 // let watchId = navigator.geolocation.watchPosition(function(position) {
 //   console.log(position.coords)
 // })

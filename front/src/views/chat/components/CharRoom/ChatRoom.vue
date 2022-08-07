@@ -66,12 +66,14 @@
   </div>
   <BanModal></BanModal>
   <!-- <EnterModal></EnterModal> -->
+  <Roulette></Roulette>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
+import Roulette from './Roulette.vue'
 import { ref, onMounted } from 'vue'
 
 onMounted(() => {
@@ -94,14 +96,11 @@ onMounted(() => {
   flex-direction: column;
   margin: 0px 32px;
   height: 720px;
-  /* position: relative; */
 }
 .chat-list {
   padding: 1px;
   height: 95%;
   background-color: #F5F5F5;
-  /* border-radius: 0px 0px 20px 20px; */
-
 }
 .other-chat-wrapper {
   display: flex;
@@ -112,9 +111,6 @@ onMounted(() => {
   margin: 12px;
   justify-content: end;
 }
-/* .chat-icon {
-
-} */
 .chat-content{
   display: flex;
   flex-direction: column;

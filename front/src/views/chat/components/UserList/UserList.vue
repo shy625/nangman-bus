@@ -314,7 +314,6 @@ const data = ref({
 })
 
 onMounted(() => {
-  // 유저 프로필 모달 구현
   const user = document.querySelectorAll('.user')
   const profileContainer = document.querySelector('#profileContainer')
   const users = document.querySelector('#users')
@@ -405,8 +404,6 @@ onMounted(() => {
 .profile-me {
   margin-left: 4px;
 }
-
-/* 모달 */
 .profile-active {
   overflow: hidden;
 }

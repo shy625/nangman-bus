@@ -35,7 +35,6 @@
 .tooltip-active {
   padding: 4px;
   z-index: 1;
-  /* width: 65%; */
   height: 30px;
   transition: all .3s ;
 }
