@@ -121,6 +121,8 @@ export function giveBusData({}) {
   return busData
 }
 
+// 낭만보고서 목록 가져오는 함수
+// Vue3 infinite scroll axios
 export function reportsList() {
-  
+
 }
