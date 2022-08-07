@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 
-@Service("reportService")
+@Service
 @Slf4j
 public class ReportServiceImpl implements ReportService{
 
