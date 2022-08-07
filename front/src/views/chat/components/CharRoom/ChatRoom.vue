@@ -116,7 +116,7 @@ onMounted(() => {
   flex-direction: column;
 }
 .chat-nick {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-bottom: 4px;
 }
 .chat-chatting {
@@ -128,7 +128,8 @@ onMounted(() => {
   align-items: center;
   padding: 4px;
   border-radius: 5px;
-  font-size: 1.2rem;
+  font-size: .85rem;
+  font-family: Pretendard;
 }
 .other-chat-wrapper .chatting {
   background-color: white;

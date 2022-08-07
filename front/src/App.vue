@@ -35,9 +35,14 @@ export default {
   src: url('./assets/fonts/BMHANNAPro.ttf') format('woff');
   font-weight: normal;
 }
+@font-face {
+  font-family:'Pretendard';
+  src: url('./assets/fonts/PretendardVariable.ttf') format('woff');
+  font-weight: normal;
+}
 body {
   margin: 0;
-  font-family: BMHANNAAir, BMHANNAPro;
+  font-family: BMHANNAAir, BMHANNAPro, Pretendard;
 }
 .slide-fade-enter {
   transform: translateY(-15px);
