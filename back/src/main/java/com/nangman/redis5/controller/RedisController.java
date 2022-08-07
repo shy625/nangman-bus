@@ -1,7 +1,6 @@
 package com.nangman.redis5.controller;
 
-import com.nangman.redis5.controller.dto.RedisCrudResponseDto;
-import com.nangman.redis5.controller.dto.RedisCrudSaveRequestDto;
+import com.nangman.redis5.dto.RedisCrudSaveRequestDto;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
