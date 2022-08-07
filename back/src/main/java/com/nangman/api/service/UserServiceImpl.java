@@ -88,13 +88,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User updateUser(UserDto.RegisterRequest userInfo) {
-		log.info(userInfo.getUseremail());
+//		log.info("테스트테스트테스트테스트" +userInfo.getUseremail() + ", " + userInfo.getUserBirthday());
 
 		User user = userRepository.findByUseremailAndIsDeletedFalse(userInfo.getUseremail()).get();
 
-
 		// 생일 값 추가일 경우에만 수행
-		if(user.getUserBirthday() == null && userInfo.getUserBirthday() != null) user.setUserBirthday(user.getUserBirthday());
+		if((user.getUserBirthday().equals("") || user.getUserBirthday() == null) && (userInfo.getUserBirthday() != null && !userInfo.getUserBirthday().equals("")) ){
+			user.setUserBirthday(userInfo.getUserBirthday());
+		}
 
 		// 비밀번호 수정일 경우에만 수행
 		if(!passwordEncoder.matches(userInfo.getPassword(), user.getPassword())) user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
@@ -131,8 +132,10 @@ public class UserServiceImpl implements UserService {
 			Nickname selectedNickname = nicknameList.get(randomNumber);
 
 			// 기존 닉네임 리스트에서 해당 유저 제거
-			curUser.getNickname().getUsers().remove(curUser);
-			nicknameRepository.save(curUser.getNickname());
+			if(curUser.getNickname() != null) {
+				curUser.getNickname().getUsers().remove(curUser);
+				nicknameRepository.save(curUser.getNickname());
+			}
 
 			// 닉네임 부여
 			curUser.setNickname(selectedNickname);
