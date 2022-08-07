@@ -43,5 +43,6 @@
 }
 .enter-input::placeholder {
   text-align: center;
+  font-family: BMHANNAAir;
 }
 </style>

@@ -33,7 +33,6 @@ setTimeout(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
-  /* margin: 0px 32px; */
   padding: 28px;
   background-color: #f5f5f5;
   display: flex;

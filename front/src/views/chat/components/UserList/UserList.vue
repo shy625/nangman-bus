@@ -2,7 +2,7 @@
   <div id="users" class="users">
     <div class="users-title">
       <div class="user-count">
-        승객 {{ countUsers.countUsers }}명
+        승객 {{ data.countUser }}명
       </div>
       <div class="option-whisper">
         <img class="whisper-img" src="" alt="귓">
@@ -309,14 +309,17 @@
 import { ref, onMounted } from 'vue'
 import ProfileModal from './ProfileModal.vue'
 
-const countUsers = ref({ countUsers: 21 })
+const data = ref({
+  countUser: 21,
+})
 
 onMounted(() => {
-  // 유저 프로필 모달 구현
   const user = document.querySelectorAll('.user')
   const profileContainer = document.querySelector('#profileContainer')
   const users = document.querySelector('#users')
   const body = document.querySelector('body')
+  const elCarouselArrows = document.querySelectorAll('.el-carousel__arrow')
+  const profileExit = document.querySelector('.profile-exit')
 
   user.forEach(u => {
     u.addEventListener('click', () => {
@@ -325,16 +328,27 @@ onMounted(() => {
       users.removeAttribute('class')
       users.classList.add('users')
       body.classList.add('profile-active')
+      elCarouselArrows.forEach(arrow => {
+        arrow.disabled = true
+        arrow.classList.add('arrow-profile-active')
+      })
     })
   })
-  profileContainer.addEventListener('click', () => {
+  profileExit.addEventListener('click', () => {
     profileContainer.classList.add('out')
     users.classList.add('out')
     body.classList.remove('profile-active')
+    elCarouselArrows.forEach(arrow => {
+    arrow.disabled = false
+    arrow.classList.remove('arrow-profile-active')
+    })
   })
 })
 </script>
 <style>
+.arrow-profile-active {
+  display: none !important;
+}
 .users {
   display: flex;
   flex-grow: 1;
@@ -390,8 +404,6 @@ onMounted(() => {
 .profile-me {
   margin-left: 4px;
 }
-
-/* 모달 */
 .profile-active {
   overflow: hidden;
 }
