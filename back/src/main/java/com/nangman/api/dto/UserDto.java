@@ -49,7 +49,7 @@ public class UserDto implements Serializable {
 
         private String is_rouletted;
 
-//        private String nickname;
+        private String nickname;
 
         private String whiperMode;
 
@@ -60,7 +60,7 @@ public class UserDto implements Serializable {
             this.useremail = user.getUseremail();
             this.userBirthday = user.getUserBirthday();
             this.is_rouletted = user.isRouletted() ? "Y" : "N";
-//            this.nickname = user.getNickname().getNickname();
+            this.nickname = user.getNickname().getNickname();
             this.whiperMode = user.getSetting().isWhisperMode() ? "Y" : "N";
         }
     }
