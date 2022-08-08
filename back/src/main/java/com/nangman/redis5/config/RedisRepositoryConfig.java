@@ -44,6 +44,14 @@ public class RedisRepositoryConfig {
 //        redisTemplate.setKeySerializer(new StringRedisSerializer());
 //        return redisTemplate;
 //    }
+
+    @Bean
+    public RedisTemplate<String, String> redisTemplate() {
+       RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+       redisTemplate.setConnectionFactory(redisConnectionFactory());
+       redisTemplate.setKeySerializer(new StringRedisSerializer());
+       return redisTemplate;
+    }
 //        @Bean
 //        public RedisTemplate<?, ?> redisTemplate() {
 //            RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
@@ -54,18 +62,18 @@ public class RedisRepositoryConfig {
 //            redisTemplate.afterPropertiesSet();
 //            return redisTemplate;
 //        }
-            @Bean
-            public RedisTemplate<?, ?> redisTemplate() {
-                RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
-                redisTemplate.setConnectionFactory(redisConnectionFactory());
-                redisTemplate.setKeySerializer(new StringRedisSerializer());
-                redisTemplate.setValueSerializer(new StringRedisSerializer());
-
-                redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-                redisTemplate.setHashValueSerializer(new StringRedisSerializer());
-
-                return redisTemplate;
-            }
+//            @Bean
+//            public RedisTemplate<?, ?> redisTemplate() {
+//                RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
+//                redisTemplate.setConnectionFactory(redisConnectionFactory());
+//                redisTemplate.setKeySerializer(new StringRedisSerializer());
+//                redisTemplate.setValueSerializer(new StringRedisSerializer());
+//
+//                redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+//                redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+//
+//                return redisTemplate;
+//            }
 //        @Bean
 //        public RedisTemplate<String, Object> redisTemplate() {
 //            RedisTemplate<String, Object> template = new RedisTemplate<>();

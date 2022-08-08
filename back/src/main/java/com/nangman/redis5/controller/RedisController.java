@@ -1,6 +1,8 @@
 package com.nangman.redis5.controller;
 
 import com.nangman.redis5.dto.RedisCrudSaveRequestDto;
+import com.nangman.redis5.service.RedisService;
+import com.nangman.redis5.service.RedisServiceImpl;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,23 +19,16 @@ import java.util.Set;
 @RequestMapping("api/redis")
 @Api(value = "레디스 API", tags = {"redis"})
 public class RedisController {
-    private final StringRedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
 //    private final RedisRepositoryConfig repositoryConfig;
+//    private final RedisServiceImpl redisService = new RedisServiceImpl(redisTemplate);
+    private final RedisServiceImpl redisService;
 
     @GetMapping("/")
     public String ok() {
         return "ok";
     }
 
-    @GetMapping("/keys")
-    public String keys() {
-//        Set<String> keys = redisTemplate.opsForSet().members("*");
-//        Set<String> keys = redisCrudService.getAll();
-        Set<String> keys = redisTemplate.keys("*");
-//        Set<String> keys = repositoryConfig.redisTemplate().opsForSet().members();
-        assert keys != null;
-        return Arrays.toString(keys.toArray());
-    }
 
     @GetMapping("/test01/{key, subKey}")
     public String test01(@PathVariable("key") String key, @PathVariable("subKey") String subKey) {
@@ -70,6 +65,21 @@ public class RedisController {
 //        Set<String> keys = repositoryConfig.redisTemplate().opsForSet().members();
     }
 
+
+    @GetMapping("/test06")
+    public void test06() {
+        redisService.test01();
+    }
+
+    @GetMapping("/keys")
+    public String keys() {
+//        Set<String> keys = redisTemplate.opsForSet().members("*");
+//        Set<String> keys = redisCrudService.getAll();
+        Set<String> keys = redisTemplate.keys("*");
+//        Set<String> keys = repositoryConfig.redisTemplate().opsForSet().members();
+        assert keys != null;
+        return Arrays.toString(keys.toArray());
+    }
 
     @PostMapping("/save")
     public void save(@RequestBody RedisCrudSaveRequestDto requestDto) {
