@@ -106,4 +106,24 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private List<UserReport> userReports = new ArrayList<>();
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "password='" + password + '\'' +
+                ", useremail='" + useremail + '\'' +
+                ", userBirthday='" + userBirthday + '\'' +
+                ", socialToken='" + socialToken + '\'' +
+                ", nickname=" + nickname +
+                ", isDeleted=" + isDeleted +
+                ", deletedDate=" + deletedDate +
+                ", isRouletted=" + isRouletted +
+                ", boards=" + boards +
+                ", setting=" + setting +
+                ", chats=" + chats +
+                ", chatInOutRecords=" + chatInOutRecords +
+                ", userReports=" + userReports +
+                '}';
+    }
 }

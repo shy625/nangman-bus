@@ -20,7 +20,7 @@ import java.util.List;
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
-@Service("userService")
+@Service
 @Slf4j
 public class UserServiceImpl implements UserService {
 
@@ -30,12 +30,12 @@ public class UserServiceImpl implements UserService {
 
 	private SettingRepository settingRepository;
 	private PasswordEncoder passwordEncoder;
+
 	public UserServiceImpl(@Lazy UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder, @Lazy SettingRepository settingRepository, @Lazy NicknameRepository nicknameRepository) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.nicknameRepository = nicknameRepository;
 		this.settingRepository = settingRepository;
-
 	}
 
 	@Override
@@ -88,13 +88,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User updateUser(UserDto.RegisterRequest userInfo) {
-		log.info(userInfo.getUseremail());
+//		log.info("테스트테스트테스트테스트" +userInfo.getUseremail() + ", " + userInfo.getUserBirthday());
 
 		User user = userRepository.findByUseremailAndIsDeletedFalse(userInfo.getUseremail()).get();
 
-
 		// 생일 값 추가일 경우에만 수행
-		if(user.getUserBirthday() == null && userInfo.getUserBirthday() != null) user.setUserBirthday(user.getUserBirthday());
+		if((user.getUserBirthday().equals("") || user.getUserBirthday() == null) && (userInfo.getUserBirthday() != null && !userInfo.getUserBirthday().equals("")) ){
+			user.setUserBirthday(userInfo.getUserBirthday());
+		}
 
 		// 비밀번호 수정일 경우에만 수행
 		if(!passwordEncoder.matches(userInfo.getPassword(), user.getPassword())) user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
@@ -116,7 +117,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public void updateUserNickname() {
+		log.info("유저 닉네임 업데이트 시작");
 		List<User> userList = userRepository.findByIsDeletedFalse();
 		List<Nickname> nicknameList = nicknameRepository.findAll();
 
@@ -127,10 +130,19 @@ public class UserServiceImpl implements UserService {
 			User curUser = userList.get(i);
 			int randomNumber = (int) (Math.random() * totalNickname);
 			Nickname selectedNickname = nicknameList.get(randomNumber);
+
+			// 기존 닉네임 리스트에서 해당 유저 제거
+			if(curUser.getNickname() != null) {
+				curUser.getNickname().getUsers().remove(curUser);
+				nicknameRepository.save(curUser.getNickname());
+			}
+
+			// 닉네임 부여
 			curUser.setNickname(selectedNickname);
 			userRepository.save(curUser);
 			nicknameRepository.save(selectedNickname);
 		}
+		log.info("유저 닉네임 업데이트 끝");
 	}
 
 }
