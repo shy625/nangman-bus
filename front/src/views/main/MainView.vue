@@ -9,17 +9,15 @@
   2-3. 메인-채팅리스트 페이지: 버스리스트 배치 (버스리스트-버스아이템들 잡히는 버스만큼 배치)
   -->
 
-  <div v-if="!isLoggedIn">
+  <div>
     <p>우리는 이걸</p>
     <img src="../../assets/logo.png" alt="낭만버스">라
     <p>부르기로 하였다.</p>
     <button><router-link to="signup">시작하기</router-link></button>
     이미 낭만하셨나요? <router-link to="login">로그인</router-link>
   </div>
-  <div v-if="isLoggedIn">
-    <Header />
+  <div>
     <Home />
-    <Footer />
 
     <!--
     <div v-if="router가 채팅리스트일 때">
@@ -36,18 +34,27 @@
     -->
   </div>
 </template>
-
 <script>
-  import Header from '../../views/components/Header.vue'
-  import Footer from '../../views/components/Footer.vue'
+  // import Header from '../../views/components/Header.vue'
+  // import Footer from '../../views/components/Footer.vue'
   // import Nickname from '../components/Nickname.vue'
   // import BusNow from '../components/BusNow.vue'
   // import BusList from '../components/BusList.vue'
   // import Report from '../components/Report.vue'
   import Home from './Home.vue'
+  // 스토어에서 isLoggedin 가져오기
+  import { useStore } from 'vuex'
 
   export default {
     name: 'MainView',
+    components: {
+      Home
+    }
+  }
+
+  setup() {
+    const store = useStore()
+    const isLoggedIn = store.getters('isLoggedIn',)
   }
 </script>
 <style>

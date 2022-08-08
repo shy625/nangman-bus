@@ -10,6 +10,7 @@
 <script setup>
   import { useStore } from 'vuex'
   import { ref, onMounted } from 'vue'
+
   const store = useStore()
   onMounted(() => {
   })
