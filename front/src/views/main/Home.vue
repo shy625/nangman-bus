@@ -1,7 +1,10 @@
 <template>
-  <p>낭만보고서 ㅡㅡㅡㅡㅡㅡㅡ</p>
-  <div>달력</div>
-  <reportitem/>
+  홈화면
+  <Header />
+  <Nickname />
+  <Busnow />
+  <Footer />
+  홈화면
 </template>
 <script setup>
   import { useStore } from 'vuex'

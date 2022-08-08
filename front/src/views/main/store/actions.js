@@ -123,6 +123,15 @@ export function giveBusData({}) {
 
 // 낭만보고서 목록 가져오는 함수
 // Vue3 infinite scroll axios
-export function reportsList() {
+// export function reportsList() {
+//   axios({
+//     url: api.
+//   })
+// }
 
+// 채팅리스트 가져오는 함수
+export function chatList() {
+  axios({
+
+  })
 }

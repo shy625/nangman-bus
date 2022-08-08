@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button>뒤로</button>
+    <button @click="$router.go(-1)" type="button">뒤로</button>
   </div>
   <div>
     <h3>이메일을 입력해주세요.</h3>
