@@ -13,9 +13,9 @@ import com.nangman.db.repository.UserReportRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -27,6 +27,7 @@ public class ReportServiceImpl implements ReportService{
     RoomRepository roomRepository;
     ChatInOutRecordRepository chatInOutRecordRepository;
     @Override
+    @Transactional(readOnly = true)
     public List<Report> getReportsByUserId(long userId) {
         List<Report> reports = new ArrayList<>();
         List<UserReport> userReports = userReportRepository.findUserReportsByUserId(userId);
@@ -40,10 +41,11 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ReportDto.Info getReportByIds(ReportDto.DetailRequest detailRequest) {
         Report report = reportRepository.findReportById(detailRequest.getReportId());
         int accessTime = 0;
-        ChatInOutRecord chatInOutRecord = chatInOutRecordRepository
+        List<ChatInOutRecord> chatInOutRecordList = chatInOutRecordRepository
                 .findChatInOutRecordByUserIdAndRoomId(
                 detailRequest.getUserId(),
                 roomRepository.findRoomByReport(report).getId()
@@ -62,7 +64,7 @@ public class ReportServiceImpl implements ReportService{
 
         if (!isInReport) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
 
-        accessTime = getAccessTime(accessTime, chatInOutRecord);
+        for (ChatInOutRecord item : chatInOutRecordList) accessTime += getAccessTime(accessTime, item);
 
         return new ReportDto.Info(report.getId(), report.getContent(), report.getAverageTime(), report.getTotalChatCount(),
                 report.getTotalUserCount(), accessTime);
