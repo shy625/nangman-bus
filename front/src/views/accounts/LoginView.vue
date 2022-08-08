@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button>뒤로</button>
+    <button @click="$router.go(-1)" type="button">뒤로</button>
   </div>
   <div>
     <h3>이메일을 입력해주세요.</h3>
@@ -17,7 +17,7 @@
     </label>
     <button>로그인</button>
   </form>
-  <a href="https://127.0.0.1/">회원가입</a>
+  <router-link to="signup">회원가입</router-link>
 </template>
 
 <script setup>
