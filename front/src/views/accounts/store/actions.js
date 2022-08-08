@@ -43,7 +43,7 @@ export function signup({ commit, dispatch }, credentials) {
     data: credentials,
   })
     .then(res => {
-      console.log(res.data)
+      // console.log(res.data)
       const token = res.data.key
       dispatch('setToken', token)
       dispatch('fetchCurrentUser')
