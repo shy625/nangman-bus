@@ -1,4 +1,7 @@
 <template>
+
+  <mainview/>
+
 <router-link :to="{ name: 'chat', params: { roomId: 1 }}">채팅방</router-link>
 
 <router-view v-slot="{ Component, route }">
@@ -10,12 +13,12 @@
 </template>
 
 <script>
-
+import MainView from './views/main/MainView.vue'
 export default {
   name: 'App',
 
   components: {
-    
+    MainView
   },
 
   data: () => ({
