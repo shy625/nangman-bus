@@ -75,6 +75,10 @@
 import { ref, onMounted } from 'vue'
 
 onMounted(() => {
+  const boardScrollView = document.querySelector('#boardScroll .el-scrollbar__view')
+  const boardScroll = document.querySelector('#boardScroll .el-scrollbar__wrap')
+  boardScroll.scrollTo(0, boardScrollView.scrollHeight)
+
   const boardContent = document.querySelector('#boardContent')
   function boardContentToggle() {
       boardContent.classList.toggle('collapsed')
@@ -86,6 +90,7 @@ const clickCreateBtn = () => {
   // 컴포넌트 생성
   const boardContent = document.createElement('div')
   boardContent.classList.add('board-content')
+  boardContent.classList.add('add-board')
   const form = document.createElement('form')
   form.classList.add('board-create-form')
   const textarea = document.createElement('textarea')
@@ -128,7 +133,10 @@ const clickCreateBtn = () => {
 
   // 취소버튼 이벤트
   createDelBtn.addEventListener('click', () => {
-    boardScrollView.removeChild(boardContent)
+    boardContent.classList.add('remove-board')
+    boardContent.addEventListener('animationend', () => {
+      boardScrollView.removeChild(boardContent)      
+    })
     createBtn.style.display = 'inline-flex'
   })
 
@@ -154,9 +162,10 @@ const clickCreateBtn = () => {
     createTime.innerText = '17:55'
 
     createBoardcontent.append(boardContentBody, boardContentDate)
-    console.log(createBoardcontent)
+    // console.log(createBoardcontent)
     boardContentDate.append(createDate, createTime)
     boardScrollView.append(createBoardcontent)
+    createBoardcontent.classList.add('submit-board')
   })
 }
 </script>
@@ -237,5 +246,47 @@ const clickCreateBtn = () => {
 .create-form-btn {
   display: flex;
   justify-content: center;
+}
+#boardScroll .el-scrollbar__view {
+  transition: all 1s;
+}
+.add-board {
+  animation: addBoard .2s linear;
+}
+@keyframes addBoard {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.remove-board {
+  animation: removeBoard .2s linear;
+}
+@keyframes removeBoard {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+.submit-board {
+  animation: submitBoard .2s linear;
+}
+@keyframes submitBoard {
+  from {
+    opacity: 0;
+    transform: translateY(20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
