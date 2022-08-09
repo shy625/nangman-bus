@@ -10,6 +10,7 @@ import com.nangman.db.repository.ChatInOutRecordRepository;
 import com.nangman.db.repository.ReportRepository;
 import com.nangman.db.repository.RoomRepository;
 import com.nangman.db.repository.UserReportRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
@@ -20,12 +21,13 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService{
 
-    UserReportRepository userReportRepository;
-    ReportRepository reportRepository;
-    RoomRepository roomRepository;
-    ChatInOutRecordRepository chatInOutRecordRepository;
+    private final UserReportRepository userReportRepository;
+    private final ReportRepository reportRepository;
+    private final RoomRepository roomRepository;
+    private final ChatInOutRecordRepository chatInOutRecordRepository;
     @Override
     @Transactional(readOnly = true)
     public List<Report> getReportsByUserId(long userId) {

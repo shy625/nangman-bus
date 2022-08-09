@@ -16,10 +16,9 @@ import java.time.LocalDateTime;
 @Slf4j
 @RequiredArgsConstructor
 public class ChatInOutRecordServiceImpl implements ChatInOutRecordService{
-
-    ChatInOutRecordRepository chatInOutRecordRepository;
-    UserRepository userRepository;
-    RoomRepository roomRepository;
+    private final ChatInOutRecordRepository chatInOutRecordRepository;
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
     @Override
     @Transactional

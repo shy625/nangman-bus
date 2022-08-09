@@ -1,8 +1,4 @@
 package com.nangman.api.dto;
-
-import com.nangman.db.entity.Chat;
-import com.nangman.db.entity.ChatInOutRecord;
-import com.nangman.db.entity.Report;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 
 @ApiModel("Room model")
 public class RoomDto {

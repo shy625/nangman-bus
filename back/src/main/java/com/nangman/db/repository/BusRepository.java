@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface BusRepository {
-    Optional<Bus> findBusByLicenseNo(String licenseNo);
+    Optional<Bus> findBusByLicense(String licenseNo);
 }

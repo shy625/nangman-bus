@@ -12,6 +12,6 @@ public interface RoomService {
     Room createRoom(RoomDto.CreateRequest createRequest);
 
     @Transactional
-    public Room updateRoom(Room room);
+    Room updateRoom(Room room);
 
 }

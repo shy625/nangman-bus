@@ -85,7 +85,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Chat> chats = new ArrayList<>();
 
-    public void addChatting(Chat chat) {
+    public void addChat(Chat chat) {
         this.chats.add(chat);
 
         if (chat.getUser() != this) {

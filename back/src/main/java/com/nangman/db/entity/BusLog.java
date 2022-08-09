@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class BusLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
-    private Long id = null;
+    private Long id;
     //licenseNo
     private String license;
 
@@ -32,4 +33,6 @@ public class BusLog {
     private String ord;
     //busNumber
     private String no;
+
+    private LocalDateTime createdDate;
 }

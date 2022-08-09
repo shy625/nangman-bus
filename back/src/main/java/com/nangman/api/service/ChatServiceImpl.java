@@ -18,14 +18,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService{
 
-    RoomRepository roomRepository;
-    ReportService reportService;
-    ChatRepository chatRepository;
-    UserRepository userRepository;
-    ChatInOutRecordRepository chatInOutRecordRepository;
-    UserReportRepository userReportRepository;
-
-    RoomService roomService;
+    private final RoomRepository roomRepository;
+    private final ReportService reportService;
+    private final ChatRepository chatRepository;
+    private final UserRepository userRepository;
+    private final ChatInOutRecordRepository chatInOutRecordRepository;
+    private final UserReportRepository userReportRepository;
+    private final RoomService roomService;
 
     @Override
     @Transactional
@@ -48,10 +47,11 @@ public class ChatServiceImpl implements ChatService{
                 checkBigLike = tempLike;
                 reportMsg = item.getContent();
             }
+            userList.add(user);
             chat.setContent(item.getContent());
             chat.setLikes(tempLike);
             chat = createChat(chat);
-            user.addChatting(chat);
+            user.addChat(chat);
             room.addChat(chat);
         }
 

@@ -8,20 +8,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService{
 
-    RoomRepository roomRepository;
-    BusRepository busRepository;
+    private final RoomRepository roomRepository;
+    private final BusRepository busRepository;
     @Transactional
     @Override
     public Room createRoom(RoomDto.CreateRequest createRequest) {
         Room room = new Room();
         room.setSessionId(createRequest.getSessionId());
-        room.setBus(busRepository.findBusByLicenseNo(createRequest.getLicenseNo()).get());
+        room.setBus(busRepository.findBusByLicense(createRequest.getLicenseNo()).get());
         roomRepository.save(room);
         room = roomRepository.findRoomBySessionId(room.getSessionId()).get();
         return room;
