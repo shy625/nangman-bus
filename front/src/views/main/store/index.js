@@ -4,7 +4,7 @@ import * as getters from './getters'
 import * as mutations from './mutations'
 import * as actions from './actions'
 
-const accounts = {
+const mainPage = {
   namespaced: true,
   state,
   getters,
@@ -12,4 +12,4 @@ const accounts = {
   actions
 }
 
-export default accounts
+export default mainPage
