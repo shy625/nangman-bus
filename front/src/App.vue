@@ -1,11 +1,12 @@
 <template>
 <router-link :to="{ name: 'chat', params: { roomId: 1 }}">채팅방</router-link>
 
-<router-view v-slot="{ Component, route }">
+<!-- <router-view v-slot="{ Component, route }">
   <transition :name="route.meta.transition" :mode="route.meta.mode">
     <component :is="Component"></component>
   </transition>
-</router-view>
+</router-view> -->
+<router-view></router-view>
 
 </template>
 
