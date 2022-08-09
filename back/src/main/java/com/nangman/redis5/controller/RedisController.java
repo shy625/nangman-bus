@@ -71,6 +71,11 @@ public class RedisController {
         redisService.test01();
     }
 
+    @GetMapping("/test07")
+    public void test07() {
+        System.out.println(redisService.deleteChattingRoom("sessionId").toString());
+    }
+
     @GetMapping("/keys")
     public String keys() {
 //        Set<String> keys = redisTemplate.opsForSet().members("*");

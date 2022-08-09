@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class chattingRoomDto {
-    String roomId;
+    String sessionId;
     String routeId;
     int distance;
     int inUsers;

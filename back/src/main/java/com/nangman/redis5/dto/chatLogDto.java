@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class chatLogDto {
     // 버스 관련 정보
-    String roomId;
+    String sessionId;
     String licenseNo;
     String routeId;
     String createdDate;

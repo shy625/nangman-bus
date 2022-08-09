@@ -44,7 +44,7 @@ public class ReportServiceImpl implements ReportService{
         Report report = reportRepository.findReportById(detailRequest.getReportId());
         int accessTime = 0;
         ChatInOutRecord chatInOutRecord = chatInOutRecordRepository
-                .findChatInOutRecordByUserIdAndRoomId(
+                .findChatInOutRecordByUserIdAndsessionId(
                 detailRequest.getUserId(),
                 roomRepository.findRoomByReport(report).getId()
                 );

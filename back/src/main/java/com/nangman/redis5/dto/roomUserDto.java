@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class roomUserDto {
     String nickName;
-    boolean isBirth;
+    String birth;
     int emotion;
     String outBusStop;
 }
