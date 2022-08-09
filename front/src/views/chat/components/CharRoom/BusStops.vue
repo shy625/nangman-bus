@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div id="busstopList" class="busstop-list">
+    <div id="busstopList" class="busstop-list collapsed">
       <el-scrollbar height="30vh">
         <el-timeline>
           <el-timeline-item
@@ -122,7 +122,7 @@ const busstops = [
 onMounted(() => {
   const busstopList = document.querySelector('#busstopList')
   const busToggle = document.querySelector('#busToggle')
-  busstopList.classList.add('collapsed')
+  // busstopList.classList.add('collapsed')
   function busstopListToggle() {
       busstopList.classList.toggle('collapsed')
       if (data.value.isToggled === true) {
