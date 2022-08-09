@@ -11,10 +11,10 @@ const router = createRouter({
       name: 'main',
       path: '/', 
       component: MainView,
-      meta: {
-        transition: 'slide-fade',
-        mode: 'out-in'
-      } 
+      // meta: {
+      //   transition: 'slide-fade',
+      //   mode: 'out-in'
+      // } 
     },
     // { name: 'welcome', path: '/welcome', component: WelcomeView },
     { name: 'login', path: '/login', component: LoginView },
@@ -26,10 +26,10 @@ const router = createRouter({
       name: 'chat', 
       path: '/chat/:roomId', 
       component: ChatView, 
-      meta: {
-        transition: 'slide-fade',
-        mode: 'out-in'
-      }
+      // meta: {
+      //   transition: 'slide-fade',
+      //   mode: 'out-in'
+      // }
     },
     // 방명록이랑 유저목록은 컴포넌트 구조에 따라 달라질 예정
     // { name: 'board', path: '/room/board', component: BoardView },

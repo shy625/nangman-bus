@@ -2,7 +2,7 @@
   <div class="board">
     <div class="board-title">방명록</div>
     <div class="board-list">
-      <el-scrollbar height="80vh">
+      <el-scrollbar id="boardScroll" height="75vh">
         <!-- 방명록 만들 때, id에 pk값이나 key값 넣기 -->
         <div id="boardContent" class="board-content">
           <div class="board-content-body">
@@ -58,11 +58,18 @@
             <div class="create-time">11:40</div>
           </div>
         </div>
-        
-      </el-scrollbar>
       <!-- 이 밑으로 추가! -->
+      </el-scrollbar>
     </div>
   </div>
+  <el-button 
+    class="create-btn"
+    @click="clickCreateBtn"
+    color="#FFD96A" 
+    round
+  >
+  낭만 남기기
+  </el-button>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -74,6 +81,84 @@ onMounted(() => {
   }
   boardContent.addEventListener('click', boardContentToggle)
 })
+
+const clickCreateBtn = () => {
+  // 컴포넌트 생성
+  const boardContent = document.createElement('div')
+  boardContent.classList.add('board-content')
+  const form = document.createElement('form')
+  form.classList.add('board-create-form')
+  const textarea = document.createElement('textarea')
+  textarea.classList.add('board-create-content')
+  textarea.placeholder = '당신의 낭만을 남겨주세요.'
+  // const createFormBtn = document.createElement('div')
+  // createFormBtn.classList.add('create-form-btn')
+
+  const createSubmitBtn = document.createElement('button')
+  createSubmitBtn.classList = ('el-button is-round')
+  createSubmitBtn.setAttribute('aria-disabled', 'false')
+  createSubmitBtn.setAttribute('type', 'button')
+  createSubmitBtn.setAttribute('style', '--el-button-bg-color:#FFD96A; --el-button-text-color:var(--el-color-black); --el-button-border-color:#FFD96A; --el-button-hover-bg-color:rgb(255, 228, 151); --el-button-hover-text-color:var(--el-color-black); --el-button-hover-border-color:rgb(255, 228, 151); --el-button-active-bg-color:rgb(208, 178, 89); --el-button-active-border-color:rgb(208, 178, 89);')
+  const submitBtnSpan = document.createElement('span')
+  submitBtnSpan.innerText = '등록'
+  createSubmitBtn.append(submitBtnSpan)
+
+  const createDelBtn = document.createElement('button')
+  createDelBtn.classList = ('el-button is-round')
+  createDelBtn.setAttribute('aria-disabled', 'false')
+  createDelBtn.setAttribute('type', 'button')
+  createDelBtn.setAttribute('style', '--el-button-bg-color:#FFD96A; --el-button-text-color:var(--el-color-black); --el-button-border-color:#FFD96A; --el-button-hover-bg-color:rgb(255, 228, 151); --el-button-hover-text-color:var(--el-color-black); --el-button-hover-border-color:rgb(255, 228, 151); --el-button-active-bg-color:rgb(208, 178, 89); --el-button-active-border-color:rgb(208, 178, 89);')
+  const delBtnSpan = document.createElement('span')
+  delBtnSpan.innerText = '취소'
+  createDelBtn.append(delBtnSpan)
+
+  boardContent.append(form)
+  // form.append(textarea, createFormBtn)
+  // createFormBtn.append(createDelBtn, createSubmitBtn)
+  form.append(textarea, createSubmitBtn, createDelBtn, )
+  
+  const boardScrollView = document.querySelector('#boardScroll .el-scrollbar__view')
+  boardScrollView.append(boardContent)
+  const boardScroll = document.querySelector('#boardScroll .el-scrollbar__wrap')
+  boardScroll.scrollTo(0, boardScrollView.scrollHeight)
+
+  // 새로 만들기 없애기
+  const createBtn = document.querySelector('.create-btn')
+  createBtn.style.display = 'none'
+
+  // 취소버튼 이벤트
+  createDelBtn.addEventListener('click', () => {
+    boardScrollView.removeChild(boardContent)
+    createBtn.style.display = 'inline-flex'
+  })
+
+  // 등록버튼 이벤트
+  createSubmitBtn.addEventListener('click', e => {
+    console.log(textarea.value)
+
+    boardScrollView.removeChild(boardContent)
+    createBtn.style.display = 'inline-flex'
+
+    const createBoardcontent = document.createElement('div')
+    createBoardcontent.classList.add('board-content')
+    const boardContentBody = document.createElement('div')
+    boardContentBody.classList.add('board-content-body')
+    boardContentBody.innerText = textarea.value
+    const boardContentDate = document.createElement('div')
+    boardContentDate.classList.add('board-content-date')
+    const createDate = document.createElement('div')
+    createDate.classList.add('create-date')
+    createDate.innerText = '2022년 8월 8일'
+    const createTime = document.createElement('div')
+    createTime.classList.add('create-time')
+    createTime.innerText = '17:55'
+
+    createBoardcontent.append(boardContentBody, boardContentDate)
+    console.log(createBoardcontent)
+    boardContentDate.append(createDate, createTime)
+    boardScrollView.append(createBoardcontent)
+  })
+}
 </script>
 <style>
 .board {
@@ -97,9 +182,10 @@ onMounted(() => {
 .board-content {
   display: flex;
   font-size: 1rem;
+  font-family: Pretendard;
   flex-direction: column;
   margin: 20px 0px;
-  padding: 8px;
+  padding: 16px;
   border-radius: 10px;
   max-height: 100px;
   background-color: #FFD96A;
@@ -120,5 +206,36 @@ onMounted(() => {
 }
 .create-time {
   text-align: end;
+}
+.create-btn {
+  position: fixed;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
+}
+.create-btn span {
+  font-family: BMHANNAPro;
+}
+.board-create-content {
+  font-family: Pretendard;
+  padding: 8px;
+  width: 95%;
+  height: 100%;
+  resize: none;
+  border: 0px;
+  outline: 0px;
+  border-radius: 10px;
+  background-color: #FFD96A;
+}
+.board-create-content::placeholder {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.452)
+}
+.board-create-content::-webkit-scrollbar {
+  display: none;
+}
+.create-form-btn {
+  display: flex;
+  justify-content: center;
 }
 </style>

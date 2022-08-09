@@ -1,32 +1,35 @@
 <template>
-<div class="chat-body">
-  <header>
-    <div class="chat-header">
-      <router-link :to="{ name: 'main' }" class="chat-header-back">
-        &lt;
-      </router-link>
-      <div class="chat-header-title">5006번 버스</div>
-    </div>
-    <hr class="chat-header-hr">
-  </header>
+<div>
+  <div class="chat-body">
+    <header>
+      <div class="chat-header">
+        <router-link :to="{ name: 'main' }" class="chat-header-back">
+          &lt;
+        </router-link>
+        <div class="chat-header-title">5006번 버스</div>
+      </div>
+      <hr class="chat-header-hr">
+    </header>
+  
+    <el-carousel 
+    indicator-position="none" 
+    :initial-index="1"
+    arrow="always"
+    :autoplay="false"
+    :loop="false"
+    >
+      <el-carousel-item>
+        <BoardList></BoardList>
+      </el-carousel-item>
+      <el-carousel-item>
+        <ChatRoom></ChatRoom>
+      </el-carousel-item>
+      <el-carousel-item>
+        <UserList></UserList>
+      </el-carousel-item>
+    </el-carousel>
+  </div>
 
-  <el-carousel 
-  indicator-position="none" 
-  :initial-index="1"
-  arrow="always"
-  :autoplay="false"
-  :loop="false"
-  >
-    <el-carousel-item>
-      <BoardList></BoardList>
-    </el-carousel-item>
-    <el-carousel-item>
-      <ChatRoom></ChatRoom>
-    </el-carousel-item>
-    <el-carousel-item>
-      <UserList></UserList>
-    </el-carousel-item>
-  </el-carousel>
 </div>
 </template>
 
