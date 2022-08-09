@@ -24,15 +24,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
     ChatService chatService;
 
-    @PostMapping("chat/backup")
-    @ApiOperation(value = "채팅 내역 저장 + 낭만보고서 생성",
-            notes = "방 폭파 후 해당 채팅방의 채팅 내역을 DB에 저장 및 낭만보고서 데이터 생성")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공", response = ReportDto.class),
-            @ApiResponse(code = 404, message = "채팅방 없음"),
-            @ApiResponse(code = 500, message = "서버 오류")
-    })
-    ResponseEntity<?> backup(@RequestBody ChatDto.ChatLog chatLog){
-        chatService.InsertChatLogs(chatLog);
-    }
 }

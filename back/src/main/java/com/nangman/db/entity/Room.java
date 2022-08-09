@@ -19,6 +19,8 @@ public class Room extends BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime terminatedDate;
 
+    private String sessionId;
+
     @ManyToOne
     @JoinColumn(name = "bus_id")
     private Bus bus;

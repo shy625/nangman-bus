@@ -43,17 +43,17 @@ public class ReportServiceImpl implements ReportService{
     @Override
     @Transactional(readOnly = true)
     public ReportDto.Info getReportByIds(ReportDto.DetailRequest detailRequest) {
-        Report report = reportRepository.findReportById(detailRequest.getReportId());
+        Report report = reportRepository.findReportById(detailRequest.getReportId()).get();
         int accessTime = 0;
         List<ChatInOutRecord> chatInOutRecordList = chatInOutRecordRepository
                 .findChatInOutRecordByUserIdAndRoomId(
                 detailRequest.getUserId(),
-                roomRepository.findRoomByReport(report).getId()
+                roomRepository.findRoomByReport(report).get().getId()
                 );
 
         boolean isInReport = false;
 
-        List<UserReport> checkList = report.getUsers();
+        List<UserReport> checkList = report.getUserReports();
 
         for (UserReport userReport: checkList){
             if (userReport.getUser().getId() == detailRequest.getUserId()){
@@ -64,13 +64,30 @@ public class ReportServiceImpl implements ReportService{
 
         if (!isInReport) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
 
-        for (ChatInOutRecord item : chatInOutRecordList) accessTime += getAccessTime(accessTime, item);
+        for (ChatInOutRecord item : chatInOutRecordList) accessTime += getAccessTime(item);
 
         return new ReportDto.Info(report.getId(), report.getContent(), report.getAverageTime(), report.getTotalChatCount(),
                 report.getTotalUserCount(), accessTime);
     }
 
-    private int getAccessTime(int accessTime, ChatInOutRecord chatInOutRecord) {
+    @Override
+    @Transactional
+    public Report creatReport() {
+        Report report = new Report();
+        reportRepository.save(report);
+        report = reportRepository.findReportById(report.getId()).get();
+        return report;
+    }
+
+    @Override
+    public Report updateReport(Report report) {
+        reportRepository.save(report);
+        report = reportRepository.findReportById(report.getId()).get();
+        return report;
+    }
+
+    public int getAccessTime(ChatInOutRecord chatInOutRecord) {
+        int accessTime = 0;
         accessTime += (chatInOutRecord.getOutTime().getYear() - chatInOutRecord.getInTime().getYear()) * 31536000;
         accessTime += (chatInOutRecord.getOutTime().getDayOfYear() - chatInOutRecord.getInTime().getDayOfYear()) * 86400;
         accessTime += (chatInOutRecord.getOutTime().getHour() - chatInOutRecord.getInTime().getHour()) * 3600;

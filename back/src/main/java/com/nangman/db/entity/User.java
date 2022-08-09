@@ -107,6 +107,14 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<UserReport> userReports = new ArrayList<>();
 
+    public void addUserReport(UserReport userReport) {
+        this.userReports.add(userReport);
+
+        if (userReport.getUser() != this) {
+            userReport.setUser(this);
+        }
+    }
+
 
     @Override
     public String toString() {

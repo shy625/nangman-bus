@@ -16,8 +16,8 @@ public class Chat extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false, columnDefinition = "DEFAULT 0")
-    private int likes;
+    @Column(nullable = false)
+    private int likes = 0;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

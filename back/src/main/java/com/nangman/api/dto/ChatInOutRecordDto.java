@@ -1,5 +1,6 @@
 package com.nangman.api.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,13 +9,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@ApiModel("ChatInOut model")
 public class ChatInOutRecordDto {
     @Getter
     @Setter
     @AllArgsConstructor
     public static class Request{
         @ApiModelProperty(name="채팅방 id", example="1")
-        private Long roomId;
+        private long roomId;
     }
 
     @Setter
@@ -24,10 +26,10 @@ public class ChatInOutRecordDto {
     public static class ServiceRequest {
 
         @ApiModelProperty(name="채팅방 id", example="1")
-        private Long roomId;
+        private long roomId;
 
         @ApiModelProperty(name="유저 id", example="1")
-        private Long userId;
+        private long userId;
     }
 
     @Setter
