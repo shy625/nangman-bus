@@ -32,7 +32,6 @@ public class Bus extends BaseEntity {
             route.getBuses().add(this);
         }
     }
-
     @OneToMany(mappedBy = "bus")
     private List<Board> boards = new ArrayList<>();
 

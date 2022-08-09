@@ -13,9 +13,10 @@ import javax.persistence.*;
 @Setter
 public class Chat extends BaseEntity {
 
-
+    @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false, columnDefinition = "DEFAULT 0")
     private int likes;
 
     @ManyToOne
