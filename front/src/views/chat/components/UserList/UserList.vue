@@ -11,6 +11,27 @@
     </div>
     <div class="user-list">
       <el-scrollbar height="80vh">
+        <div class="driver">
+          <img class="steer" src="../../../../assets/steer.png" alt="steerImg" width="68">
+          <div class="cover">
+            <div class="cover-title">
+              저 다음에 내려요
+            </div>
+            <div class="list-cover">
+              <div class="getoff-list">
+                <div class="getoff-user">
+                  헤라클레스
+                </div>
+                <div class="getoff-user">
+                  가우르구라
+                </div>
+                <div class="getoff-user">
+                  헤라클레스
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="me" class="user">
           <div class="icon">
             O
@@ -49,240 +70,6 @@
           </div>
         </div>
         <div id="two" class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div>
-        <div class="user">
           <div class="icon">
             O
           </div>
@@ -363,6 +150,7 @@ onMounted(() => {
   padding: 16px;
   background-color: #f5f5f5;
   border-radius: 10px 10px 0px 0px;
+  margin-bottom: 16px;
 }
 .user-count {
   display: flex;
@@ -378,6 +166,81 @@ onMounted(() => {
 }
 .user-list {
   flex-grow: 1;
+  position: relative;
+}
+.user-list::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1.5%;
+  width: 98%;
+  border-top: 4px solid #F34949;
+  border-radius: 10px 10px 0 0;
+  border-left: 4px solid #F34949;
+  border-right: 4px solid #F34949;
+}
+.driver {
+  display: flex;
+  justify-content: space-around;
+  margin: 32px 40px;
+}
+.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 12px;
+  background-color: black;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  padding: 12px;
+  box-shadow: 0 0 .1rem #fff,
+            0 0 .1rem #fff,
+            0 0 1rem #F34949,
+            0 0 0.5rem #F34949,
+            0 0 2rem #F34949,
+            inset 0 0 1rem #F34949; 
+}
+.cover-title {
+  margin-bottom: 8px;
+  color: #FF9090;
+  text-shadow:
+    0 0 7px #FF9090,
+    0 0 10px #FF9090,
+    0 0 21px #FF9090,
+    0 0 42px #F34949,
+    0 0 82px #F34949,
+    0 0 92px #F34949,
+    0 0 102px #F34949,
+    0 0 151px #F34949;
+}
+.list-cover {
+  width: 100%;
+  height: 16px;
+  overflow: hidden;
+  align-self: center;
+}
+.getoff-list {
+  animation: getoffListScrollUp 4s linear infinite normal;
+}
+@keyframes getoffListScrollUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-67%);
+  }
+}
+.getoff-user {
+  text-align: center;
+  width: 100%;
+  color: #FFD96A;
+  text-shadow:
+    0 0 7px #FFD96A,
+    0 0 90px #FFD96A,
+    0 0 80px #ff8e8e,
+    0 0 100px #ff8e8e,
+    0 0 132px #ff8e8e;
 }
 .user {
   display: flex;
