@@ -6,7 +6,11 @@ import com.nangman.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ChatInOutRecordRepository extends JpaRepository<ChatInOutRecord, Long> {
-    ChatInOutRecord findChatInOutRecordByUserIdAndRoomId(Long userId, Long roomId);
+    List<ChatInOutRecord> findChatInOutRecordByUserIdAndRoomId(Long userId, Long roomId);
+    Optional<ChatInOutRecord> findTop1ChatInOutRecordByUserIdAndRoomIdOrderByInTimeDesc(Long userId, Long roomId);
 }
