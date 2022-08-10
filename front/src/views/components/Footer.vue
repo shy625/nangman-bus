@@ -12,13 +12,36 @@
       <div>낭만보고서</div>
     </router-link>
   </div>
+  <ChatList></ChatList>
 </template>
 <script setup>
-const clickMain = () => {
-  
-}
+import ChatList from './ChatList.vue'
+import { ref, onMounted } from 'vue'
+
+onMounted(() => {
+  // 채팅리스트 버튼
+  const chatListBtn = document.querySelector('.chatlist-btn')
+  const body = document.querySelector('body')
+  const chatList = document.querySelector('.chatlist-cover')
+  chatListBtn.addEventListener('click', () => {
+    console.log(chatList.classList.contains('chatlist-in'))
+    if (chatList.classList.contains('chatlist-in')) {
+      chatList.classList.remove('chatlist-in')
+      chatList.classList.add('chatlist-out')
+    } else {
+      chatList.classList.remove('chatlist-out')
+      chatList.classList.add('chatlist-in')
+    }
+  })
+  chatList.addEventListener('animationend', () => {
+    chatList.classList.toggle('chatlist-active')
+  })
+})
 </script>
 <style>
+.chatlist-active {
+  transform: scale(1);
+}
 .footer {
   position: fixed;
   width: 100%;
@@ -29,6 +52,8 @@ const clickMain = () => {
   padding: 4px 0 4px 0;
   border-top: 2px solid #999999;
   border-radius: 6px 6px 0 0;
+  background-color: white;
+  z-index: 1;
 }
 .footer-main-btn {
   width: 65.188px;
