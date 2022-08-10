@@ -28,10 +28,10 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public BoardDto.Info createBoard(BoardDto.createBoardRequest boardRequestInfo) {
+	public List<BoardDto.Info> createBoard(BoardDto.createBoardRequest boardRequestInfo) {
 		Board board = new Board();
 		User user = userRepository.findByIdAndIsDeletedFalse(boardRequestInfo.getUserId()).get();
-		Bus bus = busRepository.findReportById(boardRequestInfo.getBusId()).get();
+		Bus bus = busRepository.findBusById(boardRequestInfo.getBusId()).get();
 
 		board.setUser(user);
 		board.setBus(bus);
@@ -44,24 +44,27 @@ public class BoardServiceImpl implements BoardService {
 
 		userRepository.save(user);
 		busRepository.save(bus);
+		log.info(bus.getId()+"");
 
-		return new BoardDto.Info(boardRepository.findBoardById(boardRequestInfo.getBusId()).get());
+		return getBoardsById(boardRequestInfo.getBusId());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<BoardDto.Info> getBoardsById(long busId) {
-		List<Board> boardList = boardRepository.findBoardByBusId(busId);
+		List<Board> boardList = boardRepository.findBoardByBusIdOrderByCreatedDate(busId);
 		List<BoardDto.Info> boardDtos = new ArrayList<>();
+		int colorIndex = 0;
+		String[] color = {"#FFD96A", "#FF9090", "#FFB6B9"};
 		for (Board list: boardList) {
-			boardDtos.add(new BoardDto.Info(list));
+			boardDtos.add(new BoardDto.Info(list, color[(colorIndex++ % 3)] ));
 		}
 		return boardDtos;
 	}
 
 	@Override
 	@Transactional
-	public void deleteBoard(long userId, long boardId) {
+	public void deleteBoard(long boardId, long userId) {
 		boardRepository.delete(boardRepository.findBoardByIdAndUserId(boardId, userId).get());
 	}
 }
