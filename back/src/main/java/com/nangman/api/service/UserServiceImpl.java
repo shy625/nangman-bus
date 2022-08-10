@@ -50,12 +50,13 @@ public class UserServiceImpl implements UserService {
 		Setting setting = new Setting();
 		setting.setUser(user);
 		settingRepository.save(setting);
+
 		log.info(setting.isWhisperMode() ? "Y" : "N");
 
 		user.setSetting(setting);
-		// 닉네임 설정(random 선택)
-//		long totalNickname = nicknameRepository.count();
-//		user.setNickname(nicknameRepository.getOne((long) (Math.random() * totalNickname + 1)));
+//		 닉네임 설정(random 선택)
+		long totalNickname = nicknameRepository.count();
+		user.setNickname(nicknameRepository.getOne((long) (Math.random() * totalNickname + 1)));
 
 		userRepository.save(user);
 		return userRepository.findByUseremailAndIsDeletedFalse(user.getUseremail()).get();
