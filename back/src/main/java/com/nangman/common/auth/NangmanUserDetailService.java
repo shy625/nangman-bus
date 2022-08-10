@@ -23,7 +23,7 @@ public class NangmanUserDetailService implements UserDetailsService{
 
 	@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    		User user = userService.getUserByUserId(username);
+    		User user = userService.getUserByUseremail(username);
     		if(user != null) {
     			NangmanUserDetails userDetails = new NangmanUserDetails(user);
     			return userDetails;

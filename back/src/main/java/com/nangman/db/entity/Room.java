@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 public class Room extends BaseEntity {
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime terminatedDate;
 
     @ManyToOne
