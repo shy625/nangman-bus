@@ -1,19 +1,26 @@
-// const HOST = 'http://localhost:8000/api/v1/'
+const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
 
-// const ACCOUNTS = 'accounts/'
+const USER = 'user/'
+const HOME = 'home/'
 // const ARTICLES = 'articles/'
 // const COMMENTS = 'comments/'
 
-// export default {
-//   accounts: {
-//     login: () => HOST + ACCOUNTS + 'login/',
-//     logout: () => HOST + ACCOUNTS + 'logout/',
-//     signup: () => HOST + ACCOUNTS + 'signup/',
-//     // Token 으로 현재 user 판단
-//     currentUserInfo: () => HOST + ACCOUNTS + 'user/',
-//     // username으로 프로필 제공
-//     profile: username => HOST + ACCOUNTS + 'profile/' + username,
-//   },
+export default {
+  accounts: {
+    login: () => HOST + USER + 'login/',
+    logout: () => HOST + USER + 'logout/',
+    signup: () => HOST + USER,
+
+    // get: 유저정보 조회, post: 오늘의 닉네임 제공, delete: 회원 탈퇴
+    currentUserInfo: (userid) => HOST + USER + userid + '/',
+    // username으로 프로필 제공
+    profile: userid => HOST + USER + 'profile/' + userid,
+  },
+
+  // 홈 화면에서 보여줄 실시간 버스 데이터 3대
+  home: {
+    realTimeData: () => HOST + HOME + 'realtimedata/',
+  }
 //   articles: {
 //     // /articles/
 //     articles: () => HOST + ARTICLES,
@@ -24,4 +31,4 @@
 //     comment: (articlePk, commentPk) =>
 //       HOST + ARTICLES + `${articlePk}/` + COMMENTS + `${commentPk}/`,
 //   },
-// }
+}
