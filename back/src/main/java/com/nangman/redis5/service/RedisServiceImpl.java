@@ -1,6 +1,7 @@
 package com.nangman.redis5.service;
 
 import com.nangman.db.entity.Bus;
+import com.nangman.db.entity.BusLog;
 import com.nangman.db.entity.User;
 import com.nangman.db.repository.UserRepository;
 import com.nangman.redis5.dto.ChatLogDto;
@@ -17,17 +18,15 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService{
     private final StringRedisTemplate redisTemplate;
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
     private final double busCheckDist = 1000.0;
     private final int busInfoLicenseNo = 0;
     private final int busInfoRouteId = 1;
     private final int busInfoLat = 2;
     private final int busInfoLng = 3;
-    private final int busInfoLastModified = 4;
-    private final int busInfoCreatedDate = 5;
-    private final int busInfoNodeord = 6;
-    private final int busInfoNodeid = 7;
-    private final int busInfoNodenm = 8;
+    private final int busInfoCreatedDate = 4;
+    private final int busInfoNodeord = 5;
+    private final int busInfoNodeid = 6;
 
     private final int chatInfoUserId = 0;
     private final int chatInfoCreatedTime = 1;
@@ -44,7 +43,7 @@ public class RedisServiceImpl implements RedisService{
     private final String subKey_routeInfo = "routeInfo";
     private final String subKey_userList = "userList";
     private final String subKey_userNum = "userNum";
-    private final String splitStr = ":";
+    private final String splitStr = "_";
     private final int userStateSplitLimit = 3;
 
 
@@ -54,13 +53,62 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void updateBudData(String sessionId, Bus bus) {
+    public void updateBudData(String sessionId, BusLog busLog) {
         //현규가 버스 entity 업데이트하면 ㄱ
+        String keyRoom = sessionId + key_room;
+        StringBuilder createBusInfo = new StringBuilder();
+        createBusInfo.append(busLog.getLicense())
+                .append(splitStr)
+                .append(busLog.getNo())
+                .append(splitStr)
+                .append(busLog.getLat())
+                .append(splitStr)
+                .append(busLog.getLng())
+                .append(splitStr)
+                .append(busLog.getCreatedDate())
+                .append(splitStr)
+                .append(busLog.getOrd())
+                .append(splitStr)
+                .append(busLog.getNid());
+
+        redisTemplate.opsForHash().put(keyRoom, subKey_busInfo, createBusInfo.toString());
     }
 
     @Override
-    public void createChattingRoom(String sessionId, Bus bus, List<String> busStop) {
-        //현규가 버스 entity 업데이트하고, busStopRepository 업데이트하면 ㄱ
+    public void createChattingRoom(String sessionId, BusLog busLog, List<String> busStop) {
+        String keyRoom = sessionId + key_room;
+        String keyChat = sessionId + key_chat;
+        String keyLike = sessionId + key_like;
+        StringBuilder createBusInfo = new StringBuilder();
+        StringBuilder createRouteInfo = new StringBuilder();
+
+        createBusInfo.append(busLog.getLicense())
+                .append(splitStr)
+                .append(busLog.getNo())
+                .append(splitStr)
+                .append(busLog.getLat())
+                .append(splitStr)
+                .append(busLog.getLng())
+                .append(splitStr)
+                .append(busLog.getCreatedDate())
+                .append(splitStr)
+                .append(busLog.getOrd())
+                .append(splitStr)
+                .append(busLog.getNid());
+
+        for(String str : busStop) {
+            createRouteInfo.append(str).append(splitStr);
+        }
+        createRouteInfo.setLength(createRouteInfo.length() -1);
+
+        redisTemplate.opsForHash().put(keyRoom, subKey_busInfo, createBusInfo.toString());
+        redisTemplate.opsForHash().put(keyRoom, subKey_routeInfo, createRouteInfo.toString());
+        redisTemplate.opsForHash().put(keyRoom, subKey_userList, " ");
+        redisTemplate.opsForHash().put(keyRoom, subKey_userNum, "0");
+
+        redisTemplate.opsForHash().put(keyChat, "0", "created chatting room");
+        redisTemplate.opsForHash().put(keyLike, "0", "created like room");
+
     }
 
     @Override
@@ -145,7 +193,6 @@ public class RedisServiceImpl implements RedisService{
         String[] busInfo = busValue.split(splitStr);
         double busLat = Double.parseDouble(busInfo[busInfoLat]);
         double busLng = Double.parseDouble(busInfo[busInfoLng]);
-
         double dist = distance(lat, lng, busLat, busLng);
         if(dist < busCheckDist) return true;
         return false;
@@ -217,11 +264,17 @@ public class RedisServiceImpl implements RedisService{
 
     @Override
     public void createChat(String sessionId, String userId, String chatId, String CreatedTime, String chat) {
-        String key = sessionId + key_chat;
+        String keyChat = sessionId + key_chat;
+        String keyLike = sessionId + key_like;
         String subKey = chatId;
-        String value = userId + splitStr + CreatedTime + splitStr + chat;
-        redisTemplate.opsForHash().put(key, subKey, value);
-        redisTemplate.opsForHash().put(key, subKey, "0");
+        StringBuilder value = new StringBuilder();
+        value.append(userId)
+                .append(splitStr)
+                .append(CreatedTime)
+                .append(splitStr)
+                .append(chat);
+        redisTemplate.opsForHash().put(keyChat, subKey, value.toString());
+        redisTemplate.opsForHash().put(keyLike, subKey, "0");
     }
 
     @Override
@@ -241,7 +294,7 @@ public class RedisServiceImpl implements RedisService{
              .append(splitStr)
              .append(roomUserDto.getBirth())
              .append(splitStr)
-             .append(roomUserDto.getBirth().toString())
+             .append(Integer.toString(roomUserDto.getEmotion()))
              .append(splitStr)
              .append(roomUserDto.getOutBusStop());
         redisTemplate.opsForHash().put(key, userId, value.toString());
