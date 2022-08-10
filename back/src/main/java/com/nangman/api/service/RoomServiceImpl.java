@@ -24,6 +24,9 @@ public class RoomServiceImpl implements RoomService{
         room = roomRepository.findRoomBySessionId(room.getSessionId()).get();
         return room;
     }
+
+    @Override
+    @Transactional
     public Room updateRoom(Room room){
         roomRepository.save(room);
         return roomRepository.findRoomBySessionId(room.getSessionId()).get();

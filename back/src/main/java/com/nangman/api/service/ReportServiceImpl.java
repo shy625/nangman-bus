@@ -82,6 +82,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public Report updateReport(Report report) {
         reportRepository.save(report);
         report = reportRepository.findReportById(report.getId()).get();

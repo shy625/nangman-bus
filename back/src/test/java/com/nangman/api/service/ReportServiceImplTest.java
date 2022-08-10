@@ -54,7 +54,7 @@ class ReportServiceImplTest {
     void setUp() {
         passwordEncoder = new BCryptPasswordEncoder();
         userService = new UserServiceImpl(userRepository, passwordEncoder, settingRepository, nicknameRepository);
-        reportService = new ReportServiceImpl();
+//        reportService = new ReportServiceImpl();
 
         log.info("====== test start ======");
     }

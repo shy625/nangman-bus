@@ -80,6 +80,7 @@ public class ChatServiceImpl implements ChatService{
         roomService.updateRoom(room);
     }
 
+    @Transactional
     public Chat createChat(Chat chat){
         chatRepository.save(chat);
         chat = chatRepository.findById(chat.getId()).get();
