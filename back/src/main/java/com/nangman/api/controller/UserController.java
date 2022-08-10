@@ -31,7 +31,7 @@ import javax.validation.Valid;
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
 @Slf4j
-@Api(value = "유저 API", tags = {"user"})
+@Api(value = "유저 API", tags = {"User"})
 @RestController
 @RequestMapping("api/")
 @RequiredArgsConstructor
@@ -100,7 +100,7 @@ public class UserController {
 			log.info(user.getUseremail());
 			log.info(user.getPassword());
 
-			Cookie cookie = new Cookie("useremail", user.getUseremail());
+			Cookie cookie = new Cookie("user", user.getUseremail());
 			cookie.setPath("/"); // 도메인 기준 쿠키 생성
 			cookie.setMaxAge(24*60*60*365); // 쿠키 만료기한 365일
 			response.addCookie(cookie);

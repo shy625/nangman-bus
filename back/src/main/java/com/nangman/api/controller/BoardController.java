@@ -30,20 +30,20 @@ public class BoardController {
 
 	private final BoardService boardService;
 
-	@PostMapping("board")
+	@PostMapping("boards")
 	@ApiOperation(value = "방명록 생성", notes = "방명록을 생성해 줍니다.")
     @ApiResponses({
         @ApiResponse(code = 201, message = "방명록 작성 성공"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<BoardDto.Info> createBoard(
+	public ResponseEntity<List<BoardDto.Info>> createBoard(
 			@RequestBody @ApiParam(value="방명록 정보", required = true) @Valid BoardDto.createBoardRequest createInfo) {
 		
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-		return new ResponseEntity<BoardDto.Info>(boardService.createBoard(createInfo), HttpStatus.CREATED);
+		return new ResponseEntity<List<BoardDto.Info>>(boardService.createBoard(createInfo), HttpStatus.CREATED);
 	}
 
-	@GetMapping("board/{busId}")
+	@GetMapping("boards/{busId}")
 	@ApiOperation(value = "busID로 방명록 정보 조회", notes = "busID를 기반으로 방명록 리스트 정보를 응답한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -55,8 +55,8 @@ public class BoardController {
 		return new ResponseEntity<List<BoardDto.Info>>(boardService.getBoardsById(busId), HttpStatus.OK);
 	}
 
-	@DeleteMapping("board/{boardId}")
-	@ApiOperation(value = "회원 탈퇴", notes = "회원 정보의 is_deleted 필드를 true로 수정한다.(soft delete)")
+	@DeleteMapping("boards/{boardId}")
+	@ApiOperation(value = "방명록 삭제", notes = "방명록 Id로 방명록 삭제(hard delete)")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 404, message = "사용자 없음"),
@@ -65,7 +65,7 @@ public class BoardController {
 	public ResponseEntity<String> deleteUser(@PathVariable long boardId, HttpSession session) {
 		User user = (User) session.getAttribute("User");
 
-		boardService.deleteBoard(user.getId(), boardId);
+		boardService.deleteBoard(boardId, user.getId());
 
 		return new ResponseEntity<String>("삭제 완료", HttpStatus.OK);
 	}

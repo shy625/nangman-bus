@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface BusRepository extends JpaRepository<Bus, Long>{
-    Optional<Bus> findReportById(long id);
+    Optional<Bus> findBusById(long id);
 }
