@@ -1,5 +1,6 @@
 <template>
-      <button @click="clickBbtn">임시버튼ㅋ</button>
+  <button @click="getin">입장test</button>
+  <button @click="getoff">퇴장test</button>
 
   <div id="users" class="users">
     <div class="users-title">
@@ -35,29 +36,9 @@
             </div>
           </div>
         </div>
-        <!-- <div id="me" class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                가우르구라
-                <div class="birth">
-                  o
-                </div>
-              </div>
-              <div class="profile-me">(나)</div>
-            </div>
-            <div class="destination">
-              흥덕지구 11단지 경남아너스빌
-            </div>
-          </div>
-        </div> -->
         <div class="test-users">
           <div class="test-user">
             <div class="test-icon">
-              <!-- <img src="../../../../assets/seat2.png" alt="seat" class="seat-icon" width="96" height="96"> -->
               <img src="../../../../assets/user-pink.png" alt="pink" class="user-icon">
             </div>
             <div class="test-name">
@@ -89,24 +70,6 @@
             </div>
           </div>
         </div>
-        <!-- <div id="two" class="user">
-          <div class="icon">
-            O
-          </div>
-          <div class="profile">
-            <div class="profile-nick">
-              <div class="nickname">
-                헤라클레스
-              </div>
-              <div class="birth">
-                
-              </div>
-            </div>
-            <div class="destination">
-              목감 지하차도 윤병찬 생가
-            </div>
-          </div>
-        </div> -->
       </el-scrollbar>
     </div>
   </div>
@@ -152,7 +115,7 @@ onMounted(() => {
   })
 })
 // 유저 추가
-const clickBbtn = () => {
+const getin = () => {
   const addUser = document.createElement('div')
   addUser.classList.add('test-user')
   const addIcon = document.createElement('div')
@@ -170,6 +133,15 @@ const clickBbtn = () => {
   addIcon.append(img)
   testUsers.append(addUser)
   addUser.classList.add('add-user')
+}
+// 유저 삭제
+const getoff = () => {
+  // 내거 찾아서 -> 삭제 이벤트 넣고 -> 삭제
+  const delUser = document.querySelector('.test-user')
+  delUser.classList.add('remove-user')
+  delUser.addEventListener('animationend', () => {
+    delUser.remove()
+  })
 }
 </script>
 <style>
@@ -218,6 +190,7 @@ const clickBbtn = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: all 1s;
 }
 .test-icon {
   width: fit-content;
@@ -227,13 +200,6 @@ const clickBbtn = () => {
   width: 70px;
   height: 70px;
 }
-/* .seat-icon {
-  position: absolute;
-  top: 8%;
-  left: 0;
-  opacity: .3;
-  z-index: -1;
-} */
 .test-name {
   font-size: 1.1rem;
 }
@@ -264,6 +230,22 @@ const clickBbtn = () => {
   25% {
     -webkit-transform: rotate3d(0, 0, 1, 0deg);
     transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+.remove-user {
+  animation: removeUser 1s;
+}
+@keyframes removeUser {
+  20% {
+    opacity: 1;
+    -webkit-transform: translate3d(-20px, 0, 0) scaleX(0.9);
+    transform: translate3d(-20px, 0, 0) scaleX(0.9);
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(2000px, 0, 0) scaleX(2);
+    transform: translate3d(2000px, 0, 0) scaleX(2);
   }
 }
 .arrow-profile-active {
