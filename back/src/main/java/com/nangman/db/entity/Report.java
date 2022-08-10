@@ -17,11 +17,19 @@ public class Report extends BaseEntity {
 
     private String content;
     private int averageTime;
-    private Long totalChatCount;
+    private long totalChatCount;
     private int totalUserCount;
     @OneToOne(mappedBy = "report")
     private Room room;
 
     @OneToMany(mappedBy = "report")
-    private List<UserReport> users = new ArrayList<>();
+    private List<UserReport> userReports = new ArrayList<>();
+
+    public void addUserReport(UserReport userReport) {
+        this.userReports.add(userReport);
+
+        if (userReport.getReport() != this) {
+            userReport.setReport(this);
+        }
+    }
 }
