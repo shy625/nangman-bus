@@ -15,11 +15,8 @@ import java.util.List;
 @Setter
 public class Bus extends BaseEntity {
 
-    private String licenseNo;
-
-    private float lat;
-
-    private float lng;
+    private String license;
+    private String no;
 
     @ManyToOne
     @JoinColumn(name = "route_id")
@@ -32,7 +29,6 @@ public class Bus extends BaseEntity {
             route.getBuses().add(this);
         }
     }
-
     @OneToMany(mappedBy = "bus")
     private List<Board> boards = new ArrayList<>();
 
@@ -52,5 +48,4 @@ public class Bus extends BaseEntity {
             room.setBus(this);
         }
     }
-
 }

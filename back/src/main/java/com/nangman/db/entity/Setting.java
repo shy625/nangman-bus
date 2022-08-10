@@ -13,6 +13,10 @@ import javax.persistence.*;
 @Setter
 public class Setting extends BaseEntity {
 
+    /*
+    Boolean값은 TINYINT(1)로 지정
+     */
+    @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private boolean whisperMode;
 
     @OneToOne

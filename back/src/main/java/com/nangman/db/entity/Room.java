@@ -16,7 +16,10 @@ import java.util.List;
 @Setter
 public class Room extends BaseEntity {
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime terminatedDate;
+
+    private String sessionId;
 
     @ManyToOne
     @JoinColumn(name = "bus_id")

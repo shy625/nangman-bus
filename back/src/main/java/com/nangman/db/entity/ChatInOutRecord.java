@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 @Setter
 public class ChatInOutRecord extends BaseEntity {
 
-    private LocalDateTime InTime;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    private LocalDateTime inTime;
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime outTime;
 
     @ManyToOne
