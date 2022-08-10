@@ -9,30 +9,20 @@
   2-3. 메인-채팅리스트 페이지: 버스리스트 배치 (버스리스트-버스아이템들 잡히는 버스만큼 배치)
   -->
 
-  <div>
-    <p>우리는 이걸</p>
-    <img src="../../assets/logo.png" alt="낭만버스">라
-    <p>부르기로 하였다.</p>
-    <button><router-link to="signup">시작하기</router-link></button>
-    이미 낭만하셨나요? <router-link to="login">로그인</router-link>
+  <div class="onboard">
+    <p class="onboard-font">우리는 이걸</p>
+    <p class="onboard-font">
+      <img src="../../assets/logo.png" alt="낭만버스"
+      class="logo-img"
+      >라
+    </p>
+    <p class="onboard-font">부르기로 하였다.</p>
+    <button class="button"><router-link to="signup">시작하기</router-link></button>
+    <p class="login">
+      이미 낭만하셨나요? <router-link to="login">로그인</router-link>
+    </p>
   </div>
-  <div>
-    <Home />
 
-    <!--
-    <div v-if="router가 채팅리스트일 때">
-      <header/>
-      <buslist/>
-      <footer/>
-    </div>
-
-    <div v-if="router가 낭만보고서일 때">
-      <header/>
-      <report/>
-      <footer/>
-    </div>
-    -->
-  </div>
 </template>
 <script>
   // import Header from '../../views/components/Header.vue'
@@ -52,11 +42,19 @@
     }
   }
 
-  setup() {
-    const store = useStore()
-    const isLoggedIn = store.getters('isLoggedIn',)
-  }
+  // setup() {
+  //   const store = useStore()
+  //   const isLoggedIn = store.getters('isLoggedIn',)
+  // }
 </script>
 <style>
-  
+  .onboard {
+    background: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .onboard-font {
+    /* 여기서부터 작성하세요 */
+  }
 </style>
