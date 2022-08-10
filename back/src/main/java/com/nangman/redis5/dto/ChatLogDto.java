@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class chatLogDto {
+public class ChatLogDto {
     // 버스 관련 정보
     String sessionId;
     String licenseNo;
@@ -21,6 +21,6 @@ public class chatLogDto {
     String createdDate;
 
     // 채팅로그
-    List<logDto> chatLogs;
+    List<LogDto> chatLogs;
 
 }

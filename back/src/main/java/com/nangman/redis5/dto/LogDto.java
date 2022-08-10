@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class roomUserDto {
-    String nickName;
-    String birth;
-    int emotion;
-    String outBusStop;
+public class LogDto {
+    String chatId;
+    String userId;
+    String createdTime;
+    String content;
+    String like;
 }

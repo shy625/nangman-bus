@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class chattingRoomDto {
-    String sessionId;
-    String routeId;
-    int distance;
-    int inUsers;
-    int type;
+public class RoomUserDto {
+    String nickName;
+    String birth;
+    int emotion;
+    String outBusStop;
 }

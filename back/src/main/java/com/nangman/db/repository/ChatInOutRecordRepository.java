@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatInOutRecordRepository extends JpaRepository<ChatInOutRecord, Long> {
-    ChatInOutRecord findChatInOutRecordByUserIdAndsessionId(Long userId, Long sessionId);
+    ChatInOutRecord findChatInOutRecordByUserIdAndRoomId(Long userId, Long roomId);
 }

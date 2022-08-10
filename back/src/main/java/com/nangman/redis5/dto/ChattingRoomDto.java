@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class logDto {
-    String chatId;
-    String userId;
-    String createdTime;
-    String content;
-    String like;
+public class ChattingRoomDto {
+    String sessionId;
+    String routeId;
+    int distance;
+    int inUsers;
+    int type;
 }
