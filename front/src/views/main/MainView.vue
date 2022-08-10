@@ -53,8 +53,22 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
   }
   .onboard-font {
     /* 여기서부터 작성하세요 */
+
+  }
+  .button {
+    color: rgb(255, 217, 106);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+    
+    position: absolute;
+
   }
 </style>
