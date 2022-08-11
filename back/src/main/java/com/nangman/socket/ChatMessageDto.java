@@ -11,5 +11,6 @@ public class ChatMessageDto {
     private String roomName;
     private String writer;
     private String message;
+    private String createdDate;
 
 }

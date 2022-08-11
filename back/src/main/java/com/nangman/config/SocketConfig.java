@@ -10,8 +10,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // TODO 소켓 연결 url 적절한 url path로 변경
-        registry.addEndpoint("/stomp/chat")
+        registry.addEndpoint("/socket")
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
