@@ -66,14 +66,12 @@
   </div>
   <BanModal></BanModal>
   <!-- <EnterModal></EnterModal> -->
-  <Roulette></Roulette>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
-import Roulette from './Roulette.vue'
 import { ref, onMounted } from 'vue'
 
 onMounted(() => {

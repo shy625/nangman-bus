@@ -53,7 +53,7 @@ onMounted(() => {
   border-top: 2px solid #999999;
   border-radius: 6px 6px 0 0;
   background-color: white;
-  z-index: 1;
+  z-index: 2;
 }
 .footer-main-btn {
   width: 65.188px;
