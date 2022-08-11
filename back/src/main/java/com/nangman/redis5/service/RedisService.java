@@ -41,11 +41,12 @@ public interface RedisService {
     int getLike(String sessionId, String chatId);
     // 4. 사용자 감정상태 조회?
     // 5. updateMyEmotion(사용자 감정 상태 수정)
+    // emotion 규칙 정해야됨 0: 무표정 1: 화나요 2: 기분좋아요 3: 우울해요
     void updateMyEmotion(String sessionId, String userId, int emotion);
     // 6. 사용자 목록 조회?
     List<RoomUserDto> roomUserList(String sessionId);
     // 7. createChat(채팅 메시지 전송)
-    void createChat(String sessionId, String userId, String chatId, String CreatedTime, String chat);
+    String createChat(String sessionId, String chatId, String CreatedTime, String chat);
     // 3. joinRoom(채팅방 입장)
     void joinRoom(String sessionId, String userId, RoomUserDto roomUserDto);
     // 4. exitRoom(채팅방 퇴장)

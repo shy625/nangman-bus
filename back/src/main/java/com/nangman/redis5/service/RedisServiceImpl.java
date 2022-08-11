@@ -43,6 +43,7 @@ public class RedisServiceImpl implements RedisService{
     private final int USERSTATESPLITLIMIT = 3;
     private final int ICED = 0;
     private final int NOISY = 1;
+    private final String COUNT = "count";
 
 
 
@@ -108,8 +109,8 @@ public class RedisServiceImpl implements RedisService{
         redisTemplate.opsForHash().put(keyRoom, SUBKEYUSERLIST, " ");
         redisTemplate.opsForHash().put(keyRoom, SUBKEYUSERNUM, "0");
 
-        redisTemplate.opsForHash().put(keyChat, "0", "created chatting room");
-        redisTemplate.opsForHash().put(keyLike, "0", "created like room");
+        redisTemplate.opsForHash().put(keyChat, COUNT, "0");
+        redisTemplate.opsForHash().put(keyLike, COUNT, "0");
 
     }
 
@@ -131,12 +132,11 @@ public class RedisServiceImpl implements RedisService{
 
         List<LogDto> logs = new ArrayList<>();
         Map<Object, Object> roomChat = redisTemplate.opsForHash().entries(keyChat);
-        System.out.println(roomChat.toString());
         Map<Object, Object> roomLike = redisTemplate.opsForHash().entries(keyLike);
-        System.out.println(roomLike.toString());
 
         for(Object str : roomChat.keySet()) {
             LogDto temp = new LogDto();
+            if(COUNT.equals((String) str)) continue;
             System.out.println(str);
             temp.setChatId(str.toString());
             temp.setLike(roomLike.get(str).toString());
@@ -204,7 +204,7 @@ public class RedisServiceImpl implements RedisService{
     public List<RandomBusDto> getRandomBus() {
         List<RandomBusDto> list = new ArrayList<>();
         int index = 0;
-        String[] keys = new String[3];
+        List<String> keys = new ArrayList<>();
         for(int i = 0; i < 1000; i++) {
             String randomKey = redisTemplate.randomKey();
             String originKey = "";
@@ -219,16 +219,17 @@ public class RedisServiceImpl implements RedisService{
 
             boolean check = false;
             for(int j = 0; j < index; j++) {
-                if(originKey.equals(keys[j])){
+                if(originKey.equals(keys.get(j))){
                     check = true;
                 }
             }
             if(check) continue;
-            keys[index] = originKey;
+            keys.add(originKey);
             index++;
             if(index >= 3) break;
         }
         for(String str : keys) {
+            System.out.println(str);
             String keyRoom = str + KEYROOM;
             RandomBusDto randomBusDto = new RandomBusDto();
             String value = (String) redisTemplate.opsForHash().get(keyRoom, SUBKEYBUSINFO);
@@ -308,10 +309,12 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void createChat(String sessionId, String userId, String chatId, String CreatedTime, String chat) {
+    public String createChat(String sessionId, String userId, String CreatedTime, String chat) {
         String keyChat = sessionId + KEYCHAT;
         String keyLike = sessionId + KEYLIKE;
-        String subKey = chatId;
+        int count = Integer.parseInt((String) redisTemplate.opsForHash().get(keyChat, COUNT));
+        count++;
+        String subKey = Integer.toString(count);
         StringBuilder value = new StringBuilder();
         value.append(userId)
                 .append(SPLITSTR)
@@ -320,6 +323,10 @@ public class RedisServiceImpl implements RedisService{
                 .append(chat);
         redisTemplate.opsForHash().put(keyChat, subKey, value.toString());
         redisTemplate.opsForHash().put(keyLike, subKey, "0");
+        redisTemplate.opsForHash().put(keyChat, COUNT, subKey);
+        redisTemplate.opsForHash().put(keyLike, COUNT, subKey);
+
+        return subKey;
     }
 
     @Override
@@ -407,6 +414,7 @@ public class RedisServiceImpl implements RedisService{
         for(Object obj : list) {
             String str = (String) obj;
             String[] strs = str.split(SPLITSTR);
+            if(strs.length < CHATINFOCONTENT) continue;
             LocalDateTime ldt = LocalDateTime.parse(strs[CHATINFOCREATEDTIME]);
             int temp = ldt.getMinute();
             if(temp == minute) {
