@@ -917,12 +917,16 @@ import { ref, onMounted } from 'vue'
 </script>
 <style>
 .chatlist-cover {
+  position: fixed;
+  top: 0;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
   transform: scale(0);
-  z-index: -1;
+  z-index: 1;
 }
 .chatlist {
+  background-color: white;
   margin: 71.150px 0 45px 0;
   padding: 16px 32px;
   border: 3px solid #F34949;
