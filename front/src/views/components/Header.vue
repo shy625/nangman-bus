@@ -19,6 +19,8 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  background-color: white;
+  z-index: 1;
 }
 .header-logo {
   width: 120px;
