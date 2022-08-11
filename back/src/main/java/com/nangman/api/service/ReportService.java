@@ -1,8 +1,10 @@
 package com.nangman.api.service;
 
 import com.nangman.api.dto.ReportDto;
+import com.nangman.db.entity.ChatInOutRecord;
 import com.nangman.db.entity.Report;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -10,4 +12,12 @@ import java.util.List;
 public interface ReportService {
     List<Report> getReportsByUserId(long userId);
     ReportDto.Info getReportByIds(ReportDto.DetailRequest detailRequest);
+
+    @Transactional
+    Report creatReport();
+
+    @Transactional
+    Report updateReport(Report report);
+
+    int getAccessTime(ChatInOutRecord chatInOutRecord);
 }
