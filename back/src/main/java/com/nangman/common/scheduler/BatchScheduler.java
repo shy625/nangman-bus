@@ -24,10 +24,10 @@ public class BatchScheduler {
     private final UserService userService;
 
     //10초마다 실행
-    @Scheduled(cron = "0/10 * * * * *")
-
-    public void testSchedule() {
-        userService.updateUserNickname();
-    }
+//    @Scheduled(cron = "0/10 * * * * *")
+//
+//    public void testSchedule() {
+//        userService.updateUserNickname();
+//    }
 
 }

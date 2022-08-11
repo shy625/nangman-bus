@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserReportRepository extends JpaRepository<UserReport, Long> {
-    public List<UserReport> findUserReportsByUserId(Long userId);
+    List<UserReport> findUserReportsByUserIdOrderByCreatedDateDesc(Long userId);
 }
