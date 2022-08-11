@@ -32,7 +32,7 @@ public class ReportServiceImpl implements ReportService{
     @Transactional(readOnly = true)
     public List<Report> getReportsByUserId(long userId) {
         List<Report> reports = new ArrayList<>();
-        List<UserReport> userReports = userReportRepository.findUserReportsByUserId(userId);
+        List<UserReport> userReports = userReportRepository.findUserReportsByUserIdOrderByCreatedDateDesc(userId);
 
         for (int i = 0; i < userReports.size(); i++){
             Report report = userReports.get(i).getReport();
