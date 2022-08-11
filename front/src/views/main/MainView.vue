@@ -44,7 +44,7 @@
   // import BusNow from '../components/BusNow.vue'
   // import BusList from '../components/BusList.vue'
   // import Report from '../components/Report.vue'
-  import Home from './Home.vue'
+  import Home from './HomeView.vue'
 
   export default {
     name: 'MainView',
