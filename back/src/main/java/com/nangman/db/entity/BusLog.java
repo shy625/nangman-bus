@@ -27,6 +27,8 @@ public class BusLog {
 
     private double lng;
 
+    //정류소 이름
+    private String nname;
     //정류장 id
     private String nid;
     //몇번째 정류장

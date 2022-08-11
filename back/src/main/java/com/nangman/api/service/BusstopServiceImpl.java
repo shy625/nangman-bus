@@ -28,6 +28,7 @@ public class BusstopServiceImpl implements BusstopService{
 
     private final BusstopRepository busstopRepository;
     @Override
+    @Transactional
     public List<Busstop> addBusstop(BusstopDto.Request request) {
         String BASE_URL = "http://apis.data.go.kr/1613000/BusRouteInfoInqireService/getRouteAcctoThrghSttnList?" +
                 "serviceKey=" + serviceKey +
