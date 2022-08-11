@@ -2,10 +2,14 @@ const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
 
 const USER = 'user/'
 const HOME = 'home/'
+const REPORTS = 'reports/'
 // const ARTICLES = 'articles/'
 // const COMMENTS = 'comments/'
 
 export default {
+  reports: {
+    reportsList: () => HOST + REPORTS,
+  },
   accounts: {
     login: () => HOST + USER + 'login/',
     logout: () => HOST + USER + 'logout/',
