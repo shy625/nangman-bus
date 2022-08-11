@@ -1,9 +1,13 @@
 <template>
   <div class="scroll-container">
     <div class="scroll-text">
+      <p>헤라</p>
+      <p>클레스</p>
+      <p>ㅁㄴㄹ</p>
+      <p>ㅌㅋㅍ</p>
       <div class="chosen-nickname">
         <span class="nickname-twinkle">>> </span>
-        <span>가우르구라</span>
+        <span>가우르구라ffffff</span>
         <span class="nickname-twinkle"> &lt;&lt;</span>
       </div>
       <p>헤라</p>
@@ -16,7 +20,7 @@
       <p>클레ㅇㄴㅍㅇㄴㅍㅇㄴ스</p>
       <p>가ㅊㅌ ㅌㅋㅍㄴㅇㅍ우르구라</p>
       <p>헤라</p>
-      <p>클레ㅍㄴㅇㅍ스</p>          
+      <p>클레ㅍㄴㅇㅍ스</p>
       <p>가우르구라</p>
       <p>헤라</p>
       <p>클레스</p>
@@ -35,23 +39,24 @@
 }
 .scroll-text {
   text-align: center;
-  animation: roulette 1.5s cubic-bezier(0.1, -0.5, 0.5, 1.3);
+  animation: roulette 1s cubic-bezier(0.1, -0.5, 0.5, 1.3);
+  transform: translateY(-20%);
 }
 @keyframes roulette {
   from {
     transform: translateY(-80%);
   }
   to {
-    transform: translateY(0);
+    transform: translateY(-17%);
   }
 }
 .chosen-nickname {
-  margin-top: 32px;
+  margin-top: 16px;
 }
 .nickname-twinkle {
   opacity: 0;
   animation: twinkle .8s normal 2;
-  animation-delay: 1.5s;
+  animation-delay: 1s;
 }
 @keyframes twinkle {
   from {

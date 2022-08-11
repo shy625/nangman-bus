@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BusRepository extends JpaRepository<Bus, Long> {
-    Optional<Bus> findBusByLicense(String licenseNo);
+public interface BusRepository extends JpaRepository<Bus, Long>{
+    Optional<Bus> findReportById(long id);
 }

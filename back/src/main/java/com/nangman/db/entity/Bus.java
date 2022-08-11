@@ -15,8 +15,11 @@ import java.util.List;
 @Setter
 public class Bus extends BaseEntity {
 
-    private String license;
-    private String no;
+    private String licenseNo;
+
+    private float lat;
+
+    private float lng;
 
     @ManyToOne
     @JoinColumn(name = "route_id")
@@ -48,4 +51,5 @@ public class Bus extends BaseEntity {
             room.setBus(this);
         }
     }
+
 }
