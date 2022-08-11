@@ -1,5 +1,5 @@
 <template>
-  
+  아이템1
 </template>
 <script setup>
   import { useStore } from 'vuex'
@@ -12,5 +12,8 @@
   })
   const fName = function (event) {
     
+  }
+  export default {
+    name: ReportItem
   }
 </script>

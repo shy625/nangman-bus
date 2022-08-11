@@ -8,7 +8,7 @@
   2-2. 메인-낭만보고서 페이지: 리포트 배치 (리포트-달력, 리포트아이템 존재)
   2-3. 메인-채팅리스트 페이지: 버스리스트 배치 (버스리스트-버스아이템들 잡히는 버스만큼 배치)
   -->
-
+  <router-link to="reports">낭만보고서</router-link>
   <div class="onboard">
     <p class="onboard-font">우리는 이걸</p>
     <p class="onboard-font">
@@ -55,10 +55,10 @@
     flex-direction: column;
     justify-content: center;
   }
-  .onboard-font {
-    /* 여기서부터 작성하세요 */
+  /* .onboard-font {
+    여기서부터 작성하세요
 
-  }
+  } */
   .button {
     color: rgb(255, 217, 106);
     display: flex;
@@ -69,6 +69,14 @@
     gap: 10px;
     
     position: absolute;
+    width: 60%;
+    height: 120px;
+    top: 66%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+  }
 
+  .login {
+    color: rgb(255, 90, 90);
   }
 </style>
