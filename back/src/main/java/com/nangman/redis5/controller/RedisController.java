@@ -131,7 +131,7 @@ public class RedisController {
             busStops.add(str);
         }
 
-        redisService.createChattingRoom(testSessionId, busLog, busStops);
+        redisService.createChattingRoom(busLog, busStops);
     }
     @GetMapping("/test/deleteChattingRoom")
     public ChatLogDto deleteChattingRoom() {

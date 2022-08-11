@@ -15,7 +15,7 @@ public interface RedisService {
     void updateBudData(String sessionId, BusLog busLog);
 
     // 2. createChattingRoom
-    void createChattingRoom(String sessionId, BusLog busLog, List<String> busStop);
+    String createChattingRoom(BusLog busLog, List<String> busStop);
     // 3. deleteChattingRoom
     ChatLogDto deleteChattingRoom(String sessionId);
 

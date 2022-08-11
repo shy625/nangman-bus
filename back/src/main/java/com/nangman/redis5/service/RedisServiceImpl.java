@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -76,7 +77,14 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void createChattingRoom(String sessionId, BusLog busLog, List<String> busStop) {
+    public String createChattingRoom(BusLog busLog, List<String> busStop) {
+        String sessionId = "session_";
+
+        LocalDateTime time = LocalDateTime.now();
+        ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
+        long epoch = time.atZone(zoneId).toEpochSecond();
+        sessionId += Long.toString(epoch);
+
         String keyRoom = sessionId + KEYROOM;
         String keyChat = sessionId + KEYCHAT;
         String keyLike = sessionId + KEYLIKE;
@@ -112,6 +120,7 @@ public class RedisServiceImpl implements RedisService{
         redisTemplate.opsForHash().put(keyChat, COUNT, "0");
         redisTemplate.opsForHash().put(keyLike, COUNT, "0");
 
+        return sessionId;
     }
 
     @Override
