@@ -42,15 +42,15 @@ public class UserController {
 	@PostMapping("user/")
 	@ApiOperation(value = "회원 가입", notes = "이메일(필수), 패스워드(필수), 생일 데이터(선택)를 받아 회원가입 한다.")
     @ApiResponses({
-        @ApiResponse(code = 201, message = "회원가입 성공"),
+        @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<UserDto.Info> register(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) @Valid UserDto.RegisterRequest registerInfo) {
-
+		
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-		return new ResponseEntity<UserDto.Info>(new UserDto.Info(userService.createUser(registerInfo)), HttpStatus.CREATED);
+		return new ResponseEntity<UserDto.Info>(new UserDto.Info(userService.createUser(registerInfo)), HttpStatus.OK);
 	}
 
 	@GetMapping("user/{userId}")
@@ -65,7 +65,7 @@ public class UserController {
 		return new ResponseEntity<UserDto.Info>(new UserDto.Info(userService.getUserByUserId(userId)), HttpStatus.OK);
 	}
 
-	@PostMapping("user/logout")
+	@GetMapping("user/logout")
 	@ApiOperation(value = "로그아웃", notes = "로그아웃을 한다.")
 	public String logout(HttpSession session) {
 		session.invalidate();
