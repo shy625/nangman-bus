@@ -1,11 +1,11 @@
 <template>
+  <Header/>
   <el-calendar v-model="value" />
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref } from 'vue'
+import Header from '../../components/Header.vue'
 const value = ref(new Date())
-export default {
-  name: ReportCalender
-}
+
 </script>

@@ -13,7 +13,4 @@
   const fName = function (event) {
     
   }
-  export default {
-    name: ReportItem
-  }
 </script>

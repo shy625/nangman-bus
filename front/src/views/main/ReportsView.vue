@@ -1,7 +1,7 @@
 <template>
   <p>낭만보고서 ㅡㅡㅡㅡㅡㅡㅡ</p>
   <report-calender/>
-  <reportitem/>
+  <ReportItem/>
 </template>
 <script setup>
   import { useStore } from 'vuex'
@@ -16,8 +16,5 @@
   })
   const fName = function (event) {
     
-  }
-  export default {
-    name: ReportsView
   }
 </script>
