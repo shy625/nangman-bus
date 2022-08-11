@@ -13,7 +13,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.Path;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,10 +127,10 @@ public class RedisController {
         return redisService.deleteChattingRoom(testSessionId);
     }
 
-    @GetMapping("/test/selectRooms")
-    public ResponseEntity<List<ChattingRoomDto>> selectRooms() {
+    @GetMapping("/test/selectRooms/{lat}/{lng}")
+    public ResponseEntity<List<ChattingRoomDto>> selectRooms(@PathVariable double lat, @PathVariable double lng) {
         return new ResponseEntity<List<ChattingRoomDto>>(
-                redisService.selectRooms(37.32341, 127.1259),HttpStatus.OK);
+                redisService.selectRooms(lat, lng),HttpStatus.OK);
     }
     @GetMapping("/test/isAccessibleRoom")
     public boolean isAccessibleRoom() {
