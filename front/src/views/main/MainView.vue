@@ -13,7 +13,6 @@
     <button><router-link to="signup">시작하기</router-link></button>
     이미 낭만하셨나요? <router-link to="login">로그인</router-link>
   </div> -->
-
   <div>
     <Header></Header>
     <Home></Home>

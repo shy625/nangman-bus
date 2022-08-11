@@ -11,6 +11,7 @@
         <img src="../../assets/bus-unclicked.png" alt="unclickedBus" class="welcome-chaticon-img">
       </div>
     </div>
+    <router-link :to="{ name: 'reportsdetail', params: { userId: 1 }}">리포트 디테일</router-link>
     <MostlyBus></MostlyBus>
     <RecentlyBus></RecentlyBus>
     <RandomBus></RandomBus>

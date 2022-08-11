@@ -40,7 +40,7 @@
   border-radius: 10px;
   height: 80px;
   overflow: hidden;
-  transform: scale(0) translateX(-50%);
+  transform: scale(0);
   /* transform: scale(1) translateX(-50%); */
   box-shadow: 0 5px 10px 0 #FFD96A,
               1px 2px 4px 0 #FFD96A,
@@ -102,22 +102,19 @@
     transform: rotate3d(0, 0, 1, -45deg);
     opacity: 0;
   }
-
   to {
     transform: translate3d(-50%, 0, 0);
     opacity: 1;
   }
 }
 .roulette-out {
-  animation: rouletteOut 1s forwards;
+  animation: rouletteOut 1s normal;
 }
 @keyframes rouletteOut {
   from {
     opacity: 1;
   }
-
   to {
-    -webkit-transform: rotate3d(-50%, 0, 1, 45deg);
     transform: rotate3d(0, 0, 1, 45deg);
     opacity: 0;
   }
