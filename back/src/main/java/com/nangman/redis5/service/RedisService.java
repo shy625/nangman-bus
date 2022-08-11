@@ -4,6 +4,7 @@ import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusLog;
 import com.nangman.redis5.dto.ChatLogDto;
 import com.nangman.redis5.dto.ChattingRoomDto;
+import com.nangman.redis5.dto.RandomBusDto;
 import com.nangman.redis5.dto.RoomUserDto;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public interface RedisService {
     List<ChattingRoomDto> selectRooms(double lat, double lng);
     // 2. checkInRoom(채팅방 접속 가능 여부 확인)
     boolean isAccessibleRoom(double lat, double lng, String sessionId);
+    // 3. 메인에서 랜덤으로 버스 3개 받는거
+    List<RandomBusDto> getRandomBus();
+
 
 
 

@@ -1,10 +1,7 @@
 package com.nangman.redis5.controller;
 
 import com.nangman.db.entity.BusLog;
-import com.nangman.redis5.dto.RedisCrudSaveRequestDto;
-import com.nangman.redis5.dto.ChatLogDto;
-import com.nangman.redis5.dto.ChattingRoomDto;
-import com.nangman.redis5.dto.RoomUserDto;
+import com.nangman.redis5.dto.*;
 import com.nangman.redis5.service.RedisService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -132,6 +129,13 @@ public class RedisController {
         return new ResponseEntity<List<ChattingRoomDto>>(
                 redisService.selectRooms(lat, lng),HttpStatus.OK);
     }
+
+    @GetMapping("/test/getRandomBus")
+    public ResponseEntity<List<RandomBusDto>> getRandomBus() {
+        return new ResponseEntity<List<RandomBusDto>>(
+                redisService.getRandomBus(), HttpStatus.OK);
+    }
+
     @GetMapping("/test/isAccessibleRoom")
     public boolean isAccessibleRoom() {
         return redisService.isAccessibleRoom(37.32341, 127.1259, testSessionId);
@@ -180,6 +184,8 @@ public class RedisController {
     public void setOutBusStop() {
         redisService.setOutBusStop(testSessionId, "10", "1");
     }
+
+
 
 
     @GetMapping("/keys")
