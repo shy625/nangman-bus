@@ -24,7 +24,7 @@ onMounted(() => {
   const body = document.querySelector('body')
   const chatList = document.querySelector('.chatlist-cover')
   chatListBtn.addEventListener('click', () => {
-    console.log(chatList.classList.contains('chatlist-in'))
+    // console.log(chatList.classList.contains('chatlist-in'))
     if (chatList.classList.contains('chatlist-in')) {
       chatList.classList.remove('chatlist-in')
       chatList.classList.add('chatlist-out')
