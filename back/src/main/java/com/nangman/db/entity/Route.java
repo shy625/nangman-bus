@@ -2,6 +2,7 @@ package com.nangman.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,8 +14,11 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Route extends BaseEntity {
+@ToString
+public class Route {
 
+    @Id
+    @Column(updatable = false)
     private String code;
 
     private String no;
@@ -29,17 +33,7 @@ public class Route extends BaseEntity {
 
     private String type;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
-
-    public void setCity(City city) {
-        this.city = city;
-
-        if (!city.getRoutes().contains(this)) {
-            city.getRoutes().add(this);
-        }
-    }
+    private int citycode;
 
     @OneToMany(mappedBy = "route")
     private List<Bus> buses = new ArrayList<>();
