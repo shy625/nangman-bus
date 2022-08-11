@@ -1,3 +1,4 @@
+
 package com.nangman.api.dto;
 
 import io.swagger.annotations.ApiModel;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+
 
 @ApiModel("Chat model")
 public class ChatDto {
