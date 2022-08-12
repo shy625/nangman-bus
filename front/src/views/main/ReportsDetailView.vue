@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="report-bg-img"></div>
   <div class="report-detail">
     <el-scrollbar>
@@ -8,6 +9,7 @@
       <ReportDetailBusData></ReportDetailBusData>
     </el-scrollbar>
   </div>
+</div>
 </template>
 <script setup>
 import ReportDetailHeader from './components/ReportDetailHeader.vue'

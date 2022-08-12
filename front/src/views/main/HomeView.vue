@@ -11,7 +11,6 @@
         <img src="../../assets/bus-unclicked.png" alt="unclickedBus" class="welcome-chaticon-img">
       </div>
     </div>
-    <router-link :to="{ name: 'reportsdetail', params: { userId: 1 }}">리포트 디테일</router-link>
     <MostlyBus></MostlyBus>
     <RecentlyBus></RecentlyBus>
     <RandomBus></RandomBus>
@@ -25,12 +24,20 @@ import MostlyBus from './components/MostlyBus.vue'
 import RecentlyBus from './components/RecentlyBus.vue'
 import RandomBus from './components/RandomBus.vue'
 import { ref, onMounted } from 'vue'
-
+ 
 const data = ref({
   isChanged: true,
 })
 
 onMounted(() => {
+  const urlNow = window.location.href
+  const footerMainBtn = document.querySelector('.footer-main-btn')
+  const fotterReportsBtn = document.querySelector('.footer-reports-btn')
+  if (urlNow[urlNow.length-1] === '/') {
+    footerMainBtn.classList.add('footer-btn-active')
+    fotterReportsBtn.classList.remove('footer-btn-active')
+  }
+
   if (data.value.isChanged) {
     const rouletteContainer = document.querySelector('.roulette-container')
     const home = document.querySelector('.home')

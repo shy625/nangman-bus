@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <!-- <div>
     <OnBoardingView></OnBoardingView>
-  </div>
+  </div> -->
   <div>
-    <!-- <Header></Header>
+    <Header></Header>
     <Home></Home>
-    <Footer></Footer> -->
+    <Footer></Footer>
   </div>
 </template>
 <script setup>

@@ -11,9 +11,14 @@
       부르기로 하였다.
     </div>
     <div class="onboarding-start">
-      <el-button color="#FFD96A" size="large" class="start-btn">시작하기</el-button>
+      <router-link :to="{ name: 'signup' }">
+        <el-button color="#FFD96A" size="large" class="start-btn">시작하기</el-button>
+      </router-link>
       <div class="start-login">
-        이미 낭만하셨나요?<span class="login-text"> 로그인</span>
+        이미 낭만하셨나요?
+        <router-link :to="{ name: 'login' }">
+          <span class="login-text"> 로그인</span>
+        </router-link>
       </div>
     </div>
   </div>
@@ -32,7 +37,6 @@
   align-items: center;
   font-size: 1.3rem;
 }
-
 .onboarding-one {
   margin-bottom: 20px;
   opacity: 0;
