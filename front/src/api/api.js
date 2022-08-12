@@ -5,10 +5,14 @@ const HOST = 'http://localhost:8080/api/'
 const USER = 'user/'
 const HOME = 'home/'
 const REDIS = 'redis/'
+const REPORTS = 'reports/'
 // const ARTICLES = 'articles/'
 // const COMMENTS = 'comments/'
 
 export default {
+  reports: {
+    reportsList: () => HOST + REPORTS,
+  },
   accounts: {
     login: () => HOST + USER + 'login',
     logout: () => HOST + USER + 'logout',
