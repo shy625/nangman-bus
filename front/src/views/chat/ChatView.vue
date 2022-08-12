@@ -1,5 +1,4 @@
 <template>
-<div>
   <div class="chat-body">
     <header>
       <div class="chat-header">
@@ -29,8 +28,6 @@
       </el-carousel-item>
     </el-carousel>
   </div>
-
-</div>
 </template>
 
 <script setup>
