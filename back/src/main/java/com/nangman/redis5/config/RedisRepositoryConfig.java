@@ -1,15 +1,9 @@
 package com.nangman.redis5.config;
 
-import com.nangman.redis5.config.RedisProperties;
-import io.lettuce.core.ClientOptions;
-import io.lettuce.core.protocol.ProtocolVersion;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurationBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
@@ -50,6 +44,14 @@ public class RedisRepositoryConfig {
 //        redisTemplate.setKeySerializer(new StringRedisSerializer());
 //        return redisTemplate;
 //    }
+
+    @Bean
+    public RedisTemplate<String, String> redisTemplate() {
+       RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+       redisTemplate.setConnectionFactory(redisConnectionFactory());
+       redisTemplate.setKeySerializer(new StringRedisSerializer());
+       return redisTemplate;
+    }
 //        @Bean
 //        public RedisTemplate<?, ?> redisTemplate() {
 //            RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
@@ -60,18 +62,18 @@ public class RedisRepositoryConfig {
 //            redisTemplate.afterPropertiesSet();
 //            return redisTemplate;
 //        }
-            @Bean
-            public RedisTemplate<?, ?> redisTemplate() {
-                RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
-                redisTemplate.setConnectionFactory(redisConnectionFactory());
-                redisTemplate.setKeySerializer(new StringRedisSerializer());
-                redisTemplate.setValueSerializer(new StringRedisSerializer());
-
-                redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-                redisTemplate.setHashValueSerializer(new StringRedisSerializer());
-
-                return redisTemplate;
-            }
+//            @Bean
+//            public RedisTemplate<?, ?> redisTemplate() {
+//                RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
+//                redisTemplate.setConnectionFactory(redisConnectionFactory());
+//                redisTemplate.setKeySerializer(new StringRedisSerializer());
+//                redisTemplate.setValueSerializer(new StringRedisSerializer());
+//
+//                redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+//                redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+//
+//                return redisTemplate;
+//            }
 //        @Bean
 //        public RedisTemplate<String, Object> redisTemplate() {
 //            RedisTemplate<String, Object> template = new RedisTemplate<>();

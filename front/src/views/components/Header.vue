@@ -1,22 +1,31 @@
 <template>
-  <router-link to="main">
-    <!-- <img src="@/assets/logo.png" alt="낭만버스 로고"> -->
-    홈
-  </router-link>
-  <a href="https://127.0.0.1:8000/">
-    <font-awesome-icon icon="fa-solid fa-circle-user" />
-  </a>
+  <div class="header">
+    <router-link :to="{ name: 'main' }">
+      <img src="../../assets/logo.png" alt="nangmanLogo" class="header-logo">
+    </router-link>
+    <router-link to="">
+      <img src="../../assets/user-yellow.png" alt="userIcon" class="header-user">
+    </router-link>
+  </div>  
 </template>
 <script setup>
-  import { useStore } from 'vuex'
-  import { ref, onMounted } from 'vue'
-  const store = useStore()
-  onMounted(() => {
-  })
-  const dataNameExample = ref({
-    
-  })
-  const fName = function (event) {
-    
-  }
 </script>
+<style>
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.header-logo {
+  width: 120px;
+  margin: 20px 0 20px 20px;
+}
+.header-user {
+  width: 40px;
+  margin-right: 20px;
+}
+</style>
