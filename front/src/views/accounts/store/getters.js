@@ -8,7 +8,7 @@
 //   },
 // }
 export function isLoggedIn(state) {
-  return !!state.token
+  return !!localStorage.token
 }
 
 export function currentUser(state) {
