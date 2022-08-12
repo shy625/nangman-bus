@@ -24,6 +24,7 @@ public class Bus extends BaseEntity {
     private String nodeId;
     private String nodeName;
     private int nodeOrd;
+    private String sessionId;
 
     @ManyToOne
     @JoinColumn(name = "route_id")

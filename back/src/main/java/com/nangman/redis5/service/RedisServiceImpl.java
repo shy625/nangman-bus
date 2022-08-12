@@ -1,5 +1,6 @@
 package com.nangman.redis5.service;
 
+import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusStop;
 import com.nangman.redis5.dto.*;
@@ -54,9 +55,9 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void updateBudData(String sessionId, Bus bus) {
+    public void updateBudData(Bus bus) {
         //현규가 버스 entity 업데이트하면 ㄱ
-        String keyRoom = sessionId + KEYROOM;
+        String keyRoom = bus.getSessionId() + KEYROOM;
         StringBuilder createBusInfo = new StringBuilder();
         createBusInfo.append(bus.getLicenseNo())
                 .append(SPLITSTR)
@@ -78,18 +79,10 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public String createChattingRoom(String sessionId, Bus bus) {
-//        String sessionId = "session_";
-
-//        LocalDateTime time = LocalDateTime.now();
-//        ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
-//        long epoch = time.atZone(zoneId).toEpochSecond();
-////        long epoch = LocalDateTime.now().toEpochSecond();
-//        sessionId += Long.toString(epoch);
-
-        String keyRoom = sessionId + KEYROOM;
-        String keyChat = sessionId + KEYCHAT;
-        String keyLike = sessionId + KEYLIKE;
+    public void createChattingRoom(Bus bus) {
+        String keyRoom = bus.getSessionId() + KEYROOM;
+        String keyChat = bus.getSessionId() + KEYCHAT;
+        String keyLike = bus.getSessionId() + KEYLIKE;
         StringBuilder createBusInfo = new StringBuilder();
         StringBuilder createRouteInfo = new StringBuilder();
 
@@ -121,13 +114,11 @@ public class RedisServiceImpl implements RedisService{
 
         redisTemplate.opsForHash().put(keyChat, COUNT, "0");
         redisTemplate.opsForHash().put(keyLike, COUNT, "0");
-
-        return sessionId;
     }
 
     @Override
-    public ChatLogDto deleteChattingRoom(String sessionId) {
-        ChatLogDto chatLog = new ChatLogDto();
+    public ChatDto.ChatLog deleteChattingRoom(String sessionId) {
+        ChatDto.ChatLog chatLog = new ChatDto.ChatLog();
         String keyRoom = sessionId + KEYROOM;
         String keyChat = sessionId + KEYCHAT;
         String keyLike = sessionId + KEYLIKE;
@@ -141,12 +132,12 @@ public class RedisServiceImpl implements RedisService{
         chatLog.setRouteId(busInfo[BUSINFOROUTEID]);
         chatLog.setCreatedDate(busInfo[BUSINFOCREATEDDATE]);
 
-        List<LogDto> logs = new ArrayList<>();
+        List<ChatDto.MsgLog> logs = new ArrayList<>();
         Map<Object, Object> roomChat = redisTemplate.opsForHash().entries(keyChat);
         Map<Object, Object> roomLike = redisTemplate.opsForHash().entries(keyLike);
 
         for(Object str : roomChat.keySet()) {
-            LogDto temp = new LogDto();
+            ChatDto.MsgLog temp = new ChatDto.MsgLog();
             if(COUNT.equals((String) str)) continue;
             System.out.println(str);
             temp.setChatId(str.toString());

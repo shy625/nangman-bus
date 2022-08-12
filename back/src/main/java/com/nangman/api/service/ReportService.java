@@ -19,5 +19,4 @@ public interface ReportService {
     @Transactional
     Report updateReport(Report report);
 
-    int getAccessTime(ChatInOutRecord chatInOutRecord);
 }
