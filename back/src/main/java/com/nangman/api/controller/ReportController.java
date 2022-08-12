@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
-@Api(value = "낭만보고서 API", tags = {"report"})
+@Api(value = "낭만보고서 API", tags = {"Report"})
 @RestController
 @RequestMapping("api/")
 @RequiredArgsConstructor

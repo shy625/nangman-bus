@@ -1,5 +1,6 @@
 package com.nangman.common.scheduler;
 
+import com.nangman.api.service.BusService;
 import com.nangman.api.service.UserService;
 import com.nangman.db.entity.Nickname;
 import com.nangman.db.entity.User;
@@ -22,12 +23,17 @@ import java.util.List;
 public class BatchScheduler {
 
     private final UserService userService;
+    private final BusService busService;
 
     //10초마다 실행
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "0 0 4 * * *")
 
-    public void testSchedule() {
+    public void nicknameSchedule() {
         userService.updateUserNickname();
     }
+
+//    @Scheduled(cron = "0 0/1 * 1/1 * ? *")
+//
+//    public void busLoggingSchedule() {busService.followBuses(); }
 
 }
