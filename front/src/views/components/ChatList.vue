@@ -8,9 +8,8 @@
         <hr class="chatlist-title-line">
       </div>
       <div class="buslist">
-        <div v-if="data.rooms">
-          <div v-for="room in data.rooms" :key="room.sessionId">
-            <div class="bus-cover">
+        <div v-for="room in data.rooms" :key="room.sessionId">
+          <div class="bus-cover">
             <img src="../../assets/bus-unclicked.png" class="bus-icon">
             <div class="bus-detail">
               <div class="bus-number-dist">
@@ -30,7 +29,6 @@
             <div class="bus-getin">
               >
             </div>
-          </div>
           </div>
         </div>
       </div>
