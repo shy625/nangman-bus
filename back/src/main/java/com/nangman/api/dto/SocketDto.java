@@ -23,4 +23,11 @@ public class SocketDto {
         private String createdTime;
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatLike {
+        private String chatId;
+        private Integer count;
+    }
+
 }

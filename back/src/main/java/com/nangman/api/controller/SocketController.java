@@ -64,13 +64,19 @@ public class SocketController {
     // 채팅 좋아요 등록
     @MessageMapping("/chat/rooms/{sessionId}/{chatId}/like/up")
     public void registerChatLike(@DestinationVariable String sessionId, @DestinationVariable String chatId) {
-        template.convertAndSend("/sub/chat/rooms/" + sessionId);
+        redisService.upLike(sessionId, chatId);
+        int likeCount = redisService.getLike(sessionId, chatId);
+        SocketDto.ChatLike chatLikeDto = new SocketDto.ChatLike(chatId, likeCount);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
 
     // 채팅 좋아요 취소
     @MessageMapping("/chat/rooms/{sessionId}/like/down")
-    public void cancelChatLike() {
-
+    public void cancelChatLike(@DestinationVariable String sessionId, @DestinationVariable String chatId) {
+        redisService.downLike(sessionId, chatId);
+        int likeCount = redisService.getLike(sessionId, chatId);
+        SocketDto.ChatLike chatLikeDto = new SocketDto.ChatLike(chatId, likeCount);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
 
     // 귓속말 설정
