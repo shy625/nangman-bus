@@ -39,7 +39,7 @@ const router = createRouter({
     { name: 'test', path: '/test', component: TestView }
     // 방명록이랑 유저목록은 컴포넌트 구조에 따라 달라질 예정
     // { name: 'board', path: '/room/board', component: BoardView },
-    // { name: 'users', path: '/room/users', component: UsersView }
+    // { name: 'users', path: '/room/users', component: UsersView }    
   ]
 })
 

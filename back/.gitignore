@@ -4,8 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+!**/src/main/resources/application.properties
 
 *.log
+*.gz
 
 ### STS ###
 .apt_generated
@@ -76,3 +78,8 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
+
+### properties ###
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
+src/test/resources/application.properties

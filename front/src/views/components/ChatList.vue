@@ -8,911 +8,100 @@
         <hr class="chatlist-title-line">
       </div>
       <div class="buslist">
-        <el-scrollbar height="500px">
-          <!-- bus-cover => 한 버스 채팅방 -->
-          <div class="bus-cover">
+        <div v-if="data.rooms">
+          <div v-for="room in data.rooms" :key="room.sessionId">
+            <div class="bus-cover">
             <img src="../../assets/bus-unclicked.png" class="bus-icon">
             <div class="bus-detail">
               <div class="bus-number-dist">
                 <div class="bus-number">
-                  5006번
+                  {{room.routeId}}번
                 </div>
                 <div class="bus-dist">
-                  11m
+                  {{room.distance}}m
                 </div>
               </div>
               <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
+                <span class="bus-comment-count">{{room.inUsers}}</span>명 
+                <span v-if="room.type==0" class="bus-comment-mood">조금 <span class="bus-comment-mood">어색</span>해요!</span>
+                <span v-else class="bus-comment-mood"> <span class="bus-comment-mood">시끌벅적</span>해요!</span>
               </div>
             </div>
             <div class="bus-getin">
               >
             </div>
           </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
           </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-          <div class="bus-cover">
-            <img src="../../assets/bus-unclicked.png" class="bus-icon">
-            <div class="bus-detail">
-              <div class="bus-number-dist">
-                <div class="bus-number">
-                  5006번
-                </div>
-                <div class="bus-dist">
-                  11m
-                </div>
-              </div>
-              <div class="bus-comment">
-                <span class="bus-comment-count">21</span>명, 조금 <span class="bus-comment-mood">어색</span>해요!
-              </div>
-            </div>
-            <div class="bus-getin">
-              >
-            </div>
-          </div>
-
-        </el-scrollbar>
+        </div>
       </div>
     </div>
-    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh">
-
+    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" v-on:click="getRooms(37.32341, 127.1259)">
   </div>
 </template>
 <script setup>
+import axios from "axios"
 import { ref, onMounted } from 'vue'
+import api from "../../api/api"
+const data = ref({
+  rooms: [],
+  lat: 0,
+  lng: 0
+})
+
+onMounted(() => {
+  getLocation()
+  // getRooms(lat, lng)
+})
+// // List < RandomBusDTO > list;
+// //1. userGPS <- 우현이형이 함
+// //2. ResiAPI랑 통신 <- 
+
+function getRooms(lat, lng) {
+  axios({
+    url: api.accounts.selectrooms(lat, lng),
+    method: "get",
+  })
+    .then(res => {
+      data.value.rooms = res.data;
+    })
+    .catch(err => {
+    console.log("error")
+  })
+}
+
+function getLocation() {
+  if (navigator.geolocation) { // GPS를 지원하면
+    navigator.geolocation.getCurrentPosition(position => {
+      console.log('위도: '
+        + position.coords.latitude + ' / 경도: ' + position.coords.longitude)
+      // lat = position.coords.latitude
+      // lng = position.coords.longitude
+      getRooms(position.coords.latitude,position.coords.longitude)
+
+    }, error => {
+      console.error(error)
+    }, {
+      enableHighAccuracy: false,
+      maximumAge: 0,
+      timeout: Infinity
+    })
+  } else {
+    alert('GPS를 지원하지 않습니다.')
+  }
+}
+
+// 위치바뀌면 감지
+let watchId = navigator.geolocation.watchPosition(function(position) {
+  console.log(position.coords)
+  data.value.lat = position.coords.latitude
+  data.value.lng = position.coords.longitude
+})
+//3. List형식으로 방의 정보를 받아서 저장해야되고
+//4. List로 받은것을 template에 넣어줘야됨
+
+
+//5. 약간 데이터 수정이 필요
+
 
 </script>
 <style>
