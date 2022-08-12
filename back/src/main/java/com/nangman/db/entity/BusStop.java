@@ -24,7 +24,6 @@ public class BusStop extends BaseEntity {
     private int nodeOrd;
     //정류소 id
     private String nodeId;
-    //노선 코드
     //상하행 구분 [0 : 없음, 1 : 상행, 2 : 하행]
     private int upDown = 0;
     @ManyToOne

@@ -1,5 +1,6 @@
 package com.nangman.api.service;
 
+import com.nangman.api.dto.RoomDto;
 import com.nangman.common.constants.ErrorCode;
 import com.nangman.common.exception.CustomException;
 import com.nangman.common.util.TimeCalculator;
@@ -72,6 +73,7 @@ public class BusServiceImpl implements BusService{
                 JSONObject response = (JSONObject)jsonObject.get("response");
                 if (response.get("body") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
                 JSONObject body = (JSONObject)response.get("body");
+                if (body.get("items") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
                 JSONObject items = (JSONObject)body.get("items");
                 JSONArray jsonBusList = (JSONArray)items.get("item");
 
@@ -102,6 +104,7 @@ public class BusServiceImpl implements BusService{
                         sessionId += "_";
                         sessionId += Integer.toString(i);
                         bus.setSessionId(sessionId);
+                        roomService.createRoom(new RoomDto.CreateRequest(bus.getSessionId(), bus.getLicenseNo()));
                         redisService.createChattingRoom(bus);
                     }
                     else redisService.updateBudData(bus);
