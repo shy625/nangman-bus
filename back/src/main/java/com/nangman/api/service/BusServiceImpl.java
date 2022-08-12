@@ -8,7 +8,6 @@ import com.nangman.db.entity.BusStop;
 import com.nangman.db.entity.Route;
 import com.nangman.db.repository.BusRepository;
 import com.nangman.db.repository.RouteRepository;
-import com.nangman.redis5.dto.ChatLogDto;
 import com.nangman.redis5.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -100,6 +99,8 @@ public class BusServiceImpl implements BusService{
                         ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
                         long epoch = time.atZone(zoneId).toEpochSecond();
                         sessionId += Long.toString(epoch);
+                        sessionId += "_";
+                        sessionId += Integer.toString(i);
                         bus.setSessionId(sessionId);
                         redisService.createChattingRoom(bus);
                     }
