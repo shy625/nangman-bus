@@ -3,6 +3,7 @@ package com.nangman.api.service;
 import com.nangman.api.dto.ReportDto;
 import com.nangman.common.constants.ErrorCode;
 import com.nangman.common.exception.CustomException;
+import com.nangman.common.util.TimeCalculator;
 import com.nangman.db.entity.ChatInOutRecord;
 import com.nangman.db.entity.Report;
 import com.nangman.db.entity.UserReport;
@@ -66,7 +67,8 @@ public class ReportServiceImpl implements ReportService{
 
         if (!isInReport) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
 
-        for (ChatInOutRecord item : chatInOutRecordList) accessTime += getAccessTime(item);
+        for (ChatInOutRecord item : chatInOutRecordList)
+            accessTime += TimeCalculator.getAccessTime(item.getOutTime(), item.getInTime());
 
         return new ReportDto.Info(report.getId(), report.getContent(), report.getAverageTime(), report.getTotalChatCount(),
                 report.getTotalUserCount(), accessTime);
@@ -89,13 +91,4 @@ public class ReportServiceImpl implements ReportService{
         return report;
     }
 
-    public int getAccessTime(ChatInOutRecord chatInOutRecord) {
-        int accessTime = 0;
-        accessTime += (chatInOutRecord.getOutTime().getYear() - chatInOutRecord.getInTime().getYear()) * 31536000;
-        accessTime += (chatInOutRecord.getOutTime().getDayOfYear() - chatInOutRecord.getInTime().getDayOfYear()) * 86400;
-        accessTime += (chatInOutRecord.getOutTime().getHour() - chatInOutRecord.getInTime().getHour()) * 3600;
-        accessTime += (chatInOutRecord.getOutTime().getMinute() - chatInOutRecord.getInTime().getMinute()) * 60;
-        accessTime += (chatInOutRecord.getOutTime().getSecond() - chatInOutRecord.getInTime().getSecond());
-        return accessTime;
-    }
 }

@@ -1,6 +1,7 @@
 package com.nangman.api.service;
 
 import com.nangman.api.dto.ChatDto;
+import com.nangman.common.util.TimeCalculator;
 import com.nangman.db.entity.*;
 import com.nangman.db.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,7 @@ public class ChatServiceImpl implements ChatService{
                     findChatInOutRecordByUserIdAndRoomId(item.getId(), room.getId());
             for (ChatInOutRecord inOutRecord : chatInOutRecordList){
                 room.addChatInOutRecord(inOutRecord);
-                accessTime += reportService.getAccessTime(inOutRecord);
+                accessTime += TimeCalculator.getAccessTime(inOutRecord.getOutTime(), inOutRecord.getInTime());
             }
             item.addUserReport(userReport);
             report.addUserReport(userReport);

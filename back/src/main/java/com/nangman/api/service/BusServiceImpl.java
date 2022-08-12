@@ -2,11 +2,13 @@ package com.nangman.api.service;
 
 import com.nangman.common.constants.ErrorCode;
 import com.nangman.common.exception.CustomException;
+import com.nangman.common.util.TimeCalculator;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusStop;
 import com.nangman.db.entity.Route;
 import com.nangman.db.repository.BusRepository;
 import com.nangman.db.repository.RouteRepository;
+import com.nangman.redis5.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -30,9 +34,14 @@ public class BusServiceImpl implements BusService{
     private final int numOfRows = 30;
     private final String dataType = "json";
 
+    private final RoomService roomService;
     private final RouteRepository routeRepository;
 
     private final BusRepository busRepository;
+
+    private final RedisService redisService;
+
+    private final ChatService chatService;
     @Override
     @Transactional
     public void followBuses() {
@@ -83,6 +92,17 @@ public class BusServiceImpl implements BusService{
                     if (item.get("nodeid") != null) bus.setNodeId(item.get("nodeid") + "");
                     if (item.get("nodenm") != null) bus.setNodeName(item.get("nodenm") + "");
                     if (item.get("nodeord") != null) bus.setNodeOrd(Integer.parseInt(item.get("nodeord") + ""));
+
+                    if (bus.getSessionId() == null){
+                        String sessionId = "session_";
+                        LocalDateTime time = LocalDateTime.now();
+                        ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
+                        long epoch = time.atZone(zoneId).toEpochSecond();
+                        sessionId += Long.toString(epoch);
+                        bus.setSessionId(sessionId);
+                        redisService.createChattingRoom(bus);
+                    }
+                    else redisService.updateBudData(bus);
                     busRepository.save(bus);
                 }
             }catch(Exception e) {

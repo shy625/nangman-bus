@@ -65,22 +65,22 @@ public class RedisController {
 
     private String testSessionId = "sessionId_20220810236801";
     private String user1 = "1";
-    @GetMapping("/test/updateBusData")
-    public void updateBusData() {
-        Bus bus = new Bus();
-//        Route route = new Route();
-
-        bus.setId(0L);
-        bus.setLicenseNo("경기77바3771");
-//        busLog.setRoute("8100");
-        bus.setLat(37.34033);
-        bus.setLng(127.10899);
-        bus.setCreatedDate(LocalDateTime.now());
-        bus.setNodeOrd(46);
-        bus.setNodeId("GGB206000215");
-
-        redisService.updateBudData(testSessionId, bus);
-    }
+//    @GetMapping("/test/updateBusData")
+//    public void updateBusData() {
+//        Bus bus = new Bus();
+////        Route route = new Route();
+//
+//        bus.setId(0L);
+//        bus.setLicenseNo("경기77바3771");
+////        busLog.setRoute("8100");
+//        bus.setLat(37.34033);
+//        bus.setLng(127.10899);
+//        bus.setCreatedDate(LocalDateTime.now());
+//        bus.setNodeOrd(46);
+//        bus.setNodeId("GGB206000215");
+//
+//        redisService.updateBudData(testSessionId, bus);
+//    }
     @GetMapping("/test/createChattingRoom")
     public void createChattingRoom() {
 //        Bus busLog = new Bus();
@@ -102,10 +102,10 @@ public class RedisController {
 //
 //        this.testSessionId = redisService.createChattingRoom(busLog, busStops);
     }
-    @GetMapping("/test/deleteChattingRoom")
-    public ChatLogDto deleteChattingRoom() {
-        return redisService.deleteChattingRoom(testSessionId);
-    }
+//    @GetMapping("/test/deleteChattingRoom")
+//    public ChatLogDto deleteChattingRoom() {
+//        return redisService.deleteChattingRoom(testSessionId);
+//    }
 
 
 

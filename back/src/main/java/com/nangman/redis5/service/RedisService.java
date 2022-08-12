@@ -1,7 +1,7 @@
 package com.nangman.redis5.service;
 
+import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
-import com.nangman.redis5.dto.ChatLogDto;
 import com.nangman.redis5.dto.ChattingRoomDto;
 import com.nangman.redis5.dto.RandomBusDto;
 import com.nangman.redis5.dto.RoomUserDto;
@@ -11,12 +11,12 @@ import java.util.List;
 public interface RedisService {
     // 자동으로 되는거
     // 1. updateBusData
-    void updateBusdData(String sessionId, Bus bus);
+    void updateBudData(Bus bus);
 
     // 2. createChattingRoom
-    String createChattingRoom(String sessionId, Bus bus);
+    void createChattingRoom(Bus bus);
     // 3. deleteChattingRoom
-    ChatLogDto deleteChattingRoom(String sessionId);
+    ChatDto.ChatLog deleteChattingRoom(String sessionId);
 
 
     // 요청 받는거
