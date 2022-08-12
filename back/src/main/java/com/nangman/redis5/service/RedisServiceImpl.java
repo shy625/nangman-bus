@@ -13,39 +13,44 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService{
+
+    private static final double BUS_CHECK_DIST = 1000.0;
+
+    private static final int BUS_INFO_LICENSE_NO = 0;
+    private static final int BUS_INFO_ROUTE_ID = 1;
+    private static final int BUS_INFO_LAT = 2;
+    private static final int BUS_INFO_LNG = 3;
+    private static final int BUS_INFO_CREATED_DATE = 4;
+    private static final int BUS_INFO_NODE_ORD = 5;
+    private static final int BUS_INFO_NODE_ID = 6;
+    private static final int BUS_INFO_NNAME = 7;
+
+    private static final int CHAT_INFO_USER_ID = 0;
+    private static final int CHAT_INFO_CREATED_TIME = 1;
+    private static final int CHAT_INFO_CONTENT = 2;
+
+    private static final int USER_INFO_NICKNAME = 0;
+    private static final int USER_INFO_BIRTH = 1;
+    private static final int USER_INFO_STATE = 2;
+    private static final int USER_INFO_BUS_STOP = 3;
+
+    private static final String KEY_ROOM = "_room";
+    private static final String KEY_CHAT = "_chat";
+    private static final String KEY_LIKE = "_like";
+
+    private static final String SUBKEY_BUS_INFO = "busInfo";
+    private static final String SUBKEY_ROUTE_INFO = "routeInfo";
+    private static final String SUBKEY_USER_LIST = "userList";
+    private static final String SUBKEY_USER_NUM = "userNum";
+
+    private static final String SPLIT_STR = "_";
+    private static final int USER_STATE_SPLIT_LIMIT = 3;
+    private static final int ICED = 0;
+    private static final int NOISY = 1;
+    private static final String COUNT = "count";
+
     private final StringRedisTemplate redisTemplate;
 //    private final UserRepository userRepository;
-    private final double BUS_CHECK_DIST = 1000.0;
-    private final int BUS_INFO_LICENSE_NO = 0;
-    private final int BUS_INFO_ROUTE_ID = 1;
-    private final int BUS_INFO_LAT = 2;
-    private final int BUS_INFO_LNG = 3;
-    private final int BUS_INFO_CREATED_DATE = 4;
-    private final int BUS_INFO_NODE_ORD = 5;
-    private final int BUS_INFO_NODE_ID = 6;
-    private final int BUS_INFO_NNAME = 7;
-
-    private final int CHAT_INFO_USER_ID = 0;
-    private final int CHAT_INFO_CREATED_TIME = 1;
-    private final int CHAT_INFO_CONTENT = 2;
-
-    private final int USER_INFO_NICKNAME = 0;
-    private final int USER_INFO_BIRTH = 1;
-    private final int USER_INFO_STATE = 2;
-    private final int USER_INFO_BUS_STOP = 3;
-    private final String KEY_ROOM = "_room";
-    private final String KEY_CHAT = "_chat";
-    private final String KEY_LIKE = "_like";
-    private final String SUBKEY_BUS_INFO = "busInfo";
-    private final String SUBKEY_ROUTE_INFO = "routeInfo";
-    private final String SUBKEY_USER_LIST = "userList";
-    private final String SUBKEY_USER_NUM = "userNum";
-    private final String SPLIT_STR = "_";
-    private final int USER_STATE_SPLIT_LIMIT = 3;
-    private final int ICED = 0;
-    private final int NOISY = 1;
-    private final String COUNT = "count";
-
 
     public void test01() {
         redisTemplate.opsForHash().put("key1", "subKey1", "hello");
