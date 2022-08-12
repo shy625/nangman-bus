@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface ChatInOutRecordRepository extends JpaRepository<ChatInOutRecord, Long> {
     List<ChatInOutRecord> findChatInOutRecordByUserIdAndRoomId(Long userId, Long roomId);
     Optional<ChatInOutRecord> findTop1ChatInOutRecordByUserIdAndRoomIdOrderByInTimeDesc(Long userId, Long roomId);
+    Optional<ChatInOutRecord> findTop1ChatInOutRecordByUserIdOrderByInTimeDesc(Long userId);
 }

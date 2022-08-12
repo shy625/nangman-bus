@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
-@Api(value = "채팅룸 입장/퇴장 로깅 API", tags = {"chatInOutRecord"})
+@Api(value = "채팅룸 입장/퇴장 로깅 API", tags = {"ChatInOutRecord"})
 @RestController
 @RequestMapping("api/")
 @RequiredArgsConstructor
