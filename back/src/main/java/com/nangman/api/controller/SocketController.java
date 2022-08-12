@@ -56,8 +56,8 @@ public class SocketController {
     // 채팅 - 일반
     @MessageMapping("/chat/rooms/{sessionId}/message")
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.ChatPub chatPubDto) {
-        String chatId = redisService.createChat(sessionId, chatPubDto.getWriter(), getNow(), chatPubDto.getMessage());
-        SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(chatId, chatPubDto.getWriter(), chatPubDto.getMessage(), getNow());
+        String chatId = redisService.createChat(sessionId, chatPubDto.getUserId(), getNow(), chatPubDto.getMessage());
+        SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(chatId, chatPubDto.getUserId(), chatPubDto.getMessage(), getNow());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", chatSubDto);
     }
 

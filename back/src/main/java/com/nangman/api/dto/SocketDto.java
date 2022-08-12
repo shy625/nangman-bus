@@ -10,7 +10,7 @@ public class SocketDto {
 
     @Getter
     public static class ChatPub {
-        private String writer;
+        private String userId;
         private String message;
     }
 
@@ -18,7 +18,7 @@ public class SocketDto {
     @NoArgsConstructor
     public static class ChatSub {
         private String chatId;
-        private String writer;
+        private String userId;
         private String message;
         private String createdTime;
     }
