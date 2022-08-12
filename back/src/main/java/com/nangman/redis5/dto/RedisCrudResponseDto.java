@@ -1,9 +1,7 @@
-package com.nangman.redis5.controller.dto;
+package com.nangman.redis5.dto;
 
 import com.nangman.redis5.domain.RedisCrud;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 public class RedisCrudResponseDto {

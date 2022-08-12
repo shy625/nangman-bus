@@ -4,12 +4,12 @@ import api from '../../../api/api.js'
 
 // 토큰 세팅 메소드
 export function saveToken({ commit }, token) {
-	commit('SET_TOKEN', token)
-	localStorage.setItem('token', token)
+  commit('SET_TOKEN', token)
+  localStorage.setItem('token', token)
 }
 export function removeToken({ commit }) {
-	commit('SET_TOKEN', '')
-	localStorage.setItem('token', '')
+  commit('SET_TOKEN', '')
+  localStorage.setItem('token', '')
 }
 
 export function login({ commit, dispatch }, credentials) {
@@ -19,9 +19,9 @@ export function login({ commit, dispatch }, credentials) {
     data: credentials,
   })
     .then(res => {
-      const token = res.data.key
+      const token = res.data
       dispatch('saveToken', token)
-      dispatch('fetchCurrentUser')
+      dispatch('fetchCurrentUser', token.id)
       router.push({ name: 'main' })
     })
     .catch(err => {
@@ -44,9 +44,9 @@ export function signup({ commit, dispatch }, credentials) {
   })
     .then(res => {
       // console.log(res.data)
-      const token = res.data.key
+      const token = res.data
       dispatch('setToken', token)
-      dispatch('fetchCurrentUser')
+      dispatch('fetchCurrentUser', token.id)
       router.push({ name: 'main' })
     })
     .catch(err => {
@@ -66,19 +66,22 @@ export function logout({ getters, dispatch }) {
       alert('성공적으로 로그아웃되었습니다.')
       router.push({ name: 'login' })
     })
-    .error(err => {
+    .catch(err => {
       console.error(err.response)
     })
 }
 
 export function fetchCurrentUser({ commit, getters, dispatch }, userid) {
+
   if (getters.isLoggedIn) {
     axios({
       url: api.accounts.currentUserInfo(userid),
       method: 'get',
       headers: getters.authHeader,
     })
-      .then(res => commit('SET_CURRENT_USER', res.data))
+      .then(
+        res => commit('SET_CURRENT_USER', res)
+      )
       .catch(err => {
         if (err.response.statue === 401) {
           dispatch('removeToken')

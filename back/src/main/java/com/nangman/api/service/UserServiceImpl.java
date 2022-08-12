@@ -48,17 +48,17 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
 
 		Setting setting = new Setting();
-		setting.setUser(user);
 		settingRepository.save(setting);
-		log.info(setting.isWhisperMode() ? "Y" : "N");
 
 		user.setSetting(setting);
-		// 닉네임 설정(random 선택)
-//		long totalNickname = nicknameRepository.count();
-//		user.setNickname(nicknameRepository.getOne((long) (Math.random() * totalNickname + 1)));
+//		 닉네임 설정(random 선택)
+		long totalNickname = nicknameRepository.count();
+		user.setNickname(nicknameRepository.getOne((long) (Math.random() * totalNickname + 1)));
 
+		setting.setUser(user);
 		userRepository.save(user);
-		return userRepository.findByUseremailAndIsDeletedFalse(user.getUseremail()).get();
+
+		return user;
 	}
 
 	@Override
@@ -101,7 +101,6 @@ public class UserServiceImpl implements UserService {
 		if(!passwordEncoder.matches(userInfo.getPassword(), user.getPassword())) user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
 
 		userRepository.save(user);
-
 
 		return user;
 	}

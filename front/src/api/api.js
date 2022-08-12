@@ -1,4 +1,6 @@
-const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
+// const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
+const HOST = 'http://localhost:8080/api/'
+
 
 const USER = 'user/'
 const HOME = 'home/'
@@ -7,12 +9,12 @@ const HOME = 'home/'
 
 export default {
   accounts: {
-    login: () => HOST + USER + 'login/',
-    logout: () => HOST + USER + 'logout/',
+    login: () => HOST + USER + 'login',
+    logout: () => HOST + USER + 'logout',
     signup: () => HOST + USER,
 
     // get: 유저정보 조회, post: 오늘의 닉네임 제공, delete: 회원 탈퇴
-    currentUserInfo: (userid) => HOST + USER + userid + '/',
+    currentUserInfo: (userid) => HOST + USER + userid,
     // username으로 프로필 제공
     profile: userid => HOST + USER + 'profile/' + userid,
   },
@@ -21,14 +23,14 @@ export default {
   home: {
     realTimeData: () => HOST + HOME + 'realtimedata/',
   }
-//   articles: {
-//     // /articles/
-//     articles: () => HOST + ARTICLES,
-//     // /articles/1/
-//     article: articlePk => HOST + ARTICLES + `${articlePk}/`,
-//     likeArticle: articlePk => HOST + ARTICLES + `${articlePk}/` + 'like/',
-//     comments: articlePk => HOST + ARTICLES + `${articlePk}/` + COMMENTS,
-//     comment: (articlePk, commentPk) =>
-//       HOST + ARTICLES + `${articlePk}/` + COMMENTS + `${commentPk}/`,
-//   },
+  //   articles: {
+  //     // /articles/
+  //     articles: () => HOST + ARTICLES,
+  //     // /articles/1/
+  //     article: articlePk => HOST + ARTICLES + `${articlePk}/`,
+  //     likeArticle: articlePk => HOST + ARTICLES + `${articlePk}/` + 'like/',
+  //     comments: articlePk => HOST + ARTICLES + `${articlePk}/` + COMMENTS,
+  //     comment: (articlePk, commentPk) =>
+  //       HOST + ARTICLES + `${articlePk}/` + COMMENTS + `${commentPk}/`,
+  //   },
 }

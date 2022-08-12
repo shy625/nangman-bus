@@ -1,11 +1,9 @@
-package com.nangman.redis5.controller.dto;
+package com.nangman.redis5.dto;
 
 import com.nangman.redis5.domain.RedisCrud;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor

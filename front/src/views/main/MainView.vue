@@ -10,13 +10,22 @@
   -->
 
   <div v-if="!isLoggedIn">
-    <p>우리는 이걸</p>
-    <img src="../../assets/logo.png" alt="낭만버스">라
-    <p>부르기로 하였다.</p>
-    <button><router-link to="signup">시작하기</router-link></button>
-    이미 낭만하셨나요? <router-link to="login">로그인</router-link>
+    <p class="onboard-font">우리는 이걸</p>
+    <p class="onboard-font">
+      <img src="../../assets/logo.png" alt="낭만버스" class="logo-img" />라
+    </p>
+    <p class="onboard-font">부르기로 하였다.</p>
+    <div class="button">
+      <button class="button-btn">
+        <router-link to="signup">시작하기</router-link>
+      </button>
+      <p class="login">
+        이미 낭만하셨나요? <router-link to="login">로그인</router-link>
+      </p>
+    </div>
   </div>
   <div v-if="isLoggedIn">
+    <button @click="logout">로그아웃</button>
     <Header />
     <Home />
     <Footer />
@@ -38,18 +47,62 @@
 </template>
 
 <script>
-  import Header from '../../views/components/Header.vue'
-  import Footer from '../../views/components/Footer.vue'
-  // import Nickname from '../components/Nickname.vue'
-  // import BusNow from '../components/BusNow.vue'
-  // import BusList from '../components/BusList.vue'
-  // import Report from '../components/Report.vue'
-  import Home from './Home.vue'
+import Header from "../../views/components/Header.vue";
+import Footer from "../../views/components/Footer.vue";
+// import Nickname from '../components/Nickname.vue'
+// import BusNow from '../components/BusNow.vue'
+// import BusList from '../components/BusList.vue'
+// import Report from '../components/Report.vue'
+import Home from "./Home.vue";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
-  export default {
-    name: 'MainView',
-  }
+export default {
+  name: "MainView",
+  setup() {
+    const store = useStore();
+    const state = computed(() => store.state);
+    const test = computed(() => store.getters);
+    const isLoggedIn = !!store.state.accounts.currentUser;
+    console.log(store.state.accounts.currentUser);
+    const logout = function (event) {
+      store.dispatch("accounts/logout");
+    };
+
+    return { store, state, test, logout, isLoggedIn };
+  },
+};
 </script>
 <style>
-  
+.onboard {
+  background: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* .onboard-font {
+    여기서부터 작성하세요
+
+  } */
+.button {
+  color: rgb(255, 217, 106);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+
+  position: absolute;
+  width: 60%;
+  height: 80px;
+  top: 66%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.login {
+  color: rgb(255, 90, 90);
+}
 </style>
