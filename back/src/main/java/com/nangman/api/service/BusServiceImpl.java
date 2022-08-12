@@ -99,6 +99,9 @@ public class BusServiceImpl implements BusService{
                         ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
                         long epoch = time.atZone(zoneId).toEpochSecond();
                         sessionId += Long.toString(epoch);
+                        sessionId += "_";
+//                        sessionId += Long.toString(bus.getId());
+                        sessionId += Integer.toString(i);
                         bus.setSessionId(sessionId);
                         redisService.createChattingRoom(bus);
                     }

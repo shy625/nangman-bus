@@ -17,7 +17,7 @@ import java.util.*;
 public class RedisServiceImpl implements RedisService{
     private final StringRedisTemplate redisTemplate;
 //    private final UserRepository userRepository;
-    private final double BUSCHECKDIST = 1000.0;
+    private final double BUSCHECKDIST = 20000.0;
     private final int BUSINFOLICENSENO = 0;
     private final int BUSINFOROUTEID = 1;
     private final int BUSINFOLAT = 2;
@@ -26,6 +26,7 @@ public class RedisServiceImpl implements RedisService{
     private final int BUSINFONODEORD = 5;
     private final int BUSINFONODEID = 6;
     private final int BUSINFONNAME = 7;
+    private final int BUSINFOBUSID = 8;
 
     private final int CHATINFOUSERID = 0;
     private final int CHATINFOCREATEDTIME = 1;
@@ -73,7 +74,9 @@ public class RedisServiceImpl implements RedisService{
                 .append(SPLITSTR)
                 .append(bus.getNodeId())
                 .append(SPLITSTR)
-                .append(bus.getNodeName());
+                .append(bus.getNodeName())
+                .append(SPLITSTR)
+                .append(bus.getId());
 
         redisTemplate.opsForHash().put(keyRoom, SUBKEYBUSINFO, createBusInfo.toString());
     }
@@ -100,7 +103,10 @@ public class RedisServiceImpl implements RedisService{
                 .append(SPLITSTR)
                 .append(bus.getNodeId())
                 .append(SPLITSTR)
-                .append(bus.getNodeName());
+                .append(bus.getNodeName())
+                .append(SPLITSTR)
+                .append(bus.getId());
+
 
         for(BusStop str : bus.getRoute().getBusStops()) {
             createRouteInfo.append(str.getNodeName()).append(SPLITSTR);
@@ -178,8 +184,9 @@ public class RedisServiceImpl implements RedisService{
                 ChattingRoomDto dto = new ChattingRoomDto();
                 dto.setDistance((int) dist);
                 dto.setInUsers(Integer.parseInt((String) redisTemplate.opsForHash().get(str, SUBKEYUSERNUM)));
-                dto.setSessionId(str);
+                dto.setSessionId(str.replace(KEYROOM, ""));
                 dto.setRouteId(busInfo[BUSINFOROUTEID]);
+                dto.setBusId(Long.parseLong(busInfo[BUSINFOBUSID]));
                 // 시끌벅적 정도
                 dto.setType(getType(str.replace(KEYROOM, "")));
 
