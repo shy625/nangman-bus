@@ -48,15 +48,11 @@ const data = ref({
 
 onMounted(() => {
   getLocation()
-  // getRooms(lat, lng)
 })
-// // List < RandomBusDTO > list;
-// //1. userGPS <- 우현이형이 함
-// //2. ResiAPI랑 통신 <- 
 
 function getRooms(lat, lng) {
   axios({
-    url: api.accounts.selectrooms(lat, lng),
+    url: api.main.selectrooms(lat, lng),
     method: "get",
   })
     .then(res => {
@@ -70,12 +66,9 @@ function getRooms(lat, lng) {
 function getLocation() {
   if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(position => {
-      console.log('위도: '
-        + position.coords.latitude + ' / 경도: ' + position.coords.longitude)
-      // lat = position.coords.latitude
-      // lng = position.coords.longitude
-      getRooms(position.coords.latitude,position.coords.longitude)
-
+      getRooms(position.coords.latitude, position.coords.longitude)
+      data.value.lat = position.coords.latitude
+      data.value.lng = position.coords.longitude
     }, error => {
       console.error(error)
     }, {
@@ -84,13 +77,12 @@ function getLocation() {
       timeout: Infinity
     })
   } else {
-    alert('GPS를 지원하지 않습니다.')
+    alert('GPS를 허용해 주세요.')
   }
 }
 
 // 위치바뀌면 감지
 let watchId = navigator.geolocation.watchPosition(function(position) {
-  console.log(position.coords)
   data.value.lat = position.coords.latitude
   data.value.lng = position.coords.longitude
 })
