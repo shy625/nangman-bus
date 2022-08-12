@@ -6,6 +6,7 @@ import com.nangman.db.entity.Nickname;
 import com.nangman.db.entity.User;
 import com.nangman.db.repository.NicknameRepository;
 import com.nangman.db.repository.UserRepository;
+import com.nangman.redis5.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class BatchScheduler {
 
     private final UserService userService;
     private final BusService busService;
+    private final RedisService redisService;
 
     //10초마다 실행
     @Scheduled(cron = "0 0 4 * * *")
@@ -35,6 +37,8 @@ public class BatchScheduler {
     public void busLoggingSchedule() {
         System.out.println("===========시발=============");
         busService.followBuses();
+
+
         System.out.println("===========굿~~=============");
     }
 

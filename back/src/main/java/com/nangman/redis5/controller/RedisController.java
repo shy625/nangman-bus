@@ -83,24 +83,24 @@ public class RedisController {
     }
     @GetMapping("/test/createChattingRoom")
     public void createChattingRoom() {
-        Bus busLog = new Bus();
-        busLog.setId(0L);
-        busLog.setLicenseNo("경기77바3771");
-//        busLog.setRoute("8100");
-        busLog.setLat(37.32341);
-        busLog.setLng(127.1259);
-        busLog.setCreatedDate(LocalDateTime.now());
-        busLog.setNodeOrd(2);
-        busLog.setNodeId("GGB228001978");
-        busLog.setNodeName("단국대정문");
-
-        List<String> busStops = new ArrayList<>();
-        String[] strs = "단국대영업소:단국대정문:꽃메마을.새에덴교회:보정동주민센터:오리역:미금역.청솔마을.2001아울렛:정자역:분당구청입구.수내교:순천향대학병원:남대문세무서:종로2가사거리(중):을지로입구역.광교:북창동.남대문시장:서울역버스환승센터(5번 승강장):숭례문:명동국민은행앞:남대문세무서.서울백병원:순천향대학병원:분당구청입구,수내교:정자역:미금역,청솔마을.2001아울렛:오리역:보정동행정복지센터:꽃메마을2단지:단국대,치과병원".split(":");
-        for(String str : strs) {
-            busStops.add(str);
-        }
-
-        this.testSessionId = redisService.createChattingRoom(busLog, busStops);
+//        Bus busLog = new Bus();
+//        busLog.setId(0L);
+//        busLog.setLicenseNo("경기77바3771");
+////        busLog.setRoute("8100");
+//        busLog.setLat(37.32341);
+//        busLog.setLng(127.1259);
+//        busLog.setCreatedDate(LocalDateTime.now());
+//        busLog.setNodeOrd(2);
+//        busLog.setNodeId("GGB228001978");
+//        busLog.setNodeName("단국대정문");
+//
+//        List<String> busStops = new ArrayList<>();
+//        String[] strs = "단국대영업소:단국대정문:꽃메마을.새에덴교회:보정동주민센터:오리역:미금역.청솔마을.2001아울렛:정자역:분당구청입구.수내교:순천향대학병원:남대문세무서:종로2가사거리(중):을지로입구역.광교:북창동.남대문시장:서울역버스환승센터(5번 승강장):숭례문:명동국민은행앞:남대문세무서.서울백병원:순천향대학병원:분당구청입구,수내교:정자역:미금역,청솔마을.2001아울렛:오리역:보정동행정복지센터:꽃메마을2단지:단국대,치과병원".split(":");
+//        for(String str : strs) {
+//            busStops.add(str);
+//        }
+//
+//        this.testSessionId = redisService.createChattingRoom(busLog, busStops);
     }
     @GetMapping("/test/deleteChattingRoom")
     public ChatLogDto deleteChattingRoom() {
