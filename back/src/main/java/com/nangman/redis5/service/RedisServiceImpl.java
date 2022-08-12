@@ -188,7 +188,7 @@ public class RedisServiceImpl implements RedisService{
                 dto.setSessionId(str);
                 dto.setRouteId(busInfo[BUSINFOROUTEID]);
                 // 시끌벅적 정도
-                dto.setType(getType(str));
+                dto.setType(getType(str.replace(KEYROOM, "")));
 
                 list.add(dto);
             }
@@ -426,7 +426,7 @@ public class RedisServiceImpl implements RedisService{
             if(strs.length < CHATINFOCONTENT) continue;
             LocalDateTime ldt = LocalDateTime.parse(strs[CHATINFOCREATEDTIME]);
             int temp = ldt.getMinute();
-            if(temp == minute) {
+            if(minute >= temp && minute - 5 <= temp) {
                 count++;
             }
         }
