@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header/>
-    <div class="reportview-reportlist-cover">
+    <div>
       <div class="reportview-reportlist-title">
         <div class="reportview-reportlist-title-text">
         낭만보고서
@@ -13,22 +13,24 @@
         <div v-for="report in reportsData.reportList" :key="report.time"
           class="reportview-content"
         ><!-- 시간 순서로 리포트아이템 출력 -->
-          <div>
-            <div class="reportview-date">
-              {{ report.time.substr(5, 2)>9 ? report.time.substr(5, 2) : report.time.substr(5, 2)%10 }}월
-              {{ report.time.substr(8, 2) }}일
+          <router-link :to="{ name: 'reportsdetail', params: { userId: report.id }}"> 이름은 reportsdetail 파라미터는 userId 컴포넌트는 
+            <div>
+              <div class="reportview-date">
+                {{ report.time.substr(5, 2)>9 ? report.time.substr(5, 2) : report.time.substr(5, 2)%10 }}월
+                {{ report.time.substr(8, 2) }}일
+              </div>
+              <div class="reportview-time">
+              {{ 0<report.time.substr(11, 2)&&12>report.time.substr(11, 2) ? '오전 ' + report.time.substr(11, 2) : '오후 ' + (report.time.substr(11, 2)-12) }}시
+              {{ report.time.substr(14, 2) }}분<!-- 시간 출력 -->
+              </div>
             </div>
-            <div class="reportview-time">
-            {{ 0<report.time.substr(11, 2)&&12>report.time.substr(11, 2) ? '오전 ' + report.time.substr(11, 2) : '오후 ' + (report.time.substr(11, 2)-12) }}시
-            {{ report.time.substr(14, 2) }}분<!-- 시간 출력 -->
+            <div class="reportview-busnum">
+              {{ report.bus }}번<!-- 버스 번호 -->
             </div>
-          </div>
-          <div class="reportview-busnum">
-            {{ report.bus }}번<!-- 버스 번호 -->
-          </div>
-          <div class="reportview-comment">
-            "{{ report.chatting.substr(0, 18) }}..."<!-- 가장 좋아요를 많이 받은 채팅(12자만 출력) -->
-          </div>
+            <div class="reportview-comment">
+              "{{ report.chatting.substr(0, 18) }}..."<!-- 가장 좋아요를 많이 받은 채팅(12자만 출력) -->
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -67,11 +69,13 @@
   }
   // 더미데이터
   reportsData.value.reportList[0] = {
+    id: 1,
     time: '2022-08-12T16:16:00',
     bus: '3414',
     chatting: '심리적 의존 관계, 의존 상태를 벗어나야 합니다. 국민들이 "내 나라는 내가 지킨다"라고 하는 의지와 자신감을 가지고 있어야 국방이 되는 것이지...',
   }
   reportsData.value.reportList[1] = {
+    id: 2,
     time: '2022-08-13T16:32:00',
     bus: '3414',
     chatting: '또 다시 혼자가 되는게 두려워 외면했었네',
@@ -96,15 +100,6 @@
 </script>
 
 <style>
-/* .reportview-reportlist-cover {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  /* overflow: hidden; */
-  /* transform: scale(0); */
-  /* z-index: 1; */
-/*} */
 .reportview-reportlist-title {
   display: flex;
   margin: 101.75px 0 45px 32px;
