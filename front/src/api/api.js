@@ -1,7 +1,6 @@
 const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
 
 const USER = 'user/'
-const HOME = 'home/'
 const REDIS = 'redis/'
 const REPORTS = 'reports/'
 // const ARTICLES = 'articles/'
@@ -16,18 +15,15 @@ export default {
     logout: () => HOST + USER + 'logout/',
     signup: () => HOST + USER,
 
-    selectrooms: (lat, lng) => HOST + REDIS + 'selectRooms' + '/' + lat + '/' + lng,
-    getrandombus: () => HOST + REDIS + 'getRandomBus',
-
     // get: 유저정보 조회, post: 오늘의 닉네임 제공, delete: 회원 탈퇴
     currentUserInfo: (userid) => HOST + USER + userid + '/',
     // username으로 프로필 제공
     profile: userid => HOST + USER + 'profile/' + userid,
   },
 
-  // 홈 화면에서 보여줄 실시간 버스 데이터 3대
-  home: {
-    realTimeData: () => HOST + HOME + 'realtimedata/',
+  main: {
+    selectrooms: (lat, lng) => HOST + REDIS + 'selectRooms' + '/' + lat + '/' + lng,
+    getrandombus: () => HOST + REDIS + 'getRandomBus',
   }
 //   articles: {
 //     // /articles/
