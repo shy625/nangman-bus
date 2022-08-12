@@ -4,7 +4,6 @@ import com.nangman.api.dto.ChatInOutRecordDto;
 import com.nangman.api.dto.SocketDto;
 import com.nangman.api.service.ChatInOutRecordService;
 import com.nangman.redis5.service.RedisService;
-import com.nangman.socket.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -12,8 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -59,8 +57,9 @@ public class SocketController {
     // 채팅 - 일반
     @MessageMapping("/chat/rooms/{sessionId}/message")
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.ChatPub chatPubDto) {
-        String chatId = redisService.createChat(sessionId, chatPubDto.getUserId(), getNow(), chatPubDto.getMessage());
-        SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(chatId, chatPubDto.getUserId(), chatPubDto.getMessage(), getNow());
+        String createdTime = LocalDateTime.now().toString();
+        String chatId = redisService.createChat(sessionId, chatPubDto.getUserId(), createdTime, chatPubDto.getMessage());
+        SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(chatId, chatPubDto.getUserId(), chatPubDto.getMessage(), createdTime);
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", chatSubDto);
     }
 
@@ -87,11 +86,5 @@ public class SocketController {
     // 현재 정류장 위치
 
     // 사용자 감정 상태 조회
-
-    private String getNow() {
-        ZoneId z = ZoneId.of("Asia/Seoul");
-        ZonedDateTime zdt = ZonedDateTime.now(z);
-        return zdt.toString();
-    }
 
 }
