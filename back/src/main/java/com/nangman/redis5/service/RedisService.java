@@ -46,7 +46,7 @@ public interface RedisService {
     // 6. 사용자 목록 조회?
     List<RoomUserDto> roomUserList(String sessionId);
     // 7. createChat(채팅 메시지 전송)
-    String createChat(String sessionId, String chatId, String CreatedTime, String chat);
+    String createChat(String sessionId, String userId, String createdTime, String chat);
     // 3. joinRoom(채팅방 입장)
     void joinRoom(String sessionId, String userId, RoomUserDto roomUserDto);
     // 4. exitRoom(채팅방 퇴장)

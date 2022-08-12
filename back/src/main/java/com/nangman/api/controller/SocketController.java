@@ -1,5 +1,7 @@
 package com.nangman.api.controller;
 
+import com.nangman.api.dto.SocketDto;
+import com.nangman.redis5.service.RedisService;
 import com.nangman.socket.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import java.time.ZonedDateTime;
 public class SocketController {
 
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
+    private final RedisService redisService;
 
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
@@ -52,9 +55,10 @@ public class SocketController {
 
     // 채팅 - 일반
     @MessageMapping("/chat/rooms/{sessionId}/message")
-    public void sendChatMessage(@DestinationVariable String sessionId, ChatMessageDto messageDto) {
-        // TODO : Redis 저장
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", messageDto);
+    public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.ChatPub chatPubDto) {
+        String chatId = redisService.createChat(sessionId, chatPubDto.getWriter(), getNow(), chatPubDto.getMessage());
+        SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(chatId, chatPubDto.getWriter(), chatPubDto.getMessage(), getNow());
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", chatSubDto);
     }
 
     // 채팅 좋아요 등록

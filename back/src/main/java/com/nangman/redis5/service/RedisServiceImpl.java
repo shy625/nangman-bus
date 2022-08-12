@@ -322,7 +322,7 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public String createChat(String sessionId, String userId, String CreatedTime, String chat) {
+    public String createChat(String sessionId, String userId, String createdTime, String chat) {
         String keyChat = sessionId + KEY_CHAT;
         String keyLike = sessionId + KEY_LIKE;
         int count = Integer.parseInt((String) redisTemplate.opsForHash().get(keyChat, COUNT));
@@ -331,7 +331,7 @@ public class RedisServiceImpl implements RedisService{
         StringBuilder value = new StringBuilder();
         value.append(userId)
                 .append(SPLIT_STR)
-                .append(CreatedTime)
+                .append(createdTime)
                 .append(SPLIT_STR)
                 .append(chat);
         redisTemplate.opsForHash().put(keyChat, subKey, value.toString());
