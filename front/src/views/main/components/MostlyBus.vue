@@ -27,7 +27,7 @@
 </script>
 <style>
 .mostlybus {
-  margin: 32px 0;
+  margin: 52px 0;
 }
 .mostlybus-title {
   margin-bottom: 24px;
@@ -36,7 +36,7 @@
 }
 .mostlybus-title-text {
   font-family: BMHANNAPro;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 .mostlybus-title-line {
   display: block;

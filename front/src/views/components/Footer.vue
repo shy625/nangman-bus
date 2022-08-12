@@ -7,7 +7,7 @@
     <div class="chatlist-btn">
       <img src="../../assets/bus-unclicked.png" alt="bus-unclicked" class="footer-chatlist">
     </div>
-    <router-link to="{ name: 'reports'}" class="footer-reports-btn">
+    <router-link :to="{ name: 'reports'}" class="footer-reports-btn">
       <img src="../../assets/reports.png" alt="reports" class="footer-reports">
       <div>낭만보고서</div>
     </router-link>
@@ -24,7 +24,6 @@ onMounted(() => {
   const body = document.querySelector('body')
   const chatList = document.querySelector('.chatlist-cover')
   chatListBtn.addEventListener('click', () => {
-    // console.log(chatList.classList.contains('chatlist-in'))
     if (chatList.classList.contains('chatlist-in')) {
       chatList.classList.remove('chatlist-in')
       chatList.classList.add('chatlist-out')
@@ -63,7 +62,10 @@ onMounted(() => {
   text-decoration: none;
   color: black;
   font-size: 0.8rem;
-  /* filter: opacity(50%) */
+  filter: opacity(35%);
+}
+.footer-btn-active {
+  filter: none;
 }
 .footer-main {
   height: 32px;
