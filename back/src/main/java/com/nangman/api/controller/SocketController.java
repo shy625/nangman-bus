@@ -23,7 +23,7 @@ public class SocketController {
     private final ChatInOutRecordService chatInOutRecordService;
 
     // 채팅 입장
-    @MessageMapping("chat/rooms/{sessionId}/enter")
+    @MessageMapping("/chat/rooms/{sessionId}/enter")
     public void enterChatRoom(@DestinationVariable String sessionId, String userId) {
         chatInOutRecordService.insertInRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
         SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 1);
@@ -31,7 +31,7 @@ public class SocketController {
     }
 
     // 채팅 퇴장
-    @MessageMapping("chat/rooms/{sessionId}/leave")
+    @MessageMapping("/chat/rooms/{sessionId}/leave")
     public void leaveChatRoom(@DestinationVariable String sessionId, String userId) {
         chatInOutRecordService.insertOutRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
         SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 2);
@@ -57,7 +57,7 @@ public class SocketController {
     }
 
     // 채팅 좋아요 취소
-    @MessageMapping("/chat/rooms/{sessionId}/like/down")
+    @MessageMapping("/chat/rooms/{sessionId}/{chatId}/like/down")
     public void cancelChatLike(@DestinationVariable String sessionId, @DestinationVariable String chatId) {
         redisService.downLike(sessionId, chatId);
         int likeCount = redisService.getLike(sessionId, chatId);
