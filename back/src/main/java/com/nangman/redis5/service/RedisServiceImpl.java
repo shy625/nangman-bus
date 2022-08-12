@@ -172,6 +172,7 @@ public class RedisServiceImpl implements RedisService{
 
     @Override
     public List<ChattingRoomDto> selectRooms(double lat, double lng) {
+        // TODO : busId도 같이 넘겨줘야 됨
         List<ChattingRoomDto> list = new ArrayList<>();
         String findAllRoom = "*" + KEY_ROOM;
         Set<String> keys = redisTemplate.keys(findAllRoom);

@@ -28,6 +28,7 @@ public interface RedisService {
     boolean isAccessibleRoom(double lat, double lng, String sessionId);
     // 3. 메인에서 랜덤으로 버스 3개 받는거
     List<RandomBusDto> getRandomBus();
+    // TODO : 채팅방 입장 시 이전 채팅 기록 + 버스 노선 정류장 리스트 + 현재 사용자 목록 전달
 
 
 
