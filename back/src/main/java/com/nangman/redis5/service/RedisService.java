@@ -11,7 +11,7 @@ import java.util.List;
 public interface RedisService {
     // 자동으로 되는거
     // 1. updateBusData
-    void updateBudData(String sessionId, Bus bus);
+    void updateBusdData(String sessionId, Bus bus);
 
     // 2. createChattingRoom
     String createChattingRoom(String sessionId, Bus bus);
