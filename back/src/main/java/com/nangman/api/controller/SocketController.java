@@ -1,6 +1,8 @@
 package com.nangman.api.controller;
 
+import com.nangman.api.dto.ChatInOutRecordDto;
 import com.nangman.api.dto.SocketDto;
+import com.nangman.api.service.ChatInOutRecordService;
 import com.nangman.redis5.service.RedisService;
 import com.nangman.socket.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class SocketController {
 
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
     private final RedisService redisService;
+    private final ChatInOutRecordService chatInOutRecordService;
 
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
@@ -39,18 +42,18 @@ public class SocketController {
 
     // 채팅 입장
     @MessageMapping("chat/rooms/{sessionId}/enter")
-    public void enterChatRoom(@DestinationVariable String sessionId, ChatMessageDto messageDto) {
-        ZoneId z = ZoneId.of("Asia/Seoul");
-        ZonedDateTime zdt = ZonedDateTime.now(z);
-        messageDto.setCreatedDate(zdt.toString());  // TODO : 프론트 시간 표시 요구사항에 따라 format 변경
-        // TODO : Redis 저장 및 inTime 체크
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/enter", messageDto);
+    public void enterChatRoom(@DestinationVariable String sessionId, String userId) {
+        chatInOutRecordService.insertInRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
+        SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 1);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserDto);
     }
 
     // 채팅 퇴장
     @MessageMapping("chat/rooms/{sessionId}/leave")
-    public void leaveChatRoom(@DestinationVariable String sessionId) {
-        // TODO : Redis 저장 및 outTime 체크
+    public void leaveChatRoom(@DestinationVariable String sessionId, String userId) {
+        chatInOutRecordService.insertOutRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
+        SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 2);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserDto);
     }
 
     // 채팅 - 일반

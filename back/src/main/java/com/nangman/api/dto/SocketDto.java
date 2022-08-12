@@ -30,4 +30,11 @@ public class SocketDto {
         private Integer count;
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatUser {
+        private String userId;
+        private Integer inOut;  // in : 1, out : 2
+    }
+
 }
