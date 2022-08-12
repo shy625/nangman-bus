@@ -7,7 +7,11 @@
         </div>
         <hr class="reportview-reportlist-title-line">
       </div>
-      <ReportItem :reportList="reportList" />
+      <!-- <ReportItem :reportList="reportList" /> -->
+      <!--
+        v-if 보고서가 있으면
+        v-for 
+      -->
       리포트 아이템을 하나하나 보여주는데 v-for? 해야될 것 같고
       리포트아이템 컴포넌트 내부에서 자기자신 클릭 시 이동할 라우터에 던져줄 리포트id 필요
 
