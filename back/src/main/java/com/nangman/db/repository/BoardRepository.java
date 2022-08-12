@@ -15,4 +15,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>{
     List<Board> findBoardByBusId(long busId);
 
     Optional<Board> findBoardByIdAndUserId(long boardId, Long id);
+
+    List<Board> findBoardByBusIdOrderByCreatedDateDesc(long busId);
 }

@@ -101,7 +101,4 @@ public class UserDto implements Serializable {
         @ApiModelProperty(name="유저 생일", example="1995-11-15")
         private String userBirthday;
     }
-
-
-
 }
