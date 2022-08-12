@@ -13,11 +13,11 @@ import java.util.List;
 @Service
 public interface BoardService {
 	@Transactional
-    BoardDto.Info createBoard(BoardDto.createBoardRequest userRegisterInfo);
+	List<BoardDto.Info> createBoard(BoardDto.createBoardRequest userRegisterInfo);
 
 	@Transactional(readOnly = true)
 	List<BoardDto.Info> getBoardsById(long busId);
 
 	@Transactional
-	void deleteBoard(long userId, long boardId);
+	void deleteBoard(long boardId, long userId);
 }
