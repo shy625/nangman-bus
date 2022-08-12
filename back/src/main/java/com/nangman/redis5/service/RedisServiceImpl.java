@@ -1,6 +1,6 @@
 package com.nangman.redis5.service;
 
-import com.nangman.db.entity.BusLog;
+import com.nangman.db.entity.Bus;
 import com.nangman.redis5.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -53,31 +53,31 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void updateBudData(String sessionId, BusLog busLog) {
+    public void updateBudData(String sessionId, Bus bus) {
         //현규가 버스 entity 업데이트하면 ㄱ
         String keyRoom = sessionId + KEYROOM;
         StringBuilder createBusInfo = new StringBuilder();
-        createBusInfo.append(busLog.getLicense())
+        createBusInfo.append(bus.getLicenseNo())
                 .append(SPLITSTR)
-                .append(busLog.getNo())
+                .append(bus.getRoute().getRouteNo())
                 .append(SPLITSTR)
-                .append(busLog.getLat())
+                .append(bus.getLat())
                 .append(SPLITSTR)
-                .append(busLog.getLng())
+                .append(bus.getLng())
                 .append(SPLITSTR)
-                .append(busLog.getCreatedDate())
+                .append(bus.getCreatedDate())
                 .append(SPLITSTR)
-                .append(busLog.getOrd())
+                .append(bus.getNodeOrd())
                 .append(SPLITSTR)
-                .append(busLog.getNid())
+                .append(bus.getNodeId())
                 .append(SPLITSTR)
-                .append(busLog.getNname());
+                .append(bus.getNodeName());
 
         redisTemplate.opsForHash().put(keyRoom, SUBKEYBUSINFO, createBusInfo.toString());
     }
 
     @Override
-    public String createChattingRoom(BusLog busLog, List<String> busStop) {
+    public String createChattingRoom(Bus bus, List<String> busStop) {
         String sessionId = "session_";
 
         LocalDateTime time = LocalDateTime.now();
@@ -91,21 +91,21 @@ public class RedisServiceImpl implements RedisService{
         StringBuilder createBusInfo = new StringBuilder();
         StringBuilder createRouteInfo = new StringBuilder();
 
-        createBusInfo.append(busLog.getLicense())
+        createBusInfo.append(bus.getLicenseNo())
                 .append(SPLITSTR)
-                .append(busLog.getNo())
+                .append(bus.getRoute().getRouteNo())
                 .append(SPLITSTR)
-                .append(busLog.getLat())
+                .append(bus.getLat())
                 .append(SPLITSTR)
-                .append(busLog.getLng())
+                .append(bus.getLng())
                 .append(SPLITSTR)
-                .append(busLog.getCreatedDate())
+                .append(bus.getCreatedDate())
                 .append(SPLITSTR)
-                .append(busLog.getOrd())
+                .append(bus.getNodeOrd())
                 .append(SPLITSTR)
-                .append(busLog.getNid())
+                .append(bus.getNodeId())
                 .append(SPLITSTR)
-                .append(busLog.getNname());
+                .append(bus.getNodeName());
 
         for(String str : busStop) {
             createRouteInfo.append(str).append(SPLITSTR);
@@ -188,7 +188,7 @@ public class RedisServiceImpl implements RedisService{
                 dto.setSessionId(str);
                 dto.setRouteId(busInfo[BUSINFOROUTEID]);
                 // 시끌벅적 정도
-                dto.setType(getType(str));
+                dto.setType(getType(str.replace(KEYROOM, "")));
 
                 list.add(dto);
             }
@@ -426,7 +426,7 @@ public class RedisServiceImpl implements RedisService{
             if(strs.length < CHATINFOCONTENT) continue;
             LocalDateTime ldt = LocalDateTime.parse(strs[CHATINFOCREATEDTIME]);
             int temp = ldt.getMinute();
-            if(temp == minute) {
+            if(minute >= temp && minute - 5 <= temp) {
                 count++;
             }
         }

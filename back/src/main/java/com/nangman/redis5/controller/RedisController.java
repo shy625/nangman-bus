@@ -1,6 +1,7 @@
 package com.nangman.redis5.controller;
 
-import com.nangman.db.entity.BusLog;
+import com.nangman.db.entity.Bus;
+import com.nangman.db.entity.Route;
 import com.nangman.redis5.dto.*;
 import com.nangman.redis5.service.RedisService;
 import io.swagger.annotations.Api;
@@ -66,30 +67,32 @@ public class RedisController {
     private String user1 = "1";
     @GetMapping("/test/updateBusData")
     public void updateBusData() {
-        BusLog busLog = new BusLog();
-        busLog.setId(0L);
-        busLog.setLicense("경기77바3771");
-        busLog.setNo("8100");
-        busLog.setLat(37.34033);
-        busLog.setLng(127.10899);
-        busLog.setCreatedDate(LocalDateTime.now());
-        busLog.setOrd("46");
-        busLog.setNid("GGB206000215");
+        Bus bus = new Bus();
+//        Route route = new Route();
 
-        redisService.updateBudData(testSessionId, busLog);
+        bus.setId(0L);
+        bus.setLicenseNo("경기77바3771");
+//        busLog.setRoute("8100");
+        bus.setLat(37.34033);
+        bus.setLng(127.10899);
+        bus.setCreatedDate(LocalDateTime.now());
+        bus.setNodeOrd(46);
+        bus.setNodeId("GGB206000215");
+
+        redisService.updateBudData(testSessionId, bus);
     }
     @GetMapping("/test/createChattingRoom")
     public void createChattingRoom() {
-        BusLog busLog = new BusLog();
+        Bus busLog = new Bus();
         busLog.setId(0L);
-        busLog.setLicense("경기77바3771");
-        busLog.setNo("8100");
+        busLog.setLicenseNo("경기77바3771");
+//        busLog.setRoute("8100");
         busLog.setLat(37.32341);
         busLog.setLng(127.1259);
         busLog.setCreatedDate(LocalDateTime.now());
-        busLog.setOrd("2");
-        busLog.setNid("GGB228001978");
-        busLog.setNname("단국대정문");
+        busLog.setNodeOrd(2);
+        busLog.setNodeId("GGB228001978");
+        busLog.setNodeName("단국대정문");
 
         List<String> busStops = new ArrayList<>();
         String[] strs = "단국대영업소:단국대정문:꽃메마을.새에덴교회:보정동주민센터:오리역:미금역.청솔마을.2001아울렛:정자역:분당구청입구.수내교:순천향대학병원:남대문세무서:종로2가사거리(중):을지로입구역.광교:북창동.남대문시장:서울역버스환승센터(5번 승강장):숭례문:명동국민은행앞:남대문세무서.서울백병원:순천향대학병원:분당구청입구,수내교:정자역:미금역,청솔마을.2001아울렛:오리역:보정동행정복지센터:꽃메마을2단지:단국대,치과병원".split(":");
@@ -154,8 +157,4 @@ public class RedisController {
     public void setOutBusStop() {
         redisService.setOutBusStop(testSessionId, "10", "1");
     }
-
-
-
-
 }
