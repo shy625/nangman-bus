@@ -75,4 +75,10 @@ public class SocketController {
 
     // 사용자 감정 상태 조회
 
+    private String getNow() {
+        ZoneId z = ZoneId.of("Asia/Seoul");
+        ZonedDateTime zdt = ZonedDateTime.now(z);
+        return zdt.toString();
+    }
+
 }
