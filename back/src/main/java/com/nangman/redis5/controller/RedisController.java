@@ -102,10 +102,10 @@ public class RedisController {
 //
 //        this.testSessionId = redisService.createChattingRoom(busLog, busStops);
     }
-    @GetMapping("/test/deleteChattingRoom")
-    public ChatLogDto deleteChattingRoom() {
-        return redisService.deleteChattingRoom(testSessionId);
-    }
+//    @GetMapping("/test/deleteChattingRoom")
+//    public ChatLogDto deleteChattingRoom() {
+//        return redisService.deleteChattingRoom(testSessionId);
+//    }
 
 
 

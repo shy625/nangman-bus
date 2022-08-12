@@ -2,7 +2,6 @@ package com.nangman.redis5.service;
 
 import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
-import com.nangman.redis5.dto.ChatLogDto;
 import com.nangman.redis5.dto.ChattingRoomDto;
 import com.nangman.redis5.dto.RandomBusDto;
 import com.nangman.redis5.dto.RoomUserDto;
