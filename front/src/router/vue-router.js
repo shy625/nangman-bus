@@ -6,6 +6,7 @@ import ChatView from '../views/chat/ChatView.vue'
 import LoginView from '../views/accounts/LoginView.vue'
 import SignupView from '../views/accounts/SignupView.vue'
 import TestView from '../views/components/TestView.vue'
+import UpdateView from '../views/accounts/UpdateView.vue'
 
 
 const router = createRouter({
@@ -54,8 +55,13 @@ const router = createRouter({
     {
       name: 'test', 
       path: '/test', 
-      component: TestView 
-    }
+      component: TestView,
+    },
+    {
+      name: 'update',
+      path: '/update',
+      component: UpdateView,
+    },
   ]
 })
 

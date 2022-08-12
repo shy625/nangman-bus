@@ -3,7 +3,7 @@
     <router-link :to="{ name: 'main' }">
       <img src="../../assets/logo.png" alt="nangmanLogo" class="header-logo">
     </router-link>
-    <router-link to="">
+    <router-link :to="{ name: 'update' }">
       <img src="../../assets/user-yellow.png" alt="userIcon" class="header-user">
     </router-link>
   </div>  
