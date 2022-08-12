@@ -22,22 +22,6 @@ public class SocketController {
     private final RedisService redisService;
     private final ChatInOutRecordService chatInOutRecordService;
 
-    //Client가 SEND할 수 있는 경로
-    //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
-    //"/pub/chat/enter"
-//    @MessageMapping(value = "/chat/enter")
-//    public void enter(ChatMessageDto message){
-//        System.out.println("ChatController - enter");
-//        message.setMessage(message.getWriter() + "님이 채팅방에 참여하였습니다.");
-//        template.convertAndSend("/sub/chat/room/" + message.getSessionId(), message);
-//    }
-//
-//    @MessageMapping(value = "/chat/message")
-//    public void message(ChatMessageDto message){
-//        System.out.println("ChatController - message");
-//        template.convertAndSend("/sub/chat/room/" + message.getSessionId(), message);
-//    }
-
     // 채팅 입장
     @MessageMapping("chat/rooms/{sessionId}/enter")
     public void enterChatRoom(@DestinationVariable String sessionId, String userId) {
@@ -81,10 +65,16 @@ public class SocketController {
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
 
+    // 버스가 현재 위치한 정류장 업데이트
+    public void sendCurrentBusStop(String sessionId, Long busStopId, String busStopName) {
+        SocketDto.ChatBusStop chatBusStopDto = new SocketDto.ChatBusStop(busStopId, busStopName);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/busStop", chatBusStopDto);
+    }
+
+    // 사용자 감정 상태 설정
+
+    // 사용자 하차 정류장 설정
+
     // 귓속말 설정
-
-    // 현재 정류장 위치
-
-    // 사용자 감정 상태 조회
 
 }

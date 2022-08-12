@@ -37,4 +37,11 @@ public class SocketDto {
         private Integer inOut;  // in : 1, out : 2
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatBusStop {
+        private Long busStopId;
+        private String busStopName;
+    }
+
 }
