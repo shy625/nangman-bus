@@ -33,7 +33,7 @@ public class ChatInOutRecordController {
                                                       HttpSession session) {
         return new ResponseEntity<ChatInOutRecordDto.Info>(
                 chatInOutRecordService.insertInRecord(
-                        new ChatInOutRecordDto.ServiceRequest(request.getRoomId(), Long.parseLong(session.getId()))),
+                        new ChatInOutRecordDto.ServiceRequest(request.getSessionId(), Long.parseLong(session.getId()))),
                 HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class ChatInOutRecordController {
                                                        HttpSession session) {
         return new ResponseEntity<ChatInOutRecordDto.Info>(
                 chatInOutRecordService.insertOutRecord(
-                        new ChatInOutRecordDto.ServiceRequest(request.getRoomId(), Long.parseLong(session.getId()))),
+                        new ChatInOutRecordDto.ServiceRequest(request.getSessionId(), Long.parseLong(session.getId()))),
                 HttpStatus.OK);
     }
 }
