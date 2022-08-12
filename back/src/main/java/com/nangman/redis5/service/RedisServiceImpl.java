@@ -1,6 +1,7 @@
 package com.nangman.redis5.service;
 
 import com.nangman.db.entity.Bus;
+import com.nangman.db.entity.BusStop;
 import com.nangman.redis5.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -77,13 +78,14 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public String createChattingRoom(Bus bus, List<String> busStop) {
-        String sessionId = "session_";
+    public String createChattingRoom(String sessionId, Bus bus) {
+//        String sessionId = "session_";
 
-        LocalDateTime time = LocalDateTime.now();
-        ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
-        long epoch = time.atZone(zoneId).toEpochSecond();
-        sessionId += Long.toString(epoch);
+//        LocalDateTime time = LocalDateTime.now();
+//        ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
+//        long epoch = time.atZone(zoneId).toEpochSecond();
+////        long epoch = LocalDateTime.now().toEpochSecond();
+//        sessionId += Long.toString(epoch);
 
         String keyRoom = sessionId + KEYROOM;
         String keyChat = sessionId + KEYCHAT;
@@ -107,8 +109,8 @@ public class RedisServiceImpl implements RedisService{
                 .append(SPLITSTR)
                 .append(bus.getNodeName());
 
-        for(String str : busStop) {
-            createRouteInfo.append(str).append(SPLITSTR);
+        for(BusStop str : bus.getRoute().getBusStops()) {
+            createRouteInfo.append(str.getNodeName()).append(SPLITSTR);
         }
         createRouteInfo.setLength(createRouteInfo.length() -1);
 

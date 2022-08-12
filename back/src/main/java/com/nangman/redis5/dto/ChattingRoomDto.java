@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChattingRoomDto {
+    long busId;
     String sessionId;
     String routeId;
     int distance;
