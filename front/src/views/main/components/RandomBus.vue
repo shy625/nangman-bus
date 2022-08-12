@@ -6,20 +6,6 @@
       </div>
       <hr class="mostlybus-title-line">
     </div>
-    <!-- <div class="mostlybus-box">
-      <div class="mostlybus-content">
-        지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
-        <span class="mostlybus-status">아주 시끌벅적하네요!</span>
-      </div>
-      <div class="mostlybus-content">
-        지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
-        <span class="mostlybus-status">아주 시끌벅적하네요!</span>
-      </div>
-      <div class="mostlybus-content">
-        지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
-        <span class="mostlybus-status">아주 시끌벅적하네요!</span>
-      </div>
-    </div> -->
     <div v-for="(bus, index) in buses.randomBus" :key="index">
       <div class="mostlybus-content">
         지금 <span class="mostlybus-data">{{bus.nodeName}}</span> 지나는 <span class="mostlybus-data">{{bus.routeNumber}}번</span> 버스는요,<br>
@@ -43,7 +29,7 @@ onMounted(() => {
 
 function getRandomBus() {
   axios({
-    url: api.accounts.getrandombus(),
+    url: api.main.getrandombus(),
     method: "get",
   })
     .then(res => {
