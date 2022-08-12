@@ -19,7 +19,7 @@ public class RoomServiceImpl implements RoomService{
     public Room createRoom(RoomDto.CreateRequest createRequest) {
         Room room = new Room();
         room.setSessionId(createRequest.getSessionId());
-        room.setBus(busRepository.findBusByLicenseNo(createRequest.getLicense()).get());
+        room.setBus(busRepository.findBusByLicenseNo(createRequest.getLicenseNo()).get());
         roomRepository.save(room);
         room = roomRepository.findRoomBySessionId(room.getSessionId()).get();
         return room;

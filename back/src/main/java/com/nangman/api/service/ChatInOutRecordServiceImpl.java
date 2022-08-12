@@ -2,6 +2,7 @@ package com.nangman.api.service;
 
 import com.nangman.api.dto.ChatInOutRecordDto;
 import com.nangman.db.entity.ChatInOutRecord;
+import com.nangman.db.entity.Room;
 import com.nangman.db.repository.ChatInOutRecordRepository;
 import com.nangman.db.repository.RoomRepository;
 import com.nangman.db.repository.UserRepository;
@@ -26,7 +27,7 @@ public class ChatInOutRecordServiceImpl implements ChatInOutRecordService{
         LocalDateTime inTime = LocalDateTime.now();
         ChatInOutRecord chatInOutRecord = new ChatInOutRecord();
         chatInOutRecord.setUser(userRepository.findByIdAndIsDeletedFalse(serviceRequest.getUserId()).get());
-        chatInOutRecord.setRoom(roomRepository.findById(serviceRequest.getRoomId()).get());
+        chatInOutRecord.setRoom(roomRepository.findRoomBySessionId(serviceRequest.getSessionId()).get());
         chatInOutRecord.setInTime(inTime);
         chatInOutRecordRepository.save(chatInOutRecord);
 
@@ -38,9 +39,10 @@ public class ChatInOutRecordServiceImpl implements ChatInOutRecordService{
     @Override
     @Transactional
     public ChatInOutRecordDto.Info insertOutRecord(ChatInOutRecordDto.ServiceRequest serviceRequest) {
+        Room room = roomRepository.findRoomBySessionId(serviceRequest.getSessionId()).get();
         ChatInOutRecord chatInOutRecord = chatInOutRecordRepository.
                 findTop1ChatInOutRecordByUserIdAndRoomIdOrderByInTimeDesc(serviceRequest.getUserId(),
-                        serviceRequest.getRoomId()).get();
+                        room.getId()).get();
         LocalDateTime outTime = LocalDateTime.now();
         chatInOutRecord.setOutTime(outTime);
         chatInOutRecordRepository.save(chatInOutRecord);
