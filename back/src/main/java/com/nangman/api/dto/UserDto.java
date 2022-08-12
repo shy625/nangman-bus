@@ -3,10 +3,7 @@ package com.nangman.api.dto;
 import com.nangman.db.entity.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
@@ -27,6 +24,7 @@ public class UserDto implements Serializable {
     @Setter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Info {
 
         @ApiModelProperty(name="유저 id(식별자)", example="1")
@@ -69,6 +67,7 @@ public class UserDto implements Serializable {
     @Setter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class LoginRequest {
         @Email
         @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
@@ -85,6 +84,7 @@ public class UserDto implements Serializable {
     @Setter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class RegisterRequest {
         @Email
         @ApiModelProperty(name="유저 이메일", example="nangman@naver.com")
