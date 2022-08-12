@@ -89,37 +89,37 @@ export function isFirstLogin({ commit, getters }) {
 }
 
 // 메인페이지 버스데이터 전달함수
-export function giveBusData({}) {
-  const busData = [
-    {
-      nowStop: '',
-      busNum: '',
-      participant: '',
-    },
-    {
-      nowStop: '',
-      busNum: '',
-      participant: '',
-    },
-    {
-      nowStop: '',
-      busNum: '',
-      participant: '',
-    }
-  ]
-  axios({
-    url: api.home.realTimeData(),
-    method: 'get'
-  })
-    .then(res => {
-      for (let i = 0; i < 3; i++) {
-        busData[i].nowStop = res.data[i].busstop_name
-        busData[i].busNum = res.data[i].route_no
-        busData[i].participant = res.data[i].room_users
-      }
-    })
-  return busData
-}
+// export function giveBusData({}) {
+//   const busData = [
+//     {
+//       nowStop: '',
+//       busNum: '',
+//       participant: '',
+//     },
+//     {
+//       nowStop: '',
+//       busNum: '',
+//       participant: '',
+//     },
+//     {
+//       nowStop: '',
+//       busNum: '',
+//       participant: '',
+//     }
+//   ]
+//   axios({
+//     url: api.home.realTimeData(),
+//     method: 'get'
+//   })
+//     .then(res => {
+//       for (let i = 0; i < 3; i++) {
+//         busData[i].nowStop = res.data[i].busstop_name
+//         busData[i].busNum = res.data[i].route_no
+//         busData[i].participant = res.data[i].room_users
+//       }
+//     })
+//   return busData
+// }
 
 // 낭만보고서 목록 가져오는 함수
 // Vue3 infinite scroll axios
