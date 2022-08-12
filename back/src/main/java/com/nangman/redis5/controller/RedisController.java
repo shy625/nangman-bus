@@ -25,7 +25,6 @@ import java.util.Set;
 @RequestMapping("api/redis")
 @Api(value = "레디스 API", tags = {"redis"})
 public class RedisController {
-    private StringRedisTemplate redisTemplate;
 //    private final RedisRepositoryConfig repositoryConfig;
 //    private final RedisServiceImpl redisService = new RedisServiceImpl(redisTemplate);
 //    private final RedisServiceImpl redisService;
