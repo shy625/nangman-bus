@@ -2,6 +2,7 @@ const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
 
 const USER = 'user/'
 const HOME = 'home/'
+const REDIS = 'redis/'
 const REPORTS = 'reports/'
 // const ARTICLES = 'articles/'
 // const COMMENTS = 'comments/'
@@ -14,6 +15,9 @@ export default {
     login: () => HOST + USER + 'login/',
     logout: () => HOST + USER + 'logout/',
     signup: () => HOST + USER,
+
+    selectrooms: (lat, lng) => HOST + REDIS + 'selectRooms' + '/' + lat + '/' + lng,
+    getrandombus: () => HOST + REDIS + 'getRandomBus',
 
     // get: 유저정보 조회, post: 오늘의 닉네임 제공, delete: 회원 탈퇴
     currentUserInfo: (userid) => HOST + USER + userid + '/',
