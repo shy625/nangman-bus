@@ -16,7 +16,7 @@ public class ChatInOutRecordDto {
     @AllArgsConstructor
     public static class Request{
         @ApiModelProperty(name="채팅방 id", example="1")
-        private long roomId;
+        private String sessionId;
     }
 
     @Setter
@@ -26,7 +26,7 @@ public class ChatInOutRecordDto {
     public static class ServiceRequest {
 
         @ApiModelProperty(name="채팅방 id", example="1")
-        private long roomId;
+        private String sessionId;
 
         @ApiModelProperty(name="유저 id", example="1")
         private long userId;

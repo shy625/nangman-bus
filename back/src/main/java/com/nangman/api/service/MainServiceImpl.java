@@ -39,14 +39,14 @@ public class MainServiceImpl implements MainService{
         info.setTop3(new ArrayList<>());
 
         for (UserReport userReport : userReportList){
-            String license = userReport.getReport().getRoom().getBus().getLicense();
+            String license = userReport.getReport().getRoom().getBus().getLicenseNo();
             if (countLicense.containsKey(license)) countLicense.put(license, countLicense.get(license) + 1);
             else countLicense.put(license, 1);
         }
         List<String> keySet = new ArrayList<>(countLicense.keySet());
         keySet.sort((o1, o2) -> countLicense.get(o2).compareTo(countLicense.get(o1)));
         for (int i = 0; i < 3 && i < keySet.size(); i++) {
-            Bus bus = busRepository.findBusByLicense(keySet.get(i)).get();
+            Bus bus = busRepository.findBusByLicenseNo(keySet.get(i)).get();
             info.getTop3().add(bus);
         }
         ChatInOutRecord history = chatInOutRecordRepository.findTop1ChatInOutRecordByUserIdOrderByInTimeDesc(userId).get();
