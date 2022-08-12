@@ -192,7 +192,7 @@ public class RedisController {
 
 
 
-    @GetMapping("/keys")
+    @GetMapping("/test/keys")
     public String keys() {
 //        Set<String> keys = redisTemplate.opsForSet().members("*");
 //        Set<String> keys = redisCrudService.getAll();
@@ -202,14 +202,14 @@ public class RedisController {
         return Arrays.toString(keys.toArray());
     }
 
-    @PostMapping("/save")
+    @PostMapping("/test/save")
     public void save(@RequestBody RedisCrudSaveRequestDto requestDto) {
         log.info(">>>>>>>>>>>>>>>>>>>>>> [save] redisCrud={}", requestDto);
         redisTemplate.opsForHash().put(requestDto.getKey(), requestDto.getSubKey(), requestDto.getValue());
     }
 
 
-    @GetMapping("/delete/{keyId}")
+    @GetMapping("/test/delete/{keyId}")
     public void del(@PathVariable String keyId) {
         redisTemplate.delete(keyId);
 //        System.out.println(key);
