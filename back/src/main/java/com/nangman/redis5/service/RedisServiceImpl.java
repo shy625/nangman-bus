@@ -59,7 +59,7 @@ public class RedisServiceImpl implements RedisService{
         StringBuilder createBusInfo = new StringBuilder();
         createBusInfo.append(bus.getLicenseNo())
                 .append(SPLITSTR)
-                .append(bus.getRoute())
+                .append(bus.getRoute().getRouteNo())
                 .append(SPLITSTR)
                 .append(bus.getLat())
                 .append(SPLITSTR)
@@ -93,7 +93,7 @@ public class RedisServiceImpl implements RedisService{
 
         createBusInfo.append(bus.getLicenseNo())
                 .append(SPLITSTR)
-                .append(bus.getRoute())
+                .append(bus.getRoute().getRouteNo())
                 .append(SPLITSTR)
                 .append(bus.getLat())
                 .append(SPLITSTR)
