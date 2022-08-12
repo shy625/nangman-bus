@@ -8,16 +8,19 @@
         </div>
         <hr class="reportview-reportlist-title-line">
       </div>
-      <div v-if="reportsData"><!-- 리포트데이터가 있으면 보여줌 -->
-        <div v-for="report in reportsData.reportList" :key="report.time"><!-- 시간 순서로 리포트아이템 출력 -->
-          <div class="reportview-preview">
+      <div v-if="!reportsData.reportList[0]"><img src="../../assets/nothing-reports.png" alt="낭만보고서가 없어요..." style="display: block; margin: 0 auto; width: 80%; height: 80%;"><p style="text-align: center; font-size: 20px;">낭만보고서가 없어요...<br>먼저 낭만버스를 이용해주세요!</p></div>
+      <div v-if="reportsData.reportList[0]"><!-- 리포트데이터가 있으면 보여줌 -->
+        <div v-for="report in reportsData.reportList" :key="report.time"
+          class="reportview-content"
+        ><!-- 시간 순서로 리포트아이템 출력 -->
+          <div>
             <div class="reportview-date">
-              {{ report.time.substr(5, 7) }}월
-              {{ report.time.substr(8, 10) }}일
+              {{ report.time.substr(5, 2) }}월
+              {{ report.time.substr(8, 2) }}일
             </div>
             <div class="reportview-time">
-            {{ report.time.substr(11, 13) }}시
-            {{ report.time.substr(14, 16) }}분<!-- 시간 출력 -->
+            {{ report.time.substr(11, 2) }}시
+            {{ report.time.substr(14, 2) }}분<!-- 시간 출력 -->
             </div>
           </div>
           <div class="reportview-busnum">
@@ -44,11 +47,11 @@
     reportList: []
   })
 
-  onMounted(() => {
-    reportListGetting()
-  })
+  // onMounted(() => {
+  //   reportListGetting()
+  // })
 
-  // 리포트 목록 가져오기
+  // // 리포트 목록 가져오기
   function reportListGetting() {
     axios({
       url: api.reports.reportsList(),
@@ -61,6 +64,12 @@
       .catch(err => {
         console.error('낭만보고서가 없거나 가져오는 데 실패했어요...')
       })
+  }
+  // 더미데이터
+  reportsData.value.reportList[0] = {
+    time: '2022-08-12T16:16:00',
+    bus: '3414',
+    chatting: '심리적 의존 관계, 의존 상태를 벗어나야 합니다. 국민들이 "내 나라는 내가 지킨다"라고 하는 의지와 자신감을 가지고 있어야 국방이 되는 것이지...',
   }
 
   // 가져올 정보가 어떤게 있냐?
@@ -108,7 +117,7 @@
   border-top: 1px solid black;
 }
 /* 리포트 미리보기 */
-.reportview-preview {
+.reportview-content {
   color: black;
 }
 .reportview-date {
