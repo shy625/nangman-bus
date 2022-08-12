@@ -15,8 +15,15 @@ import java.util.List;
 @Setter
 public class Bus extends BaseEntity {
 
-    private String license;
-    private String no;
+    //버스번호판
+    private String licenseNo;
+
+    private double lat;
+    private double lng;
+
+    private String nodeId;
+    private String nodeName;
+    private int nodeOrd;
 
     @ManyToOne
     @JoinColumn(name = "route_id")

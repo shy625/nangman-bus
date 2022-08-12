@@ -27,13 +27,15 @@ public class BatchScheduler {
 
     //10초마다 실행
     @Scheduled(cron = "0 0 4 * * *")
-
     public void nicknameSchedule() {
         userService.updateUserNickname();
     }
 
-//    @Scheduled(cron = "0 0/1 * 1/1 * ? *")
-//
-//    public void busLoggingSchedule() {busService.followBuses(); }
+    @Scheduled(cron = "10 * * * * *")
+    public void busLoggingSchedule() {
+        System.out.println("===========시발=============");
+        busService.followBuses();
+        System.out.println("===========굿~~=============");
+    }
 
 }
