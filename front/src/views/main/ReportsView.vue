@@ -1,39 +1,34 @@
 <template>
   <div>
     <Header/>
-      <div class="reportview-reportlist-cover">
-        <div class="reportview-reportlist-title">
-          <div class="reportview-reportlist-title-text">
-          낭만보고서
-          </div>
-          <hr class="reportview-reportlist-title-line">
+    <div class="reportview-reportlist-cover">
+      <div class="reportview-reportlist-title">
+        <div class="reportview-reportlist-title-text">
+        낭만보고서
         </div>
-        <!-- <ReportItem :reportList="reportList" /> -->
-        <!--
-          v-if 보고서가 있으면
-          v-for 
-        -->
-        <div v-if="reportsData"><!-- 리포트데이터가 있으면 보여줌 -->
-          <div v-for="report in reportsData.reportList" :key="report.time"><!-- 시간 순서로 리포트아이템 출력 -->
-            <div class="reportview-preview">
-              <div class="reportview-date">
-                {{ report.time.substr(5, 7) }}월
-                {{ report.time.substr(8, 10) }}일
-              </div>
-              <div class="reportview-time">
-              {{ report.time.substr(11, 13) }}시
-              {{ report.time.substr(14, 16) }}분<!-- 시간 출력 -->
-              </div>
+        <hr class="reportview-reportlist-title-line">
+      </div>
+      <div v-if="reportsData"><!-- 리포트데이터가 있으면 보여줌 -->
+        <div v-for="report in reportsData.reportList" :key="report.time"><!-- 시간 순서로 리포트아이템 출력 -->
+          <div class="reportview-preview">
+            <div class="reportview-date">
+              {{ report.time.substr(5, 7) }}월
+              {{ report.time.substr(8, 10) }}일
             </div>
-            <div class="reportview-busnum">
-              {{ report.bus }}번<!-- 버스 번호 -->
+            <div class="reportview-time">
+            {{ report.time.substr(11, 13) }}시
+            {{ report.time.substr(14, 16) }}분<!-- 시간 출력 -->
             </div>
-            <div class="reportview-comment">
-              "{{ report.chatting.substr(0, 12) }}..."<!-- 가장 좋아요를 많이 받은 채팅(12자만 출력) -->
-            </div>
+          </div>
+          <div class="reportview-busnum">
+            {{ report.bus }}번<!-- 버스 번호 -->
+          </div>
+          <div class="reportview-comment">
+            "{{ report.chatting.substr(0, 12) }}..."<!-- 가장 좋아요를 많이 받은 채팅(12자만 출력) -->
           </div>
         </div>
       </div>
+    </div>
     <Footer/>
   </div>
 </template>
@@ -46,7 +41,7 @@
   import api from '../../api/api.js'
 
   const reportsData = ref({
-    reportList = []
+    reportList: []
   })
 
   onMounted(() => {
