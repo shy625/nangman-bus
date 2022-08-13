@@ -53,4 +53,6 @@ public interface RedisService {
     void exitRoom(String sessionId, String userId);
     // 하차정류장 설정
     void setOutBusStop(String sessionId, String userId, String outBusStop);
+
+    List<String> getSessionList();
 }
