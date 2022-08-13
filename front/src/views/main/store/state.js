@@ -1,5 +1,8 @@
 const state = () => ({
-  lastVisited: '2022-08-05T22:03:00',
   nickname: '',
+  mostlyBus: [],
+  recentlyBus: [],
+  randomBus: [],
+  isRouletted: '1',
 })
 export default state

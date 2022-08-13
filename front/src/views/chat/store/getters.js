@@ -15,17 +15,13 @@ export function board(state) {
 }
 
 export function boardColor(state) {
-  return state.boardColor
+  return state.board.color
 }
 
 export function boardDate(state) {
-  return state.boardDate
+  return state.board.createDay
 }
 
 export function boardTime(state) {
-  return state.boardTime
+  return state.board.createTime
 }
-
-// export function boardsExceptOne(state) {
-//   return state.boards.slice(0, -1)
-// }

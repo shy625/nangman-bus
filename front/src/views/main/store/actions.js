@@ -135,3 +135,55 @@ export function chatList() {
 
   })
 }
+
+export function fetchRandomBus({ commit }) {
+  axios({
+    url: api.main.getrandombus(),
+    method: "get",
+  })
+    .then(res => {
+      commit('SET_RANDOM_BUS', res.data)
+    })
+    .catch(err => {
+    console.log(err)
+  })
+}
+
+export function fetchCurrentUser({ commit, getters, dispatch }, userId) {
+  axios({
+    url: api.main.fetchCurrentUser(userId),
+    method: 'get',
+  })
+    .then(res => {
+      commit('SET_CURRENT_USER', res.data)
+    })
+    .then(() => {
+      if (getters.isRouletted === 'N') {
+        const rouletteContainer = document.querySelector('.roulette-container')
+        const home = document.querySelector('.home')
+        home.classList.add('home-blur')
+        rouletteContainer.classList.add('roulette-active')
+        rouletteContainer.classList.add('roulette-in')
+        home.addEventListener('click', () => {
+          home.classList.remove('home-blur')
+          rouletteContainer.classList.remove('roulette-in')
+          rouletteContainer.classList.add('roulette-out')
+          rouletteContainer.addEventListener('animationend', () => {
+            rouletteContainer.classList.remove('roulette-active')
+          })
+        })
+        dispatch('changeIsRouletted', userId)
+      }
+    })
+    .catch(err => console.log(err))
+}
+
+export function changeIsRouletted({ commit }, userId) {
+  axios({
+    url: api.main.changeIsRouletted(userId),
+    method: 'put'
+  })
+    .then(() => {
+      commit('SET_IS_ROULETTED', 'Y')
+    })
+}

@@ -16,7 +16,45 @@
 </template>
 <script setup>
 import ChatList from './ChatList.vue'
-import { ref, onMounted } from 'vue'
+
+// 풋터 버튼 클릭할 때 색 바꾸기
+// 실패... 시간만 날림 ㅜ
+// const footerData = ref({
+//   nowUrl: window.location.href,
+// })
+// onUpdated(() => {
+//   console.log(footerData.value.nowUrl)
+// }),
+// onMounted(() => {
+//   const footerReportsBtn = document.querySelector('.footer-reports-btn')
+//   const footerMainBtn = document.querySelector('.footer-main-btn')
+//   // console.log(footerData.value.nowUrl[footerData.value.nowUrl.length-1] === '/')
+//   if (footerData.value.nowUrl[footerData.value.nowUrl.length-1] === '/') {
+//     footerMainBtn.classList.add('footer-btn-active')
+//     footerReportsBtn.classList.remove('footer-btn-active')
+//   } else {
+//     footerMainBtn.classList.remove('footer-btn-active')
+//     footerReportsBtn.classList.add('footer-btn-active')
+//   }
+// })
+// // 홈, 리포트 버튼
+// const clickFooterBtn = e => {
+//   const footerMainBtn = document.querySelector('.footer-main-btn')
+//   const footerReportsBtn = document.querySelector('.footer-reports-btn')
+//   if (e.currentTarget.classList.contains('footer-main-btn')) {
+//     footerMainBtn.style.filter = 'none'
+//     footerReportsBtn.style.filter = 'opacity(35%)'
+//     // console.log(true)
+//     // console.log(footerMainBtn.style)
+//     // console.log(footerReportsBtn)
+//   } else {
+//     footerMainBtn.style.filter = 'opacity(35%)'
+//     footerReportsBtn.style.filter = 'none'
+//     // console.log(false)
+//     // console.log(footerMainBtn)
+//     // console.log(footerReportsBtn)
+//   }
+// }
 
 // 채팅리스트 버튼
 const clickChatList = () => {
@@ -24,15 +62,21 @@ const clickChatList = () => {
   if (chatList.classList.contains('chatlist-in')) {
     chatList.classList.remove('chatlist-in')
     chatList.classList.add('chatlist-out')
+    setTimeout(() => {
+      chatList.classList.remove('chatlist-active')
+    }, 600);
   } else {
     chatList.classList.remove('chatlist-out')
+    chatList.classList.add('chatlist-active')
     chatList.classList.add('chatlist-in')
   }
-  chatList.addEventListener('animationend', () => {
-    chatList.classList.toggle('chatlist-active')
-  })
+  const footerChatList = document.querySelector('.footer-chatlist')
+  if (chatList.classList.contains('chatlist-in')) {
+    footerChatList.src = '/src/assets/bus-clicked.png'
+    } else {
+    footerChatList.src = '/src/assets/bus-unclicked.png'
+  }
 }
-
 </script>
 <style>
 .chatlist-active {
@@ -59,11 +103,11 @@ const clickChatList = () => {
   text-decoration: none;
   color: black;
   font-size: 0.8rem;
-  filter: opacity(35%);
+  /* filter: opacity(35%); */
 }
-.footer-btn-active {
+/* .footer-btn-active {
   filter: none;
-}
+} */
 .footer-main {
   height: 32px;
 }
@@ -88,7 +132,7 @@ const clickChatList = () => {
   text-decoration: none;
   color: black;
   font-size: 0.8rem;
-  filter: opacity(35%);
+  /* filter: opacity(35%); */
 }
 .footer-reports {
   height: 32px;
