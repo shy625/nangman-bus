@@ -49,13 +49,14 @@
   border-top: 4px solid #FFD96A;
 }
 .mostlybus-content {
+  font-family: Pretendard;
   padding: 16px;
   border-bottom: 4px solid #FFD96A;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 .mostlybus-data {
   font-family: BMHANNAPro;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #F34949;
 }
 </style>

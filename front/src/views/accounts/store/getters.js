@@ -26,3 +26,7 @@ export function authError(state) {
 export function authHeader(state) {
   return ({ Authorization: `Token ${state.token}` })
 }
+
+export function accountUserId() {
+  return localStorage.accountUserId
+}

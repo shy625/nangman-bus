@@ -37,9 +37,8 @@ export function fetchBoards({ commit }, busId) {
   })
     .then(res => {
       commit('SET_BOARDS', res.data)
-      return res
     })
-    .then(res => {
+    .then(() => {
       const boardScrollView = document.querySelector('#boardScroll .el-scrollbar__view')
       const boardScroll = document.querySelector('#boardScroll .el-scrollbar__wrap')
       boardScroll.scrollTo(0, boardScrollView.scrollHeight)

@@ -25,6 +25,8 @@ export default {
   main: {
     selectrooms: (lat, lng) => HOST + REDIS + 'selectRooms' + '/' + lat + '/' + lng,
     getrandombus: () => HOST + REDIS + 'getRandomBus',
+    fetchCurrentUser: userId => HOST + USER + userId,
+    changeIsRouletted: userId => HOST + USER + userId + '/roulette',
   },
   chat: {
     createBoard: () => HOST + BOARDS,

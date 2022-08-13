@@ -1,9 +1,17 @@
-// 마지막 방문 시간 설정: 닉네임 보여주기 연출 여부 판별
-export function SET_LASTVISITED(state, lastVisited) {
-  state.lastVisited = lastVisited
+// // 닉네임 설정
+// export function SET_NICKNAME(state, nickname) {
+//   state.nickname = nickname
+// }
+
+export function SET_RANDOM_BUS(state, randomBus) {
+  state.randomBus = randomBus
 }
 
-// 닉네임 설정
-export function SET_NICKNAME(state, nickname) {
-  state.nickname = nickname
+export function SET_CURRENT_USER(state, currentUser) {
+  state.nickname = currentUser.nickname
+  state.isRouletted = currentUser.is_rouletted
+}
+
+export function SET_IS_ROULETTED(state, isRouletted) {
+  state.isRouletted = isRouletted  
 }
