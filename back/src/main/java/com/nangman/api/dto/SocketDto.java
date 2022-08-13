@@ -10,15 +10,15 @@ public class SocketDto {
 
     @Getter
     public static class ChatPub {
-        private String userId;
+        private Long userId;
         private String message;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ChatSub {
-        private String chatId;
-        private String userId;
+        private Long chatId;
+        private Long userId;
         private String message;
         private String createdTime;
     }
@@ -26,14 +26,14 @@ public class SocketDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ChatLike {
-        private String chatId;
+        private Long chatId;
         private Integer count;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ChatUserInOut {
-        private String userId;
+        private Long userId;
         private Integer inOut;  // 1 : in, 2 : out
     }
 
