@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User updateUserIsRouletted(long userId) {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
-		user.setRouletted(user.isRouletted() ? false : true);
+		user.setRouletted(true);
 		userRepository.save(user);
 
 		return user;
@@ -138,6 +138,7 @@ public class UserServiceImpl implements UserService {
 
 			// 닉네임 부여
 			curUser.setNickname(selectedNickname);
+			curUser.setRouletted(false);
 			userRepository.save(curUser);
 			nicknameRepository.save(selectedNickname);
 		}
