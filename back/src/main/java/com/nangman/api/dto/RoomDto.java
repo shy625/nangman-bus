@@ -18,6 +18,6 @@ public class RoomDto {
         @ApiModelProperty(name="채팅방 세션 id", example="session_123123124325")
         private String sessionId;
         @ApiModelProperty(name="버스 번호판", example="77바8236")
-        private String license;
+        private String licenseNo;
     }
 }

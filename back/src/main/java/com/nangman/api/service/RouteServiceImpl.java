@@ -1,12 +1,10 @@
 package com.nangman.api.service;
 
 
-import com.nangman.api.dto.BusstopDto;
 import com.nangman.api.dto.RouteDto;
-import com.nangman.common.constants.CityCode;
 import com.nangman.common.constants.ErrorCode;
 import com.nangman.common.exception.CustomException;
-import com.nangman.db.entity.Busstop;
+import com.nangman.db.entity.BusStop;
 import com.nangman.db.entity.Route;
 import com.nangman.db.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RouteServiceImpl implements RouteService{
 
-    private final BusstopService busstopService;
+    private final BusStopService busStopService;
     private final RouteRepository routeRepository;
 
     private final String serviceKey = "7iPULnyfcY7QCbYSG6l7V1Xt%2BlMtgY1Svqhr%2BpqPNabuvA7obO6MIlH1n5e9BvZeA7oD52cRQTL5ToItgz99cg%3D%3D";
@@ -83,7 +81,7 @@ public class RouteServiceImpl implements RouteService{
 
         // 파싱한 데이터를 저장할 변수
         String result = "";
-        List<Busstop> busstopList = null;
+        List<BusStop> busStopList = null;
         Route route = new Route();
 
         try {
@@ -101,18 +99,18 @@ public class RouteServiceImpl implements RouteService{
             JSONObject items = (JSONObject)body.get("items");
             JSONObject item = (JSONObject)items.get("item");
             if (item == null) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
-            route.setCitycode(cityCode.get(request.getCityName()));
-            route.setNo(request.getNo());
+            route.setCityCode(cityCode.get(request.getCityName()));
+            route.setRouteNo(request.getNo());
             if (item.get("routeid") != null) route.setCode((String)item.get("routeid") + "");
-            if (item.get("startnodenm") != null) route.setStartBusstop(item.get("startnodenm") + "");
+            if (item.get("startnodenm") != null) route.setStartBusStop(item.get("startnodenm") + "");
             if (item.get("startvehicletime") != null) route.setStartTime(item.get("startvehicletime") + "");
-            if (item.get("endnodenm") != null) route.setEndBusstop(item.get("endnodenm") +  "");
+            if (item.get("endnodenm") != null) route.setEndBusStop(item.get("endnodenm") +  "");
             if (item.get("endvehicletime") != null) route.setEndTime(item.get("endvehicletime") + "");
-            if (item.get("routetp") != null) route.setType(item.get("routetp") + "");
-            busstopList = busstopService.addBusstop(new BusstopDto.Request(route.getCode(), route.getCitycode()));
-            route.setBusstops(busstopList);
+            if (item.get("routetp") != null) route.setRouteType(item.get("routetp") + "");
             routeRepository.save(route);
-            route = routeRepository.findRouteByCode(route.getCode()).get();
+            busStopList = busStopService.addBusStop(route);
+            route.setBusStops(busStopList);
+            route = routeRepository.findRouteById(route.getId()).get();
 
         }catch(Exception e) {
             e.printStackTrace();
@@ -122,7 +120,7 @@ public class RouteServiceImpl implements RouteService{
 
     @Override
     @Transactional
-    public void unfollowBus(RouteDto.Request request) {
+    public String unfollowBus(RouteDto.Request request) {
 
         String BASE_URL = "http://apis.data.go.kr/1613000/BusRouteInfoInqireService/getRouteNoList?" +
                 "serviceKey=" + serviceKey +
@@ -151,16 +149,19 @@ public class RouteServiceImpl implements RouteService{
             JSONObject item = (JSONObject)items.get("item");
             if (item == null) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
             String code = item.get("routeid") + "";
+            Route route = routeRepository.findRouteByCode(code).get();
 
-            busstopService.deleteBusstopByCode(code);
-            routeRepository.deleteRouteByCode(code);
+            busStopService.deleteBusStopByRouteId(route.getId());
+            routeRepository.deleteRouteById(route.getId());
 
         }catch(Exception e) {
             e.printStackTrace();
         }
+        return "OK";
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Route getRoute(RouteDto.Request request) {
         String BASE_URL = "http://apis.data.go.kr/1613000/BusRouteInfoInqireService/getRouteNoList?" +
                 "serviceKey=" + serviceKey +
@@ -196,5 +197,11 @@ public class RouteServiceImpl implements RouteService{
             e.printStackTrace();
         }
         return route;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Route> getAll(){
+        return routeRepository.findAll();
     }
 }

@@ -2,7 +2,6 @@ package com.nangman.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,26 +13,24 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
-public class Route {
+public class Route extends BaseEntity{
 
-    @Id
-    @Column(updatable = false)
+    //라우트id
     private String code;
-
-    private String no;
+    //노선번호(버스번호)
+    private String routeNo;
 
     private String startTime;
 
     private String endTime;
 
-    private String startBusstop;
+    private String startBusStop;
 
-    private String endBusstop;
+    private String endBusStop;
 
-    private String type;
+    private String routeType;
 
-    private int citycode;
+    private int cityCode;
 
     @OneToMany(mappedBy = "route")
     private List<Bus> buses = new ArrayList<>();
@@ -46,10 +43,10 @@ public class Route {
     }
 
     @OneToMany(mappedBy = "route")
-    private List<Busstop> busstops = new ArrayList<>();
+    private List<BusStop> busStops = new ArrayList<>();
 
-    public void addBus(Busstop busstop) {
-        this.busstops.add(busstop);
+    public void addBusStop(BusStop busstop) {
+        this.busStops.add(busstop);
         if (busstop.getRoute() != this) {
             busstop.setRoute(this);
         }
