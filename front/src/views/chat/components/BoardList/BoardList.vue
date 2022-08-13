@@ -196,7 +196,8 @@ const clickCreateBtn = () => {
   transform: translateX(-50%);
 }
 .create-btn span {
-  font-family: BMHANNAPro;
+  font-family: Pretendard;
+  font-weight: 600;
 }
 .board-create-content {
   font-family: Pretendard;
