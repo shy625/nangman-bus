@@ -3,9 +3,7 @@ package com.nangman.api.service;
 import com.nangman.api.dto.RoomDto;
 import com.nangman.common.constants.ErrorCode;
 import com.nangman.common.exception.CustomException;
-import com.nangman.common.util.TimeCalculator;
 import com.nangman.db.entity.Bus;
-import com.nangman.db.entity.BusStop;
 import com.nangman.db.entity.Route;
 import com.nangman.db.repository.BusRepository;
 import com.nangman.db.repository.RouteRepository;
@@ -42,7 +40,6 @@ public class BusServiceImpl implements BusService{
 
     private final RedisService redisService;
 
-    private final ChatService chatService;
     @Override
     @Transactional
     public void followBuses() {
@@ -104,7 +101,7 @@ public class BusServiceImpl implements BusService{
                         sessionId += "_";
                         sessionId += Integer.toString(i);
                         bus.setSessionId(sessionId);
-                        roomService.createRoom(new RoomDto.CreateRequest(bus.getSessionId(), bus.getLicenseNo()));
+                        roomService.createRoom(new RoomDto.CreateRequest(bus));
                         redisService.createChattingRoom(bus);
                     }
                     else redisService.updateBudData(bus);

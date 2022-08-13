@@ -23,44 +23,46 @@ public class SocketController {
     private final ChatInOutRecordService chatInOutRecordService;
 
     // 채팅 입장
-    @MessageMapping("/chat/rooms/{sessionId}/enter")
-    public void enterChatRoom(@DestinationVariable String sessionId, String userId) {
-        chatInOutRecordService.insertInRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
-        SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 1);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserDto);
+    @MessageMapping("/chat/rooms/{sessionId}/in")
+    public void enterChatRoom(@DestinationVariable String sessionId, Long userId) {
+        chatInOutRecordService.insertInRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, userId));
+        SocketDto.ChatUserInOut chatUserInOutDto = new SocketDto.ChatUserInOut(userId, 1);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserInOutDto);
     }
 
     // 채팅 퇴장
-    @MessageMapping("/chat/rooms/{sessionId}/leave")
-    public void leaveChatRoom(@DestinationVariable String sessionId, String userId) {
-        chatInOutRecordService.insertOutRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
-        SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 2);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserDto);
+    @MessageMapping("/chat/rooms/{sessionId}/out")
+    public void leaveChatRoom(@DestinationVariable String sessionId, Long userId) {
+        chatInOutRecordService.insertOutRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, userId));
+        SocketDto.ChatUserInOut chatUserInOutDto = new SocketDto.ChatUserInOut(userId, 2);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserInOutDto);
     }
 
     // 채팅 - 일반
     @MessageMapping("/chat/rooms/{sessionId}/message")
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.ChatPub chatPubDto) {
+        log.info("sendChatMessage() ChatPub - userId : " + chatPubDto.getUserId() + " message : " + chatPubDto.getMessage());
         String createdTime = LocalDateTime.now().toString();
-        String chatId = redisService.createChat(sessionId, chatPubDto.getUserId(), createdTime, chatPubDto.getMessage());
-        SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(chatId, chatPubDto.getUserId(), chatPubDto.getMessage(), createdTime);
+        String chatId = redisService.createChat(sessionId, String.valueOf(chatPubDto.getUserId()), createdTime, chatPubDto.getMessage());
+        SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(Long.valueOf(chatId), chatPubDto.getUserId(), chatPubDto.getMessage(), createdTime);
+        log.info("sendChatMessage() ChatSub - userId : " + chatSubDto.getUserId() + " message : " + chatSubDto.getMessage());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", chatSubDto);
     }
 
     // 채팅 좋아요 등록
     @MessageMapping("/chat/rooms/{sessionId}/{chatId}/like/up")
-    public void registerChatLike(@DestinationVariable String sessionId, @DestinationVariable String chatId) {
-        redisService.upLike(sessionId, chatId);
-        int likeCount = redisService.getLike(sessionId, chatId);
+    public void registerChatLike(@DestinationVariable String sessionId, @DestinationVariable Long chatId) {
+        redisService.upLike(sessionId, String.valueOf(chatId));
+        int likeCount = redisService.getLike(sessionId, String.valueOf(chatId));
         SocketDto.ChatLike chatLikeDto = new SocketDto.ChatLike(chatId, likeCount);
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
 
     // 채팅 좋아요 취소
     @MessageMapping("/chat/rooms/{sessionId}/{chatId}/like/down")
-    public void cancelChatLike(@DestinationVariable String sessionId, @DestinationVariable String chatId) {
-        redisService.downLike(sessionId, chatId);
-        int likeCount = redisService.getLike(sessionId, chatId);
+    public void cancelChatLike(@DestinationVariable String sessionId, @DestinationVariable Long chatId) {
+        redisService.downLike(sessionId, String.valueOf(chatId));
+        int likeCount = redisService.getLike(sessionId, String.valueOf(chatId));
         SocketDto.ChatLike chatLikeDto = new SocketDto.ChatLike(chatId, likeCount);
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
@@ -71,7 +73,13 @@ public class SocketController {
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/busStop", chatBusStopDto);
     }
 
-    // 사용자 감정 상태 설정
+    // 사용자 감정 상태 설정 - 0 : 무표정, 1 : 화나요, 2 : 기분좋아요, 3 : 우울해요
+    @MessageMapping("/chat/rooms/{sessionId}/{userId}/emotion")
+    public void setUserEmotion(@DestinationVariable String sessionId, @DestinationVariable Long userId, int emotion) {
+        redisService.updateMyEmotion(sessionId, String.valueOf(userId), emotion);
+        SocketDto.ChatUserEmotion chatUserEmotionDto = new SocketDto.ChatUserEmotion(userId, emotion);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/emotion", chatUserEmotionDto);
+    }
 
     // 사용자 하차 정류장 설정
 

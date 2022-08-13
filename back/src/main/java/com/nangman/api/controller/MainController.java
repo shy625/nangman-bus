@@ -24,7 +24,7 @@ public class MainController {
     private final MainService mainService;
 
     @GetMapping("main/topbus")
-    @ApiOperation(value = "보고서 리스트 조회", notes = "유저가 참가한 채팅의 낭만보고서들을 리턴")
+    @ApiOperation(value = "메인 데이터 조회", notes = "유저가 참가한 채팅의 낭만보고서들을 리턴")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = ReportDto.class),
             @ApiResponse(code = 404, message = "보고서 없음"),

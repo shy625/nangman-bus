@@ -395,6 +395,18 @@ public class RedisServiceImpl implements RedisService{
         redisTemplate.opsForHash().put(key, subKey, newUserInfo.toString());
     }
 
+    @Override
+    public List<String> getSessionList() {
+        Set<String> redisKeys = redisTemplate.keys("*_chat");
+        List<String> keysList = new ArrayList<>();
+        Iterator<String> iter = redisKeys.iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            keysList.add(key);
+        }
+        return keysList;
+    }
+
 
     // 두 좌표 사이의 거리를 구하는 함수
     // dsitance(첫번쨰 좌표의 위도, 첫번째 좌표의 경도, 두번째 좌표의 위도, 두번째 좌표의 경도)
