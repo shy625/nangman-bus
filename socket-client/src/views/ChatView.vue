@@ -28,7 +28,8 @@ import * as StompJs from "@stomp/stompjs";
 
 onMounted(() => {
   const client = new StompJs.Client({
-    brokerURL: "ws://localhost:8080/stomp/chat",
+    brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
+    // brokerURL: "ws://localhost:8080/socket",
     connectHeaders: {
       login: "user",
       passcode: "password",
@@ -47,20 +48,30 @@ onMounted(() => {
   // to be used for each (re)connect
   client.webSocketFactory = function () {
     // Note that the URL is different from the WebSocket URL
-    return new SockJS("http://localhost:8080/stomp/chat");
+    return new SockJS("http://i7a704.p.ssafy.io:8080/socket");
+    // return new SockJS("http://localhost:8080/socket");
   };
   // }
 
   client.onConnect = function () {
     console.log("socket connection success");
-    client.subscribe("/sub/chat/room/" + data.value.room, (message) => {
-      const payload = JSON.parse(message.body);
-      let msgDiv = document.createElement("div");
-      // msgDiv.innerHTML =
-      //   "<span>[" + payload.writer + "]: </span><span>" + payload.message + "</span>";
-      msgDiv.innerHTML = payload.writer + " : " + payload.message;
-      document.getElementById("msgArea").appendChild(msgDiv);
-    });
+    client.subscribe(
+      "/sub/chat/rooms/" + data.value.room + "/message",
+      (message) => {
+        const payload = JSON.parse(message.body);
+        console.log(payload);
+        let msgDiv = document.createElement("div");
+        // msgDiv.innerHTML =
+        //   "<span>[" + payload.writer + "]: </span><span>" + payload.message + "</span>";
+        msgDiv.innerHTML =
+          payload.userId +
+          " : " +
+          payload.message +
+          " : " +
+          payload.createdTime;
+        document.getElementById("msgArea").appendChild(msgDiv);
+      }
+    );
   };
 
   const connBtn = document.getElementById("connBtn");
@@ -76,12 +87,12 @@ onMounted(() => {
   const sendBtn = document.getElementById("sendBtn");
   sendBtn.addEventListener("click", () => {
     const payload = {
-      roomName: data.value.room,
-      writer: data.value.user,
+      userId: data.value.user,
       message: data.value.message,
     };
+    console.log(payload);
     client.publish({
-      destination: "/pub/chat/message",
+      destination: "/pub/chat/rooms/" + data.value.room + "/message",
       body: JSON.stringify(payload),
     });
     data.value.message = "";
