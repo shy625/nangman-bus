@@ -32,9 +32,9 @@ public class SocketDto {
 
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ChatUser {
+    public static class ChatUserInOut {
         private String userId;
-        private Integer inOut;  // in : 1, out : 2
+        private Integer inOut;  // 1 : in, 2 : out
     }
 
     @AllArgsConstructor
@@ -42,6 +42,13 @@ public class SocketDto {
     public static class ChatBusStop {
         private Long busStopId;
         private String busStopName;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ChatUserEmotion {
+        private Long userId;
+        private Integer emotion;    // 0 : 무표정, 1 : 화나요, 2 : 기분좋아요, 3 : 우울해요
     }
 
 }

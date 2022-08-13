@@ -26,16 +26,16 @@ public class SocketController {
     @MessageMapping("/chat/rooms/{sessionId}/enter")
     public void enterChatRoom(@DestinationVariable String sessionId, String userId) {
         chatInOutRecordService.insertInRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
-        SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 1);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserDto);
+        SocketDto.ChatUserInOut chatUserInOutDto = new SocketDto.ChatUserInOut(userId, 1);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserInOutDto);
     }
 
     // 채팅 퇴장
     @MessageMapping("/chat/rooms/{sessionId}/leave")
     public void leaveChatRoom(@DestinationVariable String sessionId, String userId) {
         chatInOutRecordService.insertOutRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, Long.parseLong(userId)));
-        SocketDto.ChatUser chatUserDto = new SocketDto.ChatUser(userId, 2);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserDto);
+        SocketDto.ChatUserInOut chatUserInOutDto = new SocketDto.ChatUserInOut(userId, 2);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserInOutDto);
     }
 
     // 채팅 - 일반
@@ -71,7 +71,13 @@ public class SocketController {
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/busStop", chatBusStopDto);
     }
 
-    // 사용자 감정 상태 설정
+    // 사용자 감정 상태 설정 - 0 : 무표정, 1 : 화나요, 2 : 기분좋아요, 3 : 우울해요
+    @MessageMapping("/chat/rooms/{sessionId}/{userId}/emotion")
+    public void setUserEmotion(@DestinationVariable String sessionId, @DestinationVariable Long userId, int emotion) {
+        redisService.updateMyEmotion(sessionId, String.valueOf(userId), emotion);
+        SocketDto.ChatUserEmotion chatUserEmotionDto = new SocketDto.ChatUserEmotion(userId, emotion);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/emotion", chatUserEmotionDto);
+    }
 
     // 사용자 하차 정류장 설정
 
