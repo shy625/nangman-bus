@@ -1,10 +1,10 @@
 <template>
   <div class="footer">
-    <router-link :to="{ name: 'main' }" class="footer-main-btn" @click="clickMain">
+    <router-link :to="{ name: 'main' }" class="footer-main-btn">
       <img src="../../assets/main.png" alt="main" class="footer-main">
       <div>홈</div>
     </router-link>
-    <div class="chatlist-btn">
+    <div class="chatlist-btn" @click="clickChatList">
       <img src="../../assets/bus-unclicked.png" alt="bus-unclicked" class="footer-chatlist">
     </div>
     <router-link :to="{ name: 'reports'}" class="footer-reports-btn">
@@ -18,24 +18,21 @@
 import ChatList from './ChatList.vue'
 import { ref, onMounted } from 'vue'
 
-onMounted(() => {
-  // 채팅리스트 버튼
-  const chatListBtn = document.querySelector('.chatlist-btn')
-  const body = document.querySelector('body')
+// 채팅리스트 버튼
+const clickChatList = () => {
   const chatList = document.querySelector('.chatlist-cover')
-  chatListBtn.addEventListener('click', () => {
-    if (chatList.classList.contains('chatlist-in')) {
-      chatList.classList.remove('chatlist-in')
-      chatList.classList.add('chatlist-out')
-    } else {
-      chatList.classList.remove('chatlist-out')
-      chatList.classList.add('chatlist-in')
-    }
-  })
+  if (chatList.classList.contains('chatlist-in')) {
+    chatList.classList.remove('chatlist-in')
+    chatList.classList.add('chatlist-out')
+  } else {
+    chatList.classList.remove('chatlist-out')
+    chatList.classList.add('chatlist-in')
+  }
   chatList.addEventListener('animationend', () => {
     chatList.classList.toggle('chatlist-active')
   })
-})
+}
+
 </script>
 <style>
 .chatlist-active {

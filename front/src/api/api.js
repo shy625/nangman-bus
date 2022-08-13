@@ -3,6 +3,7 @@ const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
 const USER = 'user/'
 const REDIS = 'redis/'
 const REPORTS = 'reports/'
+const BOARDS = 'boards/'
 // const ARTICLES = 'articles/'
 // const COMMENTS = 'comments/'
 
@@ -24,6 +25,11 @@ export default {
   main: {
     selectrooms: (lat, lng) => HOST + REDIS + 'selectRooms' + '/' + lat + '/' + lng,
     getrandombus: () => HOST + REDIS + 'getRandomBus',
+  },
+  chat: {
+    createBoard: () => HOST + BOARDS,
+    deleteBoard: boardId => HOST + BOARDS + boardId,
+    getBoards: busId => HOST + BOARDS + busId,
   }
 //   articles: {
 //     // /articles/

@@ -3,25 +3,20 @@
     <div class="board-title">방명록</div>
     <div class="board-list">
       <el-scrollbar id="boardScroll" height="75vh">
-        <div id="boardContent" class="board-content">
-          <div class="board-content-body">
-            안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕
-          </div>
-          <div class="board-content-date">
-            <div class="create-date">2022년 8월 1일</div>
-            <div class="create-time">11:40</div>
-          </div>
-        </div>
-        <div class="board-content">
-          <div class="board-content-body">
-            바이바이맨~
-          </div>
-          <div class="board-content-date">
-            <div class="create-date">2022년 8월 1일</div>
-            <div class="create-time">11:40</div>
+        <div 
+          v-for="board in boardData.boards" 
+          :key="board.boardId"
+        >
+          <div class="board-content" :style="`background-color: ${board.color}`">
+            <div class="board-content-body">
+              {{ board.content }}
+            </div>
+            <div class="board-content-date">
+              <div class="create-date">{{ board.createDay }}</div>
+              <div class="create-time">{{ board.createTime }}</div>
+            </div>
           </div>
         </div>
-      <!-- 이 밑으로 추가! -->
       </el-scrollbar>
     </div>
   </div>
@@ -35,18 +30,28 @@
   </el-button>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { ref, onMounted, computed } from 'vue'
+
+const store = useStore()
+const boardData = ref({
+  busId: computed(() => store.getters['chatStore/busId']),
+  userId: computed(() => store.getters['chatStore/userId']),
+  boards: computed(() => store.getters['chatStore/boards']),
+  board: computed(() => store.getters['chatStore/board']),
+  boardColor: computed(() => store.getters['chatStore/boardColor']),
+  boardDate: computed(() => store.getters['chatStore/boardDate']),
+  boardTime: computed(() => store.getters['chatStore/boardTime']),
+})
 
 onMounted(() => {
-  const boardScrollView = document.querySelector('#boardScroll .el-scrollbar__view')
-  const boardScroll = document.querySelector('#boardScroll .el-scrollbar__wrap')
-  boardScroll.scrollTo(0, boardScrollView.scrollHeight)
-
   const boardContent = document.querySelector('#boardContent')
   function boardContentToggle() {
       boardContent.classList.toggle('collapsed')
   }
-  boardContent.addEventListener('click', boardContentToggle)
+  if (boardContent) {
+    boardContent.addEventListener('click', boardContentToggle)
+  }
 })
 
 const clickCreateBtn = () => {
@@ -102,12 +107,19 @@ const clickCreateBtn = () => {
 
   // 등록버튼 이벤트
   createSubmitBtn.addEventListener('click', () => {
+    const credentials = {
+      busId: boardData.value.busId,
+      content: textarea.value,
+      userId: boardData.value.userId,
+    }
+    store.dispatch('chatStore/createBoard', credentials)
+
     boardScrollView.removeChild(boardContent)
     createBtn.style.display = 'inline-flex'
-    const createBoardcontent = document.createElement('div')
-    createBoardcontent.classList.add('board-content')
+    const createBoardContent = document.createElement('div')
+    createBoardContent.classList.add('board-content')
     // 배경색 입력
-    createBoardcontent.setAttribute('style', 'background-color: #FFD96A')
+    createBoardContent.setAttribute('style', `background-color: ${boardData.value.boardColor}`)
     const boardContentBody = document.createElement('div')
     boardContentBody.classList.add('board-content-body')
     // 내용 입력
@@ -117,17 +129,16 @@ const clickCreateBtn = () => {
     const createDate = document.createElement('div')
     createDate.classList.add('create-date')
     // 날짜 입력
-    createDate.innerText = '2022년 8월 8일'
+    createDate.innerText = boardData.value.boardDate
     const createTime = document.createElement('div')
     createTime.classList.add('create-time')
     // 시간 입력
-    createTime.innerText = '17:55'
+    createTime.innerText = boardData.value.boardTime
 
-    createBoardcontent.append(boardContentBody, boardContentDate)
-    // console.log(createBoardcontent)
+    createBoardContent.append(boardContentBody, boardContentDate)
     boardContentDate.append(createDate, createTime)
-    boardScrollView.append(createBoardcontent)
-    createBoardcontent.classList.add('submit-board')
+    boardScrollView.append(createBoardContent)
+    createBoardContent.classList.add('submit-board')
   })
 }
 </script>
@@ -159,7 +170,6 @@ const clickCreateBtn = () => {
   padding: 16px;
   border-radius: 10px;
   max-height: 100px;
-  /* background-color: #FFD96A; */
   transition: all 0.3s;
 }
 .board-content.collapsed {
