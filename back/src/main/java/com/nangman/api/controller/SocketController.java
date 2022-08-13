@@ -41,9 +41,11 @@ public class SocketController {
     // 채팅 - 일반
     @MessageMapping("/chat/rooms/{sessionId}/message")
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.ChatPub chatPubDto) {
+        log.info("sendChatMessage() ChatPub - userId : " + chatPubDto.getUserId() + " message : " + chatPubDto.getMessage());
         String createdTime = LocalDateTime.now().toString();
         String chatId = redisService.createChat(sessionId, String.valueOf(chatPubDto.getUserId()), createdTime, chatPubDto.getMessage());
         SocketDto.ChatSub chatSubDto = new SocketDto.ChatSub(Long.valueOf(chatId), chatPubDto.getUserId(), chatPubDto.getMessage(), createdTime);
+        log.info("sendChatMessage() ChatSub - userId : " + chatSubDto.getUserId() + " message : " + chatSubDto.getMessage());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", chatSubDto);
     }
 

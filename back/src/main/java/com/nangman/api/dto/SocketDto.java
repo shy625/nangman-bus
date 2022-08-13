@@ -14,6 +14,7 @@ public class SocketDto {
         private String message;
     }
 
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ChatSub {
