@@ -163,5 +163,4 @@ public class RedisController {
     public void setOutBusStop() {
         redisService.setOutBusStop(testSessionId, "10", "1");
     }
-
 }
