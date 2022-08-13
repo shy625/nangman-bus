@@ -7,9 +7,7 @@
         오늘은 어떤 낭만을<br>
         기대하세요?
       </div>
-      <div class="welcome-chaticon-btn">
-        <img src="../../assets/bus-unclicked.png" alt="unclickedBus" class="welcome-chaticon-img">
-      </div>
+      <img src="../../assets/bus-clicked-horizon.png" alt="unclickedBus" class="welcome-chaticon-img">
     </div>
     <MostlyBus></MostlyBus>
     <RecentlyBus></RecentlyBus>
@@ -50,19 +48,35 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 52px;
 }
-.welcome-chaticon-btn {
-  margin-right: 24px;
-  height: 24px;
-  padding: 10px;
-  background-color: white;
-  border: 3px solid #F34949;
-  border-radius: 50%;
-}
+
 .welcome-chaticon-img {
-  height: 24px;
+  height: 50px;
+  margin-right: 24px;
+  animation: welcomeIcon 4s infinite;
+}
+@keyframes welcomeIcon {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0) skewX(-30deg);
+    transform: translate3d(100%, 0, 0) skewX(-30deg);
+    opacity: 0;
+  }
+  15% {
+    -webkit-transform: skewX(20deg);
+    transform: skewX(20deg);
+    opacity: 1;
+  }
+  20% {
+    -webkit-transform: skewX(-5deg);
+    transform: skewX(-5deg);
+  }
+  25% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
 }
 .welcome-nickname {
   font-size: 1.5rem;
+  /* font-family: Pretendard; */
 }
 .welcome-bold {
   font-family: BMHANNAPro;
