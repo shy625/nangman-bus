@@ -27,7 +27,7 @@
   margin: 20px 0 20px 32px;
 }
 .header-user {
-  width: 40px;
+  width: 32px;
   margin-right: 32px;
 }
 </style>

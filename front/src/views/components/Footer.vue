@@ -121,6 +121,7 @@ const clickChatList = () => {
   left: 50%;
   transform: translateX(-50%);
   bottom: 16px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .footer-chatlist {
   height: 24px;

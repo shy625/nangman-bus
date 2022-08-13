@@ -1,8 +1,8 @@
 <template>
   <div class="roulette-container">
-    <div class="roulette-title">
+    <!-- <div class="roulette-title">
       오늘의 닉네임
-    </div>
+    </div> -->
     <div class="roulette-content">
       <p class="roulette-etc">츄파츕스</p>
       <p class="roulette-etc">미드가르드</p>
@@ -48,7 +48,7 @@ const rouletteData = ref({
   position: fixed;
   top: 20%;
   left: 50%;
-  width: 95%;
+  width: 80%;
   border: 3px solid #FFD96A;
   border-radius: 10px;
   height: 80px;
@@ -66,6 +66,7 @@ const rouletteData = ref({
   transform: translateX(-50%);
 }
 .roulette-content {
+  font-family: Pretendard;
   text-align: center;
   font-size: 1.1rem;
   animation: roulette 3s cubic-bezier(0.1, -0.2, 0.3, 1.2);
@@ -113,6 +114,7 @@ const rouletteData = ref({
 }
 .roulette-etc {
   margin: 8px;
+  font-size: 1rem;
 }
 .roulette-in {
   animation: rouletteIn 1s forwards;
