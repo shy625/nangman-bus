@@ -397,7 +397,7 @@ public class RedisServiceImpl implements RedisService{
 
     @Override
     public List<String> getSessionList() {
-        Set<String> redisKeys = redisTemplate.keys("_chat");
+        Set<String> redisKeys = redisTemplate.keys("*_chat");
         List<String> keysList = new ArrayList<>();
         Iterator<String> iter = redisKeys.iterator();
         while (iter.hasNext()) {
