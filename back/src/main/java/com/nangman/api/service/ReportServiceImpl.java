@@ -6,17 +6,16 @@ import com.nangman.common.exception.CustomException;
 import com.nangman.common.util.TimeCalculator;
 import com.nangman.db.entity.ChatInOutRecord;
 import com.nangman.db.entity.Report;
+import com.nangman.db.entity.User;
 import com.nangman.db.entity.UserReport;
-import com.nangman.db.repository.ChatInOutRecordRepository;
-import com.nangman.db.repository.ReportRepository;
-import com.nangman.db.repository.RoomRepository;
-import com.nangman.db.repository.UserReportRepository;
+import com.nangman.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +28,7 @@ public class ReportServiceImpl implements ReportService{
     private final ReportRepository reportRepository;
     private final RoomRepository roomRepository;
     private final ChatInOutRecordRepository chatInOutRecordRepository;
+    private final UserRepository userRepository;
     @Override
     @Transactional(readOnly = true)
     public List<Report> getReportsByUserId(long userId) {
@@ -47,6 +47,7 @@ public class ReportServiceImpl implements ReportService{
     @Transactional(readOnly = true)
     public ReportDto.Info getReportByIds(ReportDto.DetailRequest detailRequest) {
         Report report = reportRepository.findReportById(detailRequest.getReportId()).get();
+        int chatPerMinute = (int)(report.getTotalChatCount() / (report.getAverageTime() / 60));
         int accessTime = 0;
         List<ChatInOutRecord> chatInOutRecordList = chatInOutRecordRepository
                 .findChatInOutRecordByUserIdAndRoomId(
@@ -70,8 +71,16 @@ public class ReportServiceImpl implements ReportService{
         for (ChatInOutRecord item : chatInOutRecordList)
             accessTime += TimeCalculator.getAccessTime(item.getOutTime(), item.getInTime());
 
-        return new ReportDto.Info(report.getId(), report.getContent(), report.getAverageTime(), report.getTotalChatCount(),
-                report.getTotalUserCount(), accessTime);
+        //보고서를 작성한 시점에서 유저가 해당 버스를 몇번이나 탔는지
+        int personalCount = 0;
+        User user = userRepository.findByIdAndIsDeletedFalse(detailRequest.getUserId()).get();
+        LocalDateTime reportedTime = report.getCreatedDate();
+        List<UserReport> userReportList = user.getUserReports();
+        for (UserReport userReport : userReportList){
+            if (TimeCalculator.getAccessTime(reportedTime, userReport.getCreatedDate()) >= 0) personalCount++;
+        }
+
+        return new ReportDto.Info(report, accessTime, chatPerMinute, personalCount);
     }
 
     @Override
