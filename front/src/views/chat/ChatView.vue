@@ -34,7 +34,20 @@
 import BoardList from './components/BoardList/BoardList.vue'
 import ChatRoom from './components/CharRoom/ChatRoom.vue'
 import UserList from './components/UserList/UserList.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+const chatViewData = ref({
+  busId: computed(() => store.getters['chatStore/busId'])
+})
+
+onMounted(() => {
+  const leftBtn = document.querySelector('.el-carousel__arrow--left')
+  leftBtn.addEventListener('click', () => {
+    store.dispatch('chatStore/fetchBoards', chatViewData.value.busId)
+  })
+})
 
 function getLocation() {
   if (navigator.geolocation) { // GPS를 지원하면
