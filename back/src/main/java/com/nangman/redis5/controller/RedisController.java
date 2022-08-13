@@ -107,6 +107,12 @@ public class RedisController {
 //        return redisService.deleteChattingRoom(testSessionId);
 //    }
 
+    @GetMapping("/test/sessions")
+    public List<String> getSessionList() {
+        return redisService.getSessionList();
+    }
+
+
 
 
     @GetMapping("/test/isAccessibleRoom")

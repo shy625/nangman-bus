@@ -45,11 +45,11 @@ public class UserDto implements Serializable {
         @Pattern(regexp = "^((19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|)$") @ApiModelProperty(name="유저 생일", example="1995-11-15")
         private String userBirthday;
 
-        private String is_rouletted;
+        private Boolean is_rouletted;
 
         private String nickname;
 
-        private String whiperMode;
+        private boolean whiperMode;
 
 
         public Info(User user){
@@ -57,9 +57,9 @@ public class UserDto implements Serializable {
             this.password = null;
             this.useremail = user.getUseremail();
             this.userBirthday = user.getUserBirthday();
-            this.is_rouletted = user.isRouletted() ? "Y" : "N";
+            this.is_rouletted = user.isRouletted();
             this.nickname = user.getNickname().getNickname();
-            this.whiperMode = user.getSetting().isWhisperMode() ? "Y" : "N";
+            this.whiperMode = user.getSetting().isWhisperMode();
         }
     }
 

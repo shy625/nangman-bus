@@ -13,13 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoomServiceImpl implements RoomService{
 
     private final RoomRepository roomRepository;
-    private final BusRepository busRepository;
     @Transactional
     @Override
     public Room createRoom(RoomDto.CreateRequest createRequest) {
         Room room = new Room();
-        room.setSessionId(createRequest.getSessionId());
-        room.setBus(busRepository.findBusByLicenseNo(createRequest.getLicenseNo()).get());
+        room.setSessionId(createRequest.getBus().getSessionId());
+        room.setBus(createRequest.getBus());
         roomRepository.save(room);
         room = roomRepository.findRoomBySessionId(room.getSessionId()).get();
         return room;
