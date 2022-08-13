@@ -1,36 +1,49 @@
 <template>
   <div class="roulette-container">
+    <div class="roulette-title">
+      오늘의 닉네임
+    </div>
     <div class="roulette-content">
-      <p class="roulette-etc">헤라</p>
-      <p class="roulette-etc">클레스</p>
-      <p class="roulette-etc">ㅁㄴㄹ</p>
-      <p class="roulette-etc">ㅌㅋㅍ</p>
+      <p class="roulette-etc">츄파츕스</p>
+      <p class="roulette-etc">미드가르드</p>
+      <p class="roulette-etc">마나</p>
+      <p class="roulette-etc">곽 The Bermyu 종환</p>
       <div class="chosen-box">
         <span class="nickname-twinkle">>> </span>
-        <span class="chosen-name">가우르구라</span>
+        <span class="chosen-name">{{ rouletteData.nickname }}</span>
         <span class="nickname-twinkle"> &lt;&lt;</span>
       </div>
-      <p class="roulette-etc">헤라</p>
-      <p class="roulette-etc">클레스</p>
-      <p class="roulette-etc">ㅁㄴㄹ</p>
-      <p class="roulette-etc">ㅌㅋㅍ</p>
-      <p class="roulette-etc">ㅌㅋㅍㅌㅋㅍㅌㅋㅍ</p>
-      <p class="roulette-etc">가우ㅌㅋㅍㅁㅈㅍㅁㄴ르구라</p>
-      <p class="roulette-etc">헤ㅌㅋ ㅋㅌ ㅌㅋ 라</p>
-      <p class="roulette-etc">클레ㅇㄴㅍㅇㄴㅍㅇㄴ스</p>
-      <p class="roulette-etc">가ㅊㅌ ㅌㅋㅍㄴㅇㅍ우르구라</p>
-      <p class="roulette-etc">헤라</p>
-      <p class="roulette-etc">클레ㅍㄴㅇㅍ스</p>
-      <p class="roulette-etc">가우르구라</p>
-      <p class="roulette-etc">헤라</p>
-      <p class="roulette-etc">클레스</p>
+      <p class="roulette-etc">우리곁을 떠나버린 윤병찬.. 그립읍니다..</p>
+      <p class="roulette-etc">안피곤한 팀장 이현규</p>
+      <p class="roulette-etc">드러눕는 김종휘</p>
+      <p class="roulette-etc">소현영(남자임)</p>
+      <p class="roulette-etc">수퍼 프론트 엔지니어 이우현</p>
+      <p class="roulette-etc">쓰리 소사이어티스</p>
+      <p class="roulette-etc">에인헤르자르</p>
+      <p class="roulette-etc">파스칼</p>
+      <p class="roulette-etc">스타후르츠</p>
+      <p class="roulette-etc">아리스토텔레스</p>
+      <p class="roulette-etc">알렉산드로스</p>
+      <p class="roulette-etc">코페르니쿠스</p>
+      <p class="roulette-etc">안드로아</p>
+      <p class="roulette-etc">메리엘</p>
     </div>
   </div>
 </template>
 <script setup>
+import { useStore } from 'vuex'
+import { ref, computed } from 'vue'
 
+const store = useStore()
+const rouletteData = ref({
+  nickname: computed(() => store.getters['mainPage/nickname'])
+})
 </script>
 <style>
+.roulette-title {
+  /* font-family: Pretendard; */
+  font-weight: bold;
+}
 .roulette-container {
   position: fixed;
   top: 20%;
@@ -54,6 +67,7 @@
 }
 .roulette-content {
   text-align: center;
+  font-size: 1.1rem;
   animation: roulette 3s cubic-bezier(0.1, -0.2, 0.3, 1.2);
   transform: translateY(-19%);
 }
@@ -82,12 +96,18 @@
 }
 @keyframes twinkle {
   from {
+    font-weight: bold;
+    font-size: 1.2rem;
     opacity: 1;
   }
   50% {
+    font-weight: normal;
+    font-size: 1.1rem;
     opacity: 0;
   }
   to {
+    font-weight: bold;
+    font-size: 1.2rem;
     opacity: 1;
   }
 }
