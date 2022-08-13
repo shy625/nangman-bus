@@ -8,12 +8,12 @@
         </div>
         <hr class="reportview-reportlist-title-line">
       </div>
-      <div v-if="!reportsData.reportList[0]"><img src="../../assets/nothing-reports.png" alt="낭만보고서가 없어요..." style="display: block; margin: 0 auto; width: 80%; height: 80%;"><p style="text-align: center; font-size: 20px;">낭만보고서가 없어요...<br>먼저 낭만버스를 이용해주세요!</p></div>
+      <div v-if="!reportsData.reportList[0]"><img src="../../assets/nothing-reports.png" alt="낭만보고서가 없어요..." style="display: block; margin: 0 auto; width: 80%; height: 80%;"><p style="text-align: center; font-size: 20px; margin-bottom: 100px">낭만보고서가 없어요...<br>먼저 낭만버스를 이용해주세요!</p></div>
       <div v-if="reportsData.reportList[0]"><!-- 리포트데이터가 있으면 보여줌 -->
         <div v-for="report in reportsData.reportList" :key="report.time"
           class="reportview-content"
         ><!-- 시간 순서로 리포트아이템 출력 -->
-          <router-link :to="{ name: 'reportsdetail', params: { userId: report.id }}"> 이름은 reportsdetail 파라미터는 userId 컴포넌트는 
+          <router-link :to="{ name: 'reportsdetail', params: { userId: report.id }}">
             <div>
               <div class="reportview-date">
                 {{ report.time.substr(5, 2)>9 ? report.time.substr(5, 2) : report.time.substr(5, 2)%10 }}월
