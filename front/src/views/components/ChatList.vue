@@ -8,6 +8,10 @@
         <hr class="chatlist-title-line">
       </div>
       <div class="buslist">
+        <div v-if="!!!data.rooms.length" class="buslist-notfound">
+          <h1>주변에<br>낭만버스가<br>보이지 않아요</h1>
+          <p style="font-size: 1.3rem">하단의 새로고침 버튼을 눌러보세요!</p>
+        </div>
         <div v-for="room in data.rooms" :key="room.sessionId">
           <div class="bus-cover">
             <img src="../../assets/bus-unclicked.png" class="bus-icon">
@@ -43,30 +47,41 @@ import api from "../../api/api"
 const data = ref({
   rooms: [],
   lat: 0,
-  lng: 0
+  lng: 0,
 })
 
-onMounted(() => {
-  getLocation()
-})
+getLocation()
 
 function getRooms(lat, lng) {
-  axios({
-    url: api.main.selectrooms(lat, lng),
-    method: "get",
+  const chatListRefresh = document.querySelector('.chatlist-title-refresh')
+  chatListRefresh.classList.add('refresh-rotate')
+  chatListRefresh.addEventListener('animationend', () => {
+    chatListRefresh.classList.remove('refresh-rotate')
   })
-    .then(res => {
-      data.value.rooms = res.data;
+  const busList = document.querySelector('.buslist')
+  busList.classList.remove('buslist-in')
+  busList.classList.add('buslist-out')
+  busList.addEventListener('animationend', () => {
+    axios({
+      url: api.main.selectrooms(lat, lng),
+      method: "get",
     })
-    .catch(err => {
-    console.log("error")
+      .then(res => {
+        data.value.rooms = res.data
+        busList.classList.remove('buslist-out')
+        busList.classList.add('buslist-in')
+        // console.log('데이터')
+      })
+      .catch(err => {
+      console.log(err)
+    })
   })
 }
 
 function getLocation() {
   if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(position => {
-      getRooms(position.coords.latitude, position.coords.longitude)
+      // getRooms(position.coords.latitude, position.coords.longitude)
       data.value.lat = position.coords.latitude
       data.value.lng = position.coords.longitude
     }, error => {
@@ -117,7 +132,8 @@ let watchId = navigator.geolocation.watchPosition(function(position) {
   align-items: center;
 }
 .chatlist-title-text {
-  font-size: 1.2rem;
+  font-family: BMHANNAPro;
+  font-size: 1.3rem;
 }
 .chatlist-title-line {
   display: block;
@@ -171,6 +187,9 @@ let watchId = navigator.geolocation.watchPosition(function(position) {
 .chatlist-out {
   animation: chatlistOut 1s forwards;
 }
+.buslist-notfound {
+  margin-top: 150px;
+}
 @keyframes chatlistIn {
   from,
   60%,
@@ -181,12 +200,10 @@ let watchId = navigator.geolocation.watchPosition(function(position) {
   }
 
   from {
-    opacity: 0;
     transform: translate3d(0, 3000px, 0) scaleY(5);
   }
 
   60% {
-    opacity: 1;
     transform: translate3d(0, -20px, 0) scaleY(0.9);
   }
 
@@ -203,12 +220,44 @@ let watchId = navigator.geolocation.watchPosition(function(position) {
   }
 }
 @keyframes chatlistOut {
+  to {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+.buslist-in {
+  animation: buslistIn .75s forwards;
+}
+.buslist-out {
+  animation: buslistOut .75s forwards;
+}
+@keyframes buslistIn {
   from {
-    opacity: 1;
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
   }
   to {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes buslistOut {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    visibility: hidden;
+    transform: translate3d(150%, 0, 0);
+  }
+}
+.refresh-rotate {
+  animation: refreshRotate .75s ease-out;
+  animation-iteration-count: 2;
+}
+@keyframes refreshRotate {
+  from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(359deg) ;
   }
 }
 </style>

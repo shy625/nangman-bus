@@ -168,9 +168,10 @@ const clickCreateBtn = () => {
   flex-direction: column;
   margin: 20px 0px;
   padding: 16px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   max-height: 100px;
   transition: all 0.3s;
+  box-shadow: 0px 1.5px 1.5px rgba(0, 0, 0, 0.25);
 }
 .board-content.collapsed {
   max-height: 220px;

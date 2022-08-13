@@ -1,4 +1,6 @@
 <template>
+<div>
+
   <header>
     <div class="chat-header" style="margin: -9.5px 15px 25px 10px">
       <router-link :to="{ name: 'main' }" class="chat-header-back">
@@ -115,6 +117,7 @@
       </button>
     </div>
   </form>
+</div>
 </template>
 <script setup>
 import { useStore } from "vuex";
