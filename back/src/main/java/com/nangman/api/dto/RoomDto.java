@@ -1,4 +1,5 @@
 package com.nangman.api.dto;
+import com.nangman.db.entity.Bus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,7 @@ public class RoomDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateRequest{
-
-        @ApiModelProperty(name="채팅방 세션 id", example="session_123123124325")
-        private String sessionId;
-        @ApiModelProperty(name="버스 번호판", example="77바8236")
-        private String licenseNo;
+        @ApiModelProperty(name="생성할 룸의 버스 정보", example="77바8236")
+        private Bus bus;
     }
 }

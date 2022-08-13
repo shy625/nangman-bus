@@ -25,7 +25,7 @@ public class ChatInOutRecordDto {
     @NoArgsConstructor
     public static class ServiceRequest {
 
-        @ApiModelProperty(name="채팅방 id", example="1")
+        @ApiModelProperty(name="채팅방 id", example="session_123123124325")
         private String sessionId;
 
         @ApiModelProperty(name="유저 id", example="1")
