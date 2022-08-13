@@ -26,6 +26,8 @@ public class ChatServiceImpl implements ChatService{
     private final ChatInOutRecordRepository chatInOutRecordRepository;
     private final UserReportRepository userReportRepository;
     private final RoomService roomService;
+    private final BoardRepository boardRepository;
+    private final ReportRepository reportRepository;
 
     @Override
     @Transactional
@@ -72,6 +74,12 @@ public class ChatServiceImpl implements ChatService{
             item.addUserReport(userReport);
             report.addUserReport(userReport);
         }
+        int accumulateUserCount = 0;
+        List<Report> reportList = reportRepository.findAll();
+        for (Report item : reportList)
+            if (item.getRoom().getBus().getLicenseNo().equals(room.getBus().getLicenseNo())) accumulateUserCount += item.getTotalUserCount();
+        report.setAccumulateUserCount(accumulateUserCount);
+        report.setBoardCount(boardRepository.findBoardByBusId(room.getBus().getId()).size());
         report.setAverageTime(accessTime / userList.size());
         reportService.updateReport(report);
 
