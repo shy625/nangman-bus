@@ -1,8 +1,7 @@
 package com.nangman.redis5.service;
 
+import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
-import com.nangman.db.entity.BusLog;
-import com.nangman.redis5.dto.ChatLogDto;
 import com.nangman.redis5.dto.ChattingRoomDto;
 import com.nangman.redis5.dto.RandomBusDto;
 import com.nangman.redis5.dto.RoomUserDto;
@@ -12,12 +11,12 @@ import java.util.List;
 public interface RedisService {
     // 자동으로 되는거
     // 1. updateBusData
-    void updateBudData(String sessionId, BusLog busLog);
+    void updateBudData(Bus bus);
 
     // 2. createChattingRoom
-    String createChattingRoom(BusLog busLog, List<String> busStop);
+    void createChattingRoom(Bus bus);
     // 3. deleteChattingRoom
-    ChatLogDto deleteChattingRoom(String sessionId);
+    ChatDto.ChatLog deleteChattingRoom(String sessionId);
 
 
     // 요청 받는거
@@ -28,6 +27,7 @@ public interface RedisService {
     boolean isAccessibleRoom(double lat, double lng, String sessionId);
     // 3. 메인에서 랜덤으로 버스 3개 받는거
     List<RandomBusDto> getRandomBus();
+    // TODO : 채팅방 입장 시 이전 채팅 기록 + 버스 노선 정류장 리스트 + 현재 사용자 목록 전달
 
 
 
@@ -46,7 +46,7 @@ public interface RedisService {
     // 6. 사용자 목록 조회?
     List<RoomUserDto> roomUserList(String sessionId);
     // 7. createChat(채팅 메시지 전송)
-    String createChat(String sessionId, String chatId, String CreatedTime, String chat);
+    String createChat(String sessionId, String userId, String createdTime, String chat);
     // 3. joinRoom(채팅방 입장)
     void joinRoom(String sessionId, String userId, RoomUserDto roomUserDto);
     // 4. exitRoom(채팅방 퇴장)
