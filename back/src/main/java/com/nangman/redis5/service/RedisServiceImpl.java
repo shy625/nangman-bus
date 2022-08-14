@@ -1,9 +1,9 @@
 package com.nangman.redis5.service;
 
+import com.nangman.api.dto.BusStopDto;
 import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusStop;
-import com.nangman.db.entity.Route;
 import com.nangman.db.repository.RouteRepository;
 import com.nangman.redis5.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -133,6 +133,7 @@ public class RedisServiceImpl implements RedisService{
                     .append(str.getNodeOrd()).append(SPLIT_ROUTE_STR)
                     .append(str.getNodeId()).append(SPLIT_ROUTE_STR)
                     .append(str.getUpDown()).append(SPLIT_STR);
+//                    .append(str.getRoute()).append(SPLIT_STR);
         }
         createRouteInfo.setLength(createRouteInfo.length() -1);
 //        createBusInfo.append(bus.getCode());
@@ -165,9 +166,9 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public List<ChattingRoomDto> selectRooms(double lat, double lng) {
+    public List<ChattingRoomDto.ListInfo> selectRooms(double lat, double lng) {
         // TODO : busId도 같이 넘겨줘야 됨
-        List<ChattingRoomDto> list = new ArrayList<>();
+        List<ChattingRoomDto.ListInfo> list = new ArrayList<>();
         String findAllRoom = "*" + KEY_ROOM;
         Set<String> keys = redisTemplate.keys(findAllRoom);
 
@@ -181,7 +182,7 @@ public class RedisServiceImpl implements RedisService{
             double dist = distance(lat, lng, busLat, busLng);
 
             if(dist < BUS_CHECK_DIST) {
-                ChattingRoomDto dto = new ChattingRoomDto();
+                ChattingRoomDto.ListInfo dto = new ChattingRoomDto.ListInfo();
                 dto.setDistance((int) dist);
                 dto.setInUsers(Integer.parseInt((String) redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM)));
                 dto.setSessionId(str.replace(KEY_ROOM, ""));
@@ -327,29 +328,28 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public List<BusStop> getBusStops(String sessionId) {
+    public List<BusStopDto.Info> getBusStops(String sessionId) {
         String keyRoom = sessionId + KEY_ROOM;
-        List<BusStop> busStopList = new ArrayList<>();
+        List<BusStopDto.Info> busStopList = new ArrayList<>();
 
         String value = (String) redisTemplate.opsForHash().get(keyRoom, SUBKEY_ROUTE_INFO);
-        String[] busstops = value.split(SPLIT_STR);
-        for(String strs : busstops) {
-            String[] str = strs.split(SPLIT_ROUTE_STR);
-            BusStop bs = new BusStop();
-            bs.setNodeNo(Integer.parseInt(str[BUSSTOP_INFO_NODENO]));
-            bs.setLat(Double.parseDouble(str[BUSSTOP_INFO_LAT]));
-            bs.setLng(Double.parseDouble(str[BUSSTOP_INFO_LNG]));
-            bs.setNodeName(str[BUSSTOP_INFO_NODENAME]);
-            bs.setNodeOrd(Integer.parseInt(str[BUSSTOP_INFO_NODEORD]));
-            bs.setNodeId(str[BUSSTOP_INFO_NODEID]);
-            bs.setUpDown(Integer.parseInt(str[BUSSTOP_INFO_UPDOWN]));
-            bs.setRoute(new Route());
+        String[] busStops = value.split(SPLIT_STR);
+        for(String busStopStr : busStops) {
+            String[] str = busStopStr.split(SPLIT_ROUTE_STR);
+            BusStopDto.Info busStopDto = new BusStopDto.Info();
+            busStopDto.setNodeNo(Integer.parseInt(str[BUSSTOP_INFO_NODENO]));
+            busStopDto.setLat(Double.parseDouble(str[BUSSTOP_INFO_LAT]));
+            busStopDto.setLng(Double.parseDouble(str[BUSSTOP_INFO_LNG]));
+            busStopDto.setNodeName(str[BUSSTOP_INFO_NODENAME]);
+            busStopDto.setNodeOrd(Integer.parseInt(str[BUSSTOP_INFO_NODEORD]));
+            busStopDto.setNodeId(str[BUSSTOP_INFO_NODEID]);
+            busStopDto.setUpDown(Integer.parseInt(str[BUSSTOP_INFO_UPDOWN]));
 
-            busStopList.add(bs);
+            busStopList.add(busStopDto);
         }
-        Collections.sort(busStopList, new Comparator<BusStop>() {
+        Collections.sort(busStopList, new Comparator<BusStopDto.Info>() {
             @Override
-            public int compare(BusStop o1, BusStop o2) {
+            public int compare(BusStopDto.Info o1, BusStopDto.Info o2) {
                 if(o1.getNodeOrd() > o2.getNodeOrd()) return 1;
                 else if (o1.getNodeOrd() < o2.getNodeOrd()) return -1;
                 return 0;
@@ -517,7 +517,7 @@ public class RedisServiceImpl implements RedisService{
 
         chatLog.setSessionId(sessionId);
         chatLog.setLicenseNo(busInfo[BUS_INFO_LICENSE_NO]);
-        chatLog.setRouteId(busInfo[BUS_INFO_ROUTE_ID]);
+        chatLog.setRouteNo(busInfo[BUS_INFO_ROUTE_ID]);
         chatLog.setCreatedDate(busInfo[BUS_INFO_CREATED_DATE]);
 
         List<ChatDto.MsgLog> logs = new ArrayList<>();
@@ -555,7 +555,4 @@ public class RedisServiceImpl implements RedisService{
         return chatLog;
     }
 
-    public void test02() {
-
-    }
 }

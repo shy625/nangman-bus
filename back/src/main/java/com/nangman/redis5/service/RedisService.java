@@ -1,5 +1,6 @@
 package com.nangman.redis5.service;
 
+import com.nangman.api.dto.BusStopDto;
 import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusStop;
@@ -23,7 +24,7 @@ public interface RedisService {
     // 요청 받는거
     // RestAPI
     // 1. selectRooms(입장 가능한 채팅팡 리스트 조회)
-    List<ChattingRoomDto> selectRooms(double lat, double lng);
+    List<ChattingRoomDto.ListInfo> selectRooms(double lat, double lng);
     // 2. checkInRoom(채팅방 접속 가능 여부 확인)
     boolean isAccessibleRoom(double lat, double lng, String sessionId);
     // 3. 메인에서 랜덤으로 버스 3개 받는거
@@ -31,6 +32,11 @@ public interface RedisService {
     // TODO : 채팅방 입장 시 이전 채팅 기록 + 버스 노선 정류장 리스트 + 현재 사용자 목록 전달
 
 
+    ChatDto.ChatLog getChattingLog(String sessionId);
+
+    List<BusStopDto.Info> getBusStops(String sessionId);
+
+    List<RoomUserDto> roomUserList(String sessionId);
 
 
     // Socket
@@ -44,16 +50,12 @@ public interface RedisService {
     // 5. updateMyEmotion(사용자 감정 상태 수정)
     // emotion 규칙 정해야됨 0: 무표정 1: 화나요 2: 기분좋아요 3: 우울해요
     void updateMyEmotion(String sessionId, String userId, int emotion);
-    // 6. 사용자 목록 조회?
-    List<RoomUserDto> roomUserList(String sessionId);
 
-    List<BusStop> getBusStops(String sessionId);
     // 7. createChat(채팅 메시지 전송)
     String createChat(String sessionId, String userId, String createdTime, String chat);
     // 3. joinRoom(채팅방 입장)
     void joinRoom(String sessionId, RoomUserDto roomUserDto);
 
-    ChatDto.ChatLog getChattingLog(String sessionId);
     // 4. exitRoom(채팅방 퇴장)
     void exitRoom(String sessionId, String userId);
     // 하차정류장 설정
