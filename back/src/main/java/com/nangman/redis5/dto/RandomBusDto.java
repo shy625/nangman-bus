@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RandomBusDto {
-    String nodeName;
-    String routeNumber;
-    int type;
+    private String nodeName;
+    private String routeNumber;
+    private int type;
 }

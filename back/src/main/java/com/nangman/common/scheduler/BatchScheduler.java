@@ -48,7 +48,7 @@ public class BatchScheduler {
         List<Bus> busList = busRepository.findAll();
         for (Bus bus : busList){
             int isDone = TimeCalculator.getAccessTime(LocalDateTime.now(), bus.getLastModifiedDate());
-            if (isDone > 3600){
+            if (isDone > 60 * 60){
                 ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
                 chatService.InsertChatLogs(chatLog);
                 bus.setSessionId(null);
