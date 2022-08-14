@@ -184,6 +184,7 @@ public class RedisServiceImpl implements RedisService{
             if(dist < BUS_CHECK_DIST) {
                 ChattingRoomDto.ListInfo dto = new ChattingRoomDto.ListInfo();
                 dto.setDistance((int) dist);
+                System.out.println(redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM));
                 dto.setInUsers(Integer.parseInt((String) redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM)));
                 dto.setSessionId(str.replace(KEY_ROOM, ""));
                 dto.setRouteId(busInfo[BUS_INFO_ROUTE_ID]);
@@ -303,6 +304,7 @@ public class RedisServiceImpl implements RedisService{
         Map<Object, Object> values = redisTemplate.opsForHash().entries(key);
         // 현재 방에 있는 유저의 목록은 따로 있음
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
+        assert userList != null;
         String[] users = userList.split(SPLIT_STR);
         for(Object str : values.keySet()) {
 //            if(str.equals("busInfo") || str.equals("routeInfo") || str.equals("userList") || str.equals("userNum")) continue;
