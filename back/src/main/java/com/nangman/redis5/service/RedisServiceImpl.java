@@ -480,8 +480,26 @@ public class RedisServiceImpl implements RedisService{
             logs.add(temp);
         }
 
+        ChatIdComparator comp = new ChatIdComparator();
+		Collections.sort(logs, comp);
+
         chatLog.setChatLogs(logs);
         return chatLog;
+    }
+
+}
+
+class ChatIdComparator implements Comparator<ChatDto.MsgLog> {
+
+    @Override
+    public int compare(ChatDto.MsgLog o1, ChatDto.MsgLog o2) {
+        // TODO Auto-generated method stub
+        int firstValue = Integer.parseInt(o1.getChatId());
+        int secondValue = Integer.parseInt(o2.getChatId());
+
+        if(firstValue > secondValue) return 1;
+        else if(firstValue < secondValue) return -1;
+        else return 0;
     }
 
 }
