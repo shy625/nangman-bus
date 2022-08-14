@@ -1,12 +1,12 @@
 <template>
   <div class="emo">
     <div id="emoToggle" class="emo-toggle">
-      기쁨
+      기분
       <div id="emoList" class="emo-list">
         <div class="emo-emoji" v-for="(emo, idx) in emos"
           :key="idx"
         >
-          {{ emo }}
+          <img :src="emo" alt="" class="emoji-img">
         </div>
       </div>
     </div>
@@ -14,8 +14,12 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
-// 더미데이터
-const emos = ['기쁨', '슬픔', '취함', '우울']
+const emos = [
+  '/src/assets/emo-default.png',
+  '/src/assets/emo-happy.png',
+  '/src/assets/emo-angry.png',
+  '/src/assets/emo-blue.png',
+]
 
 // state에 현재 emo 저장해두고, 그거랑 비교해서 같은거 찾아서 toggle에 넣기
 // + 그거는 emoList에 안뜨게 거르기
@@ -47,7 +51,7 @@ onMounted(() => {
   position: absolute;
   bottom: 40px;
   overflow: hidden;
-  height: 70px;
+  height: 115px;
   transition: all 0.2s;
 }
 .emo-list.collapsed {
@@ -55,5 +59,8 @@ onMounted(() => {
 }
 .emo-emoji {
   width: 50px;
+}
+.emoji-img {
+  height: 25px;
 }
 </style>

@@ -21,10 +21,10 @@
         </div>
         <div class="busstop-mini-below">
           <div v-if="!data.isToggled">
-            펴기
+            <img src="../../../../assets/list-up.png" alt="up">
           </div>
           <div v-else>
-            접기
+            <img src="../../../../assets/list-down.png" alt="down">
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
             :key="index"
             :hide-timestamp="true"
           >
-            <div>{{ busstop.content }}</div>
+            <div class="busstop-name">{{ busstop.content }}</div>
           </el-timeline-item>
         </el-timeline>
       </el-scrollbar>
@@ -185,5 +185,11 @@ onMounted(() => {
 .el-timeline-item {
   padding: 8px 0px !important;
   line-height: 1.5;
+}
+.busstop-mini-below img {
+  filter: brightness(0);
+}
+.busstop-name {
+  font-family: Pretendard;
 }
 </style>

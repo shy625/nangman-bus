@@ -11,8 +11,8 @@
   padding: 0;
   height: 0;
   position: absolute;
-  bottom: 130%;
-  left: 16px;
+  bottom: 120%;
+  left: 28px;
   font-size: .65rem;
   background-color: black;
   color: white;
