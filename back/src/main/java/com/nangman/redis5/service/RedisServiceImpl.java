@@ -166,9 +166,9 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public List<ChattingRoomDto> selectRooms(double lat, double lng) {
+    public List<ChattingRoomDto.ListInfo> selectRooms(double lat, double lng) {
         // TODO : busId도 같이 넘겨줘야 됨
-        List<ChattingRoomDto> list = new ArrayList<>();
+        List<ChattingRoomDto.ListInfo> list = new ArrayList<>();
         String findAllRoom = "*" + KEY_ROOM;
         Set<String> keys = redisTemplate.keys(findAllRoom);
 
@@ -182,7 +182,7 @@ public class RedisServiceImpl implements RedisService{
             double dist = distance(lat, lng, busLat, busLng);
 
             if(dist < BUS_CHECK_DIST) {
-                ChattingRoomDto dto = new ChattingRoomDto();
+                ChattingRoomDto.ListInfo dto = new ChattingRoomDto.ListInfo();
                 dto.setDistance((int) dist);
                 dto.setInUsers(Integer.parseInt((String) redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM)));
                 dto.setSessionId(str.replace(KEY_ROOM, ""));
@@ -516,7 +516,7 @@ public class RedisServiceImpl implements RedisService{
 
         chatLog.setSessionId(sessionId);
         chatLog.setLicenseNo(busInfo[BUS_INFO_LICENSE_NO]);
-        chatLog.setRouteId(busInfo[BUS_INFO_ROUTE_ID]);
+        chatLog.setRouteNo(busInfo[BUS_INFO_ROUTE_ID]);
         chatLog.setCreatedDate(busInfo[BUS_INFO_CREATED_DATE]);
 
         List<ChatDto.MsgLog> logs = new ArrayList<>();

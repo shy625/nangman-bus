@@ -10,10 +10,19 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChattingRoomDto {
-    private long busId;
-    private String sessionId;
-    private String routeId;
-    private int distance;
-    private int inUsers;
-    private int type;
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ListInfo {
+        private long busId;
+        private String sessionId;
+        private String routeId;
+        private int distance;
+        private int inUsers;
+        private int type;
+    }
+
+
 }

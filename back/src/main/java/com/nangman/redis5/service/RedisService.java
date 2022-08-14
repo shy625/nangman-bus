@@ -24,7 +24,7 @@ public interface RedisService {
     // 요청 받는거
     // RestAPI
     // 1. selectRooms(입장 가능한 채팅팡 리스트 조회)
-    List<ChattingRoomDto> selectRooms(double lat, double lng);
+    List<ChattingRoomDto.ListInfo> selectRooms(double lat, double lng);
     // 2. checkInRoom(채팅방 접속 가능 여부 확인)
     boolean isAccessibleRoom(double lat, double lng, String sessionId);
     // 3. 메인에서 랜덤으로 버스 3개 받는거

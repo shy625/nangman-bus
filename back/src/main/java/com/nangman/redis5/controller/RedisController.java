@@ -33,8 +33,8 @@ public class RedisController {
 
 
     @GetMapping("/selectRooms/{lat}/{lng}")
-    public ResponseEntity<List<ChattingRoomDto>> selectRooms(@PathVariable double lat, @PathVariable double lng) {
-        return new ResponseEntity<List<ChattingRoomDto>>(
+    public ResponseEntity<List<ChattingRoomDto.ListInfo>> selectRooms(@PathVariable double lat, @PathVariable double lng) {
+        return new ResponseEntity<List<ChattingRoomDto.ListInfo>>(
                 redisService.selectRooms(lat, lng),HttpStatus.OK);
     }
 
