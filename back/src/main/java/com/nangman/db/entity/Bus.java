@@ -26,17 +26,10 @@ public class Bus extends BaseEntity {
     private int nodeOrd;
     private String sessionId;
 
-    @ManyToOne
-    @JoinColumn(name = "route_id")
-    private Route route;
-
-    public void setRoute(Route route) {
-        this.route = route;
-
-        if (!route.getBuses().contains(this)) {
-            route.getBuses().add(this);
-        }
-    }
+    //노선코드
+    private String code;
+    //노선번호
+    private String routeNo;
     @OneToMany(mappedBy = "bus")
     private List<Board> boards = new ArrayList<>();
 
