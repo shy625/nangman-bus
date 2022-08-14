@@ -3,6 +3,8 @@ package com.nangman.redis5.service;
 import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusStop;
+import com.nangman.db.entity.Route;
+import com.nangman.db.repository.RouteRepository;
 import com.nangman.redis5.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -51,6 +53,7 @@ public class RedisServiceImpl implements RedisService{
     private static final String COUNT = "count";
 
     private final StringRedisTemplate redisTemplate;
+    private final RouteRepository routeRepository;
 
     public void test01() {
         redisTemplate.opsForHash().put("key1", "subKey1", "hello");
@@ -63,7 +66,7 @@ public class RedisServiceImpl implements RedisService{
         StringBuilder createBusInfo = new StringBuilder();
         createBusInfo.append(bus.getLicenseNo())
                 .append(SPLIT_STR)
-                .append(bus.getRoute().getRouteNo())
+                .append(bus.getRouteNo())
                 .append(SPLIT_STR)
                 .append(bus.getLat())
                 .append(SPLIT_STR)
@@ -92,7 +95,7 @@ public class RedisServiceImpl implements RedisService{
 
         createBusInfo.append(bus.getLicenseNo())
                 .append(SPLIT_STR)
-                .append(bus.getRoute().getRouteNo())
+                .append(bus.getRouteNo())
                 .append(SPLIT_STR)
                 .append(bus.getLat())
                 .append(SPLIT_STR)
@@ -109,7 +112,8 @@ public class RedisServiceImpl implements RedisService{
                 .append(bus.getId());
 
 
-        for(BusStop str : bus.getRoute().getBusStops()) {
+        List<BusStop> busStopList = routeRepository.findRouteByCode(bus.getCode()).get().getBusStops();
+        for(BusStop str : busStopList) {
             createRouteInfo.append(str.getNodeName()).append(SPLIT_STR);
         }
         createRouteInfo.setLength(createRouteInfo.length() -1);
@@ -131,9 +135,8 @@ public class RedisServiceImpl implements RedisService{
         String keyLike = sessionId + KEY_LIKE;
 
         if(!redisTemplate.hasKey(keyRoom)){
-            return null;
+            return chatLog;
         }
-
         String busValue = (String) redisTemplate.opsForHash().get(keyRoom, SUBKEY_BUS_INFO);
 
         String[] busInfo = busValue.split(SPLIT_STR);
