@@ -11,4 +11,6 @@ public interface BusRepository extends JpaRepository<Bus, Long> {
     Optional<Bus> findBusByLicenseNo(String license);
     Optional<Bus> findReportById(long id);
     Optional<Bus> findBusById(long id);
+
+
 }

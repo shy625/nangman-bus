@@ -29,6 +29,16 @@ public class RedisServiceImpl implements RedisService{
     private static final int BUS_INFO_NNAME = 7;
     private static final int BUS_INFO_BUS_ID = 8;
 
+    private static  final int BUSSTOP_INFO_NODENO = 0;
+    private static  final int BUSSTOP_INFO_LAT = 1;
+    private static  final int BUSSTOP_INFO_LNG = 2;
+    private static  final int BUSSTOP_INFO_NODENAME = 3;
+    private static  final int BUSSTOP_INFO_NODEORD = 4;
+    private static  final int BUSSTOP_INFO_NODEID = 5;
+    private static  final int BUSSTOP_INFO_UPDOWN = 6;
+    private static  final int BUSSTOP_INFO_ROUTE = 7;
+
+
     private static final int CHAT_INFO_USER_ID = 0;
     private static final int CHAT_INFO_CREATED_TIME = 1;
     private static final int CHAT_INFO_CONTENT = 2;
@@ -47,6 +57,7 @@ public class RedisServiceImpl implements RedisService{
     private static final String SUBKEY_USER_NUM = "userNum";
 
     private static final String SPLIT_STR = "_";
+    private static final String SPLIT_ROUTE_STR = ":";
     private static final int USER_STATE_SPLIT_LIMIT = 3;
     private static final int ICED = 0;
     private static final int NOISY = 1;
@@ -114,9 +125,18 @@ public class RedisServiceImpl implements RedisService{
 
         List<BusStop> busStopList = routeRepository.findRouteByCode(bus.getCode()).get().getBusStops();
         for(BusStop str : busStopList) {
-            createRouteInfo.append(str.getNodeName()).append(SPLIT_STR);
+            createRouteInfo
+                    .append(str.getNodeNo()).append(SPLIT_ROUTE_STR)
+                    .append(str.getLat()).append(SPLIT_ROUTE_STR)
+                    .append(str.getLng()).append(SPLIT_ROUTE_STR)
+                    .append(str.getNodeName()).append(SPLIT_ROUTE_STR)
+                    .append(str.getNodeOrd()).append(SPLIT_ROUTE_STR)
+                    .append(str.getNodeId()).append(SPLIT_ROUTE_STR)
+                    .append(str.getUpDown()).append(SPLIT_ROUTE_STR)
+                    .append(str.getRoute()).append(SPLIT_STR);
         }
         createRouteInfo.setLength(createRouteInfo.length() -1);
+//        createBusInfo.append(bus.getCode());
 
         redisTemplate.opsForHash().put(keyRoom, SUBKEY_BUS_INFO, createBusInfo.toString());
         redisTemplate.opsForHash().put(keyRoom, SUBKEY_ROUTE_INFO, createRouteInfo.toString());
@@ -296,8 +316,8 @@ public class RedisServiceImpl implements RedisService{
                     dto.setNickName(userInfo[USER_INFO_NICKNAME]);
                     dto.setBirth(userInfo[USER_INFO_BIRTH]);
                     dto.setEmotion(Integer.parseInt(userInfo[USER_INFO_STATE]));
-                    dto.setOutBusStop(userInfo[USER_INFO_NICKNAME]);
-                    dto.setId(Long.parseLong(userId));
+                    dto.setOutBusStop(userInfo[USER_INFO_BUS_STOP]);
+                    dto.setUserId(Long.parseLong(userId));
 
                     list.add(dto);
                 }
@@ -305,6 +325,39 @@ public class RedisServiceImpl implements RedisService{
         }
 
         return list;
+    }
+
+    @Override
+    public List<BusStop> getBusStops(String sessionId) {
+        String keyRoom = sessionId + KEY_ROOM;
+        List<BusStop> busStopList = new ArrayList<>();
+
+        String value = (String) redisTemplate.opsForHash().get(keyRoom, SUBKEY_ROUTE_INFO);
+        String[] busstops = value.split(SPLIT_STR);
+        for(String strs : busstops) {
+            String[] str = strs.split(SPLIT_ROUTE_STR);
+            BusStop bs = new BusStop();
+            bs.setNodeNo(Integer.parseInt(str[BUSSTOP_INFO_NODENO]));
+            bs.setLat(Double.parseDouble(str[BUSSTOP_INFO_LAT]));
+            bs.setLng(Double.parseDouble(str[BUSSTOP_INFO_LNG]));
+            bs.setNodeName(str[BUSSTOP_INFO_NODENAME]);
+            bs.setNodeOrd(Integer.parseInt(str[BUSSTOP_INFO_NODEORD]));
+            bs.setNodeId(str[BUSSTOP_INFO_NODEID]);
+            bs.setUpDown(Integer.parseInt(str[BUSSTOP_INFO_UPDOWN]));
+            bs.setRoute(new Route());
+
+            busStopList.add(bs);
+        }
+        Collections.sort(busStopList, new Comparator<BusStop>() {
+            @Override
+            public int compare(BusStop o1, BusStop o2) {
+                if(o1.getNodeOrd() > o2.getNodeOrd()) return 1;
+                else if (o1.getNodeOrd() < o2.getNodeOrd()) return -1;
+                return 0;
+            }
+        });
+
+        return busStopList;
     }
 
     @Override
@@ -330,11 +383,11 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public ChatDto.ChatLog joinRoom(String sessionId, RoomUserDto roomUserDto) {
+    public void joinRoom(String sessionId, RoomUserDto roomUserDto) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return null;
+        if(!redisTemplate.hasKey(key)) return;
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
-        userList = userList + SPLIT_STR + Long.toString(roomUserDto.getId());
+        userList = userList + SPLIT_STR + Long.toString(roomUserDto.getUserId());
         redisTemplate.opsForHash().put(key, SUBKEY_USER_LIST, userList);
         redisTemplate.opsForHash().increment(key, SUBKEY_USER_NUM, 1);
         // userId로 검색해서 SQL에서 닉네임, 생일 가져워서 넣어주고 상태 디폴트 0, 하차정류장 null 해줘야됨
@@ -350,12 +403,14 @@ public class RedisServiceImpl implements RedisService{
              .append(Integer.toString(roomUserDto.getEmotion()))
              .append(SPLIT_STR)
              .append(roomUserDto.getOutBusStop());
-        redisTemplate.opsForHash().put(key, Long.toString(roomUserDto.getId()), value.toString());
+        redisTemplate.opsForHash().put(key, Long.toString(roomUserDto.getUserId()), value.toString());
+    }
 
+    @Override
+    public ChatDto.ChatLog getChattingLog(String sessionId) {
         ChatDto.ChatLog chatLog = getChatLog(sessionId);
 
         return chatLog;
-
     }
 
     @Override
@@ -378,7 +433,7 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void setOutBusStop(String sessionId, String userId, String outBusStop) {
+    public void setOutBusStop(String sessionId, String userId, String busStopNodeId) {
         String key = sessionId + KEY_ROOM;
         if(!redisTemplate.hasKey(key)) return;
         String subKey = userId;
@@ -388,7 +443,7 @@ public class RedisServiceImpl implements RedisService{
         newUserInfo.append(userInfo[USER_INFO_NICKNAME]).append(SPLIT_STR)
                 .append(userInfo[USER_INFO_BIRTH]).append(SPLIT_STR)
                 .append(userInfo[USER_INFO_STATE]).append(SPLIT_STR)
-                .append(outBusStop);
+                .append(busStopNodeId);
         redisTemplate.opsForHash().put(key, subKey, newUserInfo.toString());
     }
 
@@ -485,26 +540,20 @@ public class RedisServiceImpl implements RedisService{
             logs.add(temp);
         }
 
-        ChatIdComparator comp = new ChatIdComparator();
-		Collections.sort(logs, comp);
+		Collections.sort(logs, new Comparator<ChatDto.MsgLog>() {
+            @Override
+            public int compare(ChatDto.MsgLog o1, ChatDto.MsgLog o2) {
+                int firstValue = Integer.parseInt(o1.getChatId());
+                int secondValue = Integer.parseInt(o2.getChatId());
+
+                if(firstValue > secondValue) return 1;
+                else if(firstValue < secondValue) return -1;
+                else return 0;
+            }
+        });
 
         chatLog.setChatLogs(logs);
         return chatLog;
-    }
-
-}
-
-class ChatIdComparator implements Comparator<ChatDto.MsgLog> {
-
-    @Override
-    public int compare(ChatDto.MsgLog o1, ChatDto.MsgLog o2) {
-        // TODO Auto-generated method stub
-        int firstValue = Integer.parseInt(o1.getChatId());
-        int secondValue = Integer.parseInt(o2.getChatId());
-
-        if(firstValue > secondValue) return 1;
-        else if(firstValue < secondValue) return -1;
-        else return 0;
     }
 
 }

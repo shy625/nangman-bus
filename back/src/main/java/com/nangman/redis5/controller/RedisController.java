@@ -149,15 +149,15 @@ public class RedisController {
     public void createChat() {
         redisService.createChat(testSessionId,"6", LocalDateTime.now().toString(), "hello");
     }
-//    @GetMapping("/test/joinRoom")
-//    public void joinRoom() {
-//        RoomUserDto roomUserDto = new RoomUserDto();
-//        roomUserDto.setNickName("nickName11");
-//        roomUserDto.setBirth("today");
-//        roomUserDto.setEmotion(1);
-//        roomUserDto.setOutBusStop("3");
-//        redisService.joinRoom(testSessionId, "11", roomUserDto);
-//    }
+    @GetMapping("/test/joinRoom")
+    public void joinRoom() {
+        RoomUserDto roomUserDto = new RoomUserDto();
+        roomUserDto.setNickName("nickName11");
+        roomUserDto.setBirth("today");
+        roomUserDto.setEmotion(1);
+        roomUserDto.setOutBusStop("3");
+        redisService.joinRoom(testSessionId, roomUserDto);
+    }
     @GetMapping("/test/exitRoom")
     public void exitRoom() {
         redisService.exitRoom(testSessionId, "10");
