@@ -32,29 +32,29 @@ public class BatchScheduler {
     private final ChatService chatService;
 
     //10초마다 실행
-    @Scheduled(cron = "0 0 4 * * *")
-    public void nicknameSchedule() {
-        userService.updateUserNickname();
-    }
-
-    @Scheduled(cron = "10 * * * * *")
-    public void busLoggingSchedule() {
-        busService.followBuses();
-    }
-
-    @Scheduled(cron = "50 * * * * *")
-    @Transactional
-    public void endPointCheckingSchedule(){
-        List<Bus> busList = busRepository.findAll();
-        for (Bus bus : busList){
-            int isDone = TimeCalculator.getAccessTime(LocalDateTime.now(), bus.getLastModifiedDate());
-            if (isDone > 3600){
-                ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
-                chatService.InsertChatLogs(chatLog);
-                bus.setSessionId(null);
-                busRepository.save(bus);
-            }
-        }
-    }
+//    @Scheduled(cron = "0 0 4 * * *")
+//    public void nicknameSchedule() {
+//        userService.updateUserNickname();
+//    }
+//
+//    @Scheduled(cron = "10 * * * * *")
+//    public void busLoggingSchedule() {
+//        busService.followBuses();
+//    }
+//
+//    @Scheduled(cron = "50 * * * * *")
+//    @Transactional
+//    public void endPointCheckingSchedule(){
+//        List<Bus> busList = busRepository.findAll();
+//        for (Bus bus : busList){
+//            int isDone = TimeCalculator.getAccessTime(LocalDateTime.now(), bus.getLastModifiedDate());
+//            if (isDone > 3600){
+//                ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
+//                chatService.InsertChatLogs(chatLog);
+//                bus.setSessionId(null);
+//                busRepository.save(bus);
+//            }
+//        }
+//    }
 
 }

@@ -322,6 +322,7 @@ public class RedisServiceImpl implements RedisService{
                     dto.setBirth(userInfo[USER_INFO_BIRTH]);
                     dto.setEmotion(Integer.parseInt(userInfo[USER_INFO_STATE]));
                     dto.setOutBusStop(userInfo[USER_INFO_NICKNAME]);
+                    dto.setId(Long.parseLong(userId));
 
                     list.add(dto);
                 }
