@@ -184,6 +184,7 @@ public class RedisServiceImpl implements RedisService{
             if(dist < BUS_CHECK_DIST) {
                 ChattingRoomDto.ListInfo dto = new ChattingRoomDto.ListInfo();
                 dto.setDistance((int) dist);
+                System.out.println(redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM));
                 dto.setInUsers(Integer.parseInt((String) redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM)));
                 dto.setSessionId(str.replace(KEY_ROOM, ""));
                 dto.setRouteId(busInfo[BUS_INFO_ROUTE_ID]);
