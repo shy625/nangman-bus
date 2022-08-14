@@ -33,16 +33,6 @@ public class Route extends BaseEntity{
     private int cityCode;
 
     @OneToMany(mappedBy = "route")
-    private List<Bus> buses = new ArrayList<>();
-
-    public void addBus(Bus bus) {
-        this.buses.add(bus);
-        if (bus.getRoute() != this) {
-            bus.setRoute(this);
-        }
-    }
-
-    @OneToMany(mappedBy = "route")
     private List<BusStop> busStops = new ArrayList<>();
 
     public void addBusStop(BusStop busstop) {

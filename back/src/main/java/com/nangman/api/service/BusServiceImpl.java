@@ -68,9 +68,9 @@ public class BusServiceImpl implements BusService{
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
                 JSONObject response = (JSONObject)jsonObject.get("response");
-                if (response.get("body") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
+                if (response.get("body") == null) return;
                 JSONObject body = (JSONObject)response.get("body");
-                if (body.get("items") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
+                if (body.get("items") == null) return;
                 JSONObject items = (JSONObject)body.get("items");
                 JSONArray jsonBusList = (JSONArray)items.get("item");
 
@@ -82,7 +82,8 @@ public class BusServiceImpl implements BusService{
                     if (!busRepository.findBusByLicenseNo(licenseNo).isPresent()){
                         bus = new Bus();
                         bus.setLicenseNo(licenseNo);
-                        bus.setRoute(route);
+                        bus.setCode(route.getCode());
+                        bus.setRouteNo(route.getRouteNo());
                     }
                     else bus = busRepository.findBusByLicenseNo(licenseNo).get();
 
@@ -101,6 +102,7 @@ public class BusServiceImpl implements BusService{
                         sessionId += "_";
                         sessionId += Integer.toString(i);
                         bus.setSessionId(sessionId);
+                        busRepository.save(bus);
                         roomService.createRoom(new RoomDto.CreateRequest(bus));
                         redisService.createChattingRoom(bus);
                     }

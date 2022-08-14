@@ -80,7 +80,8 @@ public class ChatServiceImpl implements ChatService{
             if (item.getRoom().getBus().getLicenseNo().equals(room.getBus().getLicenseNo())) accumulateUserCount += item.getTotalUserCount();
         report.setAccumulateUserCount(accumulateUserCount);
         report.setBoardCount(boardRepository.findBoardByBusId(room.getBus().getId()).size());
-        report.setAverageTime(accessTime / userList.size());
+        if (userList.size() == 0) report.setAverageTime(0);
+        else report.setAverageTime(accessTime / userList.size());
         reportService.updateReport(report);
 
         //room update할 내용 세팅
