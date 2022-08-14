@@ -132,8 +132,7 @@ public class RedisServiceImpl implements RedisService{
                     .append(str.getNodeName()).append(SPLIT_ROUTE_STR)
                     .append(str.getNodeOrd()).append(SPLIT_ROUTE_STR)
                     .append(str.getNodeId()).append(SPLIT_ROUTE_STR)
-                    .append(str.getUpDown()).append(SPLIT_ROUTE_STR)
-                    .append(str.getRoute()).append(SPLIT_STR);
+                    .append(str.getUpDown()).append(SPLIT_STR);
         }
         createRouteInfo.setLength(createRouteInfo.length() -1);
 //        createBusInfo.append(bus.getCode());
@@ -556,4 +555,7 @@ public class RedisServiceImpl implements RedisService{
         return chatLog;
     }
 
+    public void test02() {
+
+    }
 }
