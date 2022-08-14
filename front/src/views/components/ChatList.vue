@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" v-on:click="getRooms(37.32341, 127.1259)">
+    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" v-on:click="getRooms(37.49797, 127.02763)">
   </div>
 </template>
 <script setup>
@@ -51,7 +51,7 @@ const data = ref({
 })
 
 getLocation()
-
+// 37.49797, 127.02763
 function getRooms(lat, lng) {
   const chatListRefresh = document.querySelector('.chatlist-title-refresh')
   chatListRefresh.classList.add('refresh-rotate')
@@ -81,7 +81,7 @@ function getRooms(lat, lng) {
 function getLocation() {
   if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(position => {
-      // getRooms(position.coords.latitude, position.coords.longitude)
+      getRooms(position.coords.latitude, position.coords.longitude)
       data.value.lat = position.coords.latitude
       data.value.lng = position.coords.longitude
     }, error => {
@@ -96,6 +96,9 @@ function getLocation() {
   }
 }
 
+const clickBusGetIn = sessionId => {
+  
+}
 // 위치바뀌면 감지
 let watchId = navigator.geolocation.watchPosition(function(position) {
   data.value.lat = position.coords.latitude

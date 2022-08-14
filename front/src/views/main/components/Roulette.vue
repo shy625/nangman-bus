@@ -13,7 +13,7 @@
         <span class="chosen-name">{{ rouletteData.nickname }}</span>
         <span class="nickname-twinkle"> &lt;&lt;</span>
       </div>
-      <p class="roulette-etc">우리곁을 떠나버린 윤병찬.. 그립읍니다..</p>
+      <p class="roulette-etc">도망찬 윤병찬 찬습니다..</p>
       <p class="roulette-etc">안피곤한 팀장 이현규</p>
       <p class="roulette-etc">드러눕는 김종휘</p>
       <p class="roulette-etc">소현영(남자임)</p>
