@@ -1,9 +1,9 @@
 package com.nangman.redis5.service;
 
+import com.nangman.api.dto.BusStopDto;
 import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusStop;
-import com.nangman.db.entity.Route;
 import com.nangman.db.repository.RouteRepository;
 import com.nangman.redis5.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -303,7 +303,6 @@ public class RedisServiceImpl implements RedisService{
         Map<Object, Object> values = redisTemplate.opsForHash().entries(key);
         // 현재 방에 있는 유저의 목록은 따로 있음
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
-        assert userList != null;
         String[] users = userList.split(SPLIT_STR);
         for(Object str : values.keySet()) {
 //            if(str.equals("busInfo") || str.equals("routeInfo") || str.equals("userList") || str.equals("userNum")) continue;
@@ -328,29 +327,28 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public List<BusStop> getBusStops(String sessionId) {
+    public List<BusStopDto.Info> getBusStops(String sessionId) {
         String keyRoom = sessionId + KEY_ROOM;
-        List<BusStop> busStopList = new ArrayList<>();
+        List<BusStopDto.Info> busStopList = new ArrayList<>();
 
         String value = (String) redisTemplate.opsForHash().get(keyRoom, SUBKEY_ROUTE_INFO);
-        String[] busstops = value.split(SPLIT_STR);
-        for(String strs : busstops) {
-            String[] str = strs.split(SPLIT_ROUTE_STR);
-            BusStop bs = new BusStop();
-            bs.setNodeNo(Integer.parseInt(str[BUSSTOP_INFO_NODENO]));
-            bs.setLat(Double.parseDouble(str[BUSSTOP_INFO_LAT]));
-            bs.setLng(Double.parseDouble(str[BUSSTOP_INFO_LNG]));
-            bs.setNodeName(str[BUSSTOP_INFO_NODENAME]);
-            bs.setNodeOrd(Integer.parseInt(str[BUSSTOP_INFO_NODEORD]));
-            bs.setNodeId(str[BUSSTOP_INFO_NODEID]);
-            bs.setUpDown(Integer.parseInt(str[BUSSTOP_INFO_UPDOWN]));
-            bs.setRoute(new Route());
+        String[] busStops = value.split(SPLIT_STR);
+        for(String busStopStr : busStops) {
+            String[] str = busStopStr.split(SPLIT_ROUTE_STR);
+            BusStopDto.Info busStopDto = new BusStopDto.Info();
+            busStopDto.setNodeNo(Integer.parseInt(str[BUSSTOP_INFO_NODENO]));
+            busStopDto.setLat(Double.parseDouble(str[BUSSTOP_INFO_LAT]));
+            busStopDto.setLng(Double.parseDouble(str[BUSSTOP_INFO_LNG]));
+            busStopDto.setNodeName(str[BUSSTOP_INFO_NODENAME]);
+            busStopDto.setNodeOrd(Integer.parseInt(str[BUSSTOP_INFO_NODEORD]));
+            busStopDto.setNodeId(str[BUSSTOP_INFO_NODEID]);
+            busStopDto.setUpDown(Integer.parseInt(str[BUSSTOP_INFO_UPDOWN]));
 
-            busStopList.add(bs);
+            busStopList.add(busStopDto);
         }
-        Collections.sort(busStopList, new Comparator<BusStop>() {
+        Collections.sort(busStopList, new Comparator<BusStopDto.Info>() {
             @Override
-            public int compare(BusStop o1, BusStop o2) {
+            public int compare(BusStopDto.Info o1, BusStopDto.Info o2) {
                 if(o1.getNodeOrd() > o2.getNodeOrd()) return 1;
                 else if (o1.getNodeOrd() < o2.getNodeOrd()) return -1;
                 return 0;

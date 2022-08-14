@@ -22,6 +22,7 @@ public class ChatDto {
 
         @ApiModelProperty(name="채팅 id", example="1")
         private String chatId;
+
         @ApiModelProperty(name="유저 id", example="1")
         private String userId;
 

@@ -11,9 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RoomUserDto {
 
-    long userId;
-    String nickName;
-    String birth;
-    int emotion;
-    String outBusStop;
+    private Long userId;
+    private String nickName;
+    private String birth;
+    private Integer emotion;
+    private String outBusStop;
 }
