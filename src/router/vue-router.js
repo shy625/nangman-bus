@@ -37,7 +37,7 @@ const router = createRouter({
     },
     { 
       name: 'reportsdetail',
-      path: '/reports/:userId', 
+      path: '/reports/:reportsId',
       component: ReportsDetailView,
       meta: {
         transition: 'reportIn'
