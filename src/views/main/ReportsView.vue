@@ -13,19 +13,21 @@
         <div v-for="report in reportsData.reportList" :key="report.time"
           class="reportview-content"
         ><!-- 시간 순서로 리포트아이템 출력 -->
-          <router-link :to="{ name: 'reportsdetail', params: { userId: report.id }}">
-            <div>
-              <div class="reportview-date">
-                {{ report.time.substr(5, 2)>9 ? report.time.substr(5, 2) : report.time.substr(5, 2)%10 }}월
-                {{ report.time.substr(8, 2) }}일
+          <router-link :to="{ name: 'reportsdetail', params: { userId: report.id }}" class="reportview-content-router">
+            <div class="reportview-busnum-date">
+              <div class="reportview-data-time">
+                <div class="reportview-date">
+                  {{ report.time.substr(5, 2)>9 ? report.time.substr(5, 2) : report.time.substr(5, 2)%10 }}월
+                  {{ report.time.substr(8, 2) }}일
+                </div>
+                <div class="reportview-time">
+                {{ 0<report.time.substr(11, 2)&&12>report.time.substr(11, 2) ? '오전 ' + report.time.substr(11, 2) : '오후 ' + (report.time.substr(11, 2)-12) }}시
+                {{ report.time.substr(14, 2) }}분<!-- 시간 출력 -->
+                </div>
               </div>
-              <div class="reportview-time">
-              {{ 0<report.time.substr(11, 2)&&12>report.time.substr(11, 2) ? '오전 ' + report.time.substr(11, 2) : '오후 ' + (report.time.substr(11, 2)-12) }}시
-              {{ report.time.substr(14, 2) }}분<!-- 시간 출력 -->
+              <div class="reportview-busnum">
+                {{ report.bus }}번<!-- 버스 번호 -->
               </div>
-            </div>
-            <div class="reportview-busnum">
-              {{ report.bus }}번<!-- 버스 번호 -->
             </div>
             <div class="reportview-comment">
               "{{ report.chatting.substr(0, 18) }}..."<!-- 가장 좋아요를 많이 받은 채팅(12자만 출력) -->
@@ -132,16 +134,16 @@
 <style>
 .reportview-reportlist-title {
   display: flex;
+  align-items: center;
   margin: 101.75px 0 45px 32px;
 }
 
 .reportview-reportlist-title-text {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-family: BM HANNA Pro;
 }
 
 .reportview-reportlist-title-line {
-  display: block;
   width: 55%;
   height: 1px;
   border: 0;
@@ -152,11 +154,19 @@
   color: black;
   height: 85px;
   padding: 16px;
-  border: 4px;
   margin: 32px;
-  
   background: #F5F5F5;
   border-radius: 6px;
+}
+.reportview-content-router {
+  display: flex;
+  align-items: center;
+}
+.reportview-busnum-date {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin-right: 20px;
 }
 .reportview-date {
   color: black;
@@ -173,14 +183,11 @@
   color: #F34949;
   font-family: BM HANNA Pro;
   font-size: 35px;
-  float: left;
-  margin-right: 20px;
-  
 }
 .reportview-comment {
   color: black;
-  font-size: 18px;
+  font-size: 1rem;
   line-height: 35px;
-  float: left;
+  font-style: italic;
 }
 </style>
