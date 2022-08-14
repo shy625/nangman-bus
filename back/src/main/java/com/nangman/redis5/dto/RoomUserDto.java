@@ -10,8 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomUserDto {
-    String nickName;
-    String birth;
-    int emotion;
-    String outBusStop;
+
+    private Long userId;
+    private String nickName;
+    private String birth;
+    private Integer emotion;
+    private String outBusStop;
 }
