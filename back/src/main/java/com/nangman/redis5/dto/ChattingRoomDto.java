@@ -10,10 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChattingRoomDto {
-    long busId;
-    String sessionId;
-    String routeId;
-    int distance;
-    int inUsers;
-    int type;
+    private long busId;
+    private String sessionId;
+    private String routeId;
+    private int distance;
+    private int inUsers;
+    private int type;
 }

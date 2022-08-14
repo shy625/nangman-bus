@@ -47,8 +47,8 @@ public class ChatDto {
         @ApiModelProperty(name="버스 번호판", example="77바8236")
         private String licenseNo;
 
-        @ApiModelProperty(name="버스 노선 번호", example="GGB234000878")
-        private String routeId;
+        @ApiModelProperty(name="버스 노선 번호", example="8100")
+        private String routeNo;
 
         @ApiModelProperty(name="채팅방 생성 시간", example="2021-08-01T16:26:39.098")
         private String createdDate;
