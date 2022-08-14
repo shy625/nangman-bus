@@ -101,6 +101,7 @@ public class BusServiceImpl implements BusService{
                         sessionId += "_";
                         sessionId += Integer.toString(i);
                         bus.setSessionId(sessionId);
+                        busRepository.save(bus);
                         roomService.createRoom(new RoomDto.CreateRequest(bus));
                         redisService.createChattingRoom(bus);
                     }
