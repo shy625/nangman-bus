@@ -33,3 +33,7 @@ export function sessionId(state) {
 export function rooms(state) {
   return state.rooms
 }
+
+export function busstopInfos(state) {
+  return state.roomInfo.busStopInfoList
+}

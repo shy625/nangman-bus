@@ -190,7 +190,7 @@ onMounted(() => {
 
   // 채팅방 입장
   client.activate()
-  
+
   // 퇴장
   const chatHeaderBack = document.querySelector('.chat-header-back')
   chatHeaderBack.addEventListener('click', () => {
