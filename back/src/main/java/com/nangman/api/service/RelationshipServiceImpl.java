@@ -45,12 +45,12 @@ public class RelationshipServiceImpl implements RelationshipService {
        //get CountMonthlyUsed
        int countMonthly = 0;
        Room room = roomRepository.findRoomBySessionId(sessionId).get();
-       String routeNo = room.getBus().getRoute().getRouteNo();
+       String routeNo = room.getBus().getRouteNo();
        for (UserReport userReport : targetReportList){
            Report report = userReport.getReport();
            LocalDateTime reportTime = report.getCreatedDate();
            LocalDateTime nowTime = LocalDateTime.now();
-           String targetRouteNo = report.getRoom().getBus().getRoute().getRouteNo();
+           String targetRouteNo = report.getRoom().getBus().getRouteNo();
            if (routeNo.equals(targetRouteNo) &&
                    TimeCalculator.getAccessTime(nowTime, reportTime) < 60 * 60 * 24 * 28)
                countMonthly++;

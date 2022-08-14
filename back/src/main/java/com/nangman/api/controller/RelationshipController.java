@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("api/")
 @RequiredArgsConstructor
-public class RelationShipController {
+public class RelationshipController {
     private final RelationshipService relationshipService;
 
     @GetMapping("relationship")
