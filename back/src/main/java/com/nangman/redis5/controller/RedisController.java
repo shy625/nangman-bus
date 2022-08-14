@@ -44,6 +44,12 @@ public class RedisController {
                 redisService.getRandomBus(), HttpStatus.OK);
     }
 
+    @GetMapping("/isAccessibleRoom/{lat}/{lng}/{sessionId}")
+    public boolean isAccessibleRoom(@PathVariable double lat, @PathVariable double lng, @PathVariable String sessionId) {
+        return redisService.isAccessibleRoom(lat, lng, sessionId);
+    }
+
+
     @GetMapping("/")
     public String ok() {
         return "ok";
@@ -115,10 +121,7 @@ public class RedisController {
 
 
 
-    @GetMapping("/test/isAccessibleRoom")
-    public boolean isAccessibleRoom() {
-        return redisService.isAccessibleRoom(37.32341, 127.1259, testSessionId);
-    }
+
 
     @GetMapping("/test/upLike")
     public void upLike() {
@@ -153,7 +156,7 @@ public class RedisController {
         roomUserDto.setBirth("today");
         roomUserDto.setEmotion(1);
         roomUserDto.setOutBusStop("3");
-        redisService.joinRoom(testSessionId, "11", roomUserDto);
+        redisService.joinRoom(testSessionId, roomUserDto);
     }
     @GetMapping("/test/exitRoom")
     public void exitRoom() {
