@@ -5,7 +5,7 @@
   <div id="users" class="users">
     <div class="users-title">
       <div class="user-count">
-        승객 {{ data.countUser }}명
+        승객 {{ profileData.countUser }}명
       </div>
       <div class="option-whisper">
         <img class="whisper-img" src="" alt="귓">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="user-list">
-      <el-scrollbar height="80vh">
+      <el-scrollbar height="70vh">
         <div class="driver">
           <img class="steer" src="../../../../assets/steer.png" alt="steerImg" width="68">
           <div class="cover">
@@ -79,7 +79,7 @@
 import { ref, onMounted } from 'vue'
 import ProfileModal from './ProfileModal.vue'
 
-const data = ref({
+const profileData = ref({
   countUser: 21,
 })
 
