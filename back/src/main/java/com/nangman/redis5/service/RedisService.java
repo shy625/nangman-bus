@@ -48,7 +48,7 @@ public interface RedisService {
     // 7. createChat(채팅 메시지 전송)
     String createChat(String sessionId, String userId, String createdTime, String chat);
     // 3. joinRoom(채팅방 입장)
-    void joinRoom(String sessionId, String userId, RoomUserDto roomUserDto);
+    ChatDto.ChatLog joinRoom(String sessionId, RoomUserDto roomUserDto);
     // 4. exitRoom(채팅방 퇴장)
     void exitRoom(String sessionId, String userId);
     // 하차정류장 설정

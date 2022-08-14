@@ -125,7 +125,6 @@ public class RedisServiceImpl implements RedisService{
 
     @Override
     public ChatDto.ChatLog deleteChattingRoom(String sessionId) {
-        ChatDto.ChatLog chatLog = new ChatDto.ChatLog();
         String keyRoom = sessionId + KEY_ROOM;
         String keyChat = sessionId + KEY_CHAT;
         String keyLike = sessionId + KEY_LIKE;
@@ -134,35 +133,8 @@ public class RedisServiceImpl implements RedisService{
             return null;
         }
 
-        String busValue = (String) redisTemplate.opsForHash().get(keyRoom, SUBKEY_BUS_INFO);
+        ChatDto.ChatLog chatLog = getChatLog(sessionId);
 
-        String[] busInfo = busValue.split(SPLIT_STR);
-
-        chatLog.setSessionId(sessionId);
-        chatLog.setLicenseNo(busInfo[BUS_INFO_LICENSE_NO]);
-        chatLog.setRouteId(busInfo[BUS_INFO_ROUTE_ID]);
-        chatLog.setCreatedDate(busInfo[BUS_INFO_CREATED_DATE]);
-
-        List<ChatDto.MsgLog> logs = new ArrayList<>();
-        Map<Object, Object> roomChat = redisTemplate.opsForHash().entries(keyChat);
-        Map<Object, Object> roomLike = redisTemplate.opsForHash().entries(keyLike);
-
-        for(Object str : roomChat.keySet()) {
-            ChatDto.MsgLog temp = new ChatDto.MsgLog();
-            if(COUNT.equals((String) str)) continue;
-            System.out.println(str);
-            temp.setChatId(str.toString());
-            temp.setLike(roomLike.get(str).toString());
-            String value = roomChat.get(str).toString();
-            String[] values = value.split(SPLIT_STR, USER_STATE_SPLIT_LIMIT);
-            temp.setUserId(values[CHAT_INFO_USER_ID]);
-            temp.setCreatedTime(values[CHAT_INFO_CREATED_TIME]);
-            temp.setContent(values[CHAT_INFO_CONTENT]);
-
-            logs.add(temp);
-        }
-
-        chatLog.setChatLogs(logs);
         redisTemplate.delete(keyRoom);
         redisTemplate.delete(keyChat);
         redisTemplate.delete(keyLike);
@@ -355,11 +327,11 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void joinRoom(String sessionId, String userId, RoomUserDto roomUserDto) {
+    public ChatDto.ChatLog joinRoom(String sessionId, RoomUserDto roomUserDto) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return;
+        if(!redisTemplate.hasKey(key)) return null;
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
-        userList = userList + SPLIT_STR + userId;
+        userList = userList + SPLIT_STR + Long.toString(roomUserDto.getId());
         redisTemplate.opsForHash().put(key, SUBKEY_USER_LIST, userList);
         redisTemplate.opsForHash().increment(key, SUBKEY_USER_NUM, 1);
         // userId로 검색해서 SQL에서 닉네임, 생일 가져워서 넣어주고 상태 디폴트 0, 하차정류장 null 해줘야됨
@@ -375,7 +347,12 @@ public class RedisServiceImpl implements RedisService{
              .append(Integer.toString(roomUserDto.getEmotion()))
              .append(SPLIT_STR)
              .append(roomUserDto.getOutBusStop());
-        redisTemplate.opsForHash().put(key, userId, value.toString());
+        redisTemplate.opsForHash().put(key, Long.toString(roomUserDto.getId()), value.toString());
+
+        ChatDto.ChatLog chatLog = getChatLog(sessionId);
+
+        return chatLog;
+
     }
 
     @Override
@@ -465,4 +442,46 @@ public class RedisServiceImpl implements RedisService{
         if(count > 10) return NOISY;
         return ICED;
     }
+
+    public ChatDto.ChatLog getChatLog(String sessionId) {
+        ChatDto.ChatLog chatLog = new ChatDto.ChatLog();
+
+        String keyRoom = sessionId + KEY_ROOM;
+        String keyChat = sessionId + KEY_CHAT;
+        String keyLike = sessionId + KEY_LIKE;
+
+
+
+        String busValue = (String) redisTemplate.opsForHash().get(keyRoom, SUBKEY_BUS_INFO);
+
+        String[] busInfo = busValue.split(SPLIT_STR);
+
+        chatLog.setSessionId(sessionId);
+        chatLog.setLicenseNo(busInfo[BUS_INFO_LICENSE_NO]);
+        chatLog.setRouteId(busInfo[BUS_INFO_ROUTE_ID]);
+        chatLog.setCreatedDate(busInfo[BUS_INFO_CREATED_DATE]);
+
+        List<ChatDto.MsgLog> logs = new ArrayList<>();
+        Map<Object, Object> roomChat = redisTemplate.opsForHash().entries(keyChat);
+        Map<Object, Object> roomLike = redisTemplate.opsForHash().entries(keyLike);
+
+        for(Object str : roomChat.keySet()) {
+            ChatDto.MsgLog temp = new ChatDto.MsgLog();
+            if(COUNT.equals((String) str)) continue;
+
+            temp.setChatId(str.toString());
+            temp.setLike(roomLike.get(str).toString());
+            String value = roomChat.get(str).toString();
+            String[] values = value.split(SPLIT_STR, USER_STATE_SPLIT_LIMIT);
+            temp.setUserId(values[CHAT_INFO_USER_ID]);
+            temp.setCreatedTime(values[CHAT_INFO_CREATED_TIME]);
+            temp.setContent(values[CHAT_INFO_CONTENT]);
+
+            logs.add(temp);
+        }
+
+        chatLog.setChatLogs(logs);
+        return chatLog;
+    }
+
 }
