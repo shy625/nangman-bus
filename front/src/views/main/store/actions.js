@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from '../../../router/vue-router.js'
 import api from '../../../api/api.js'
 
-// 1. 닉네임 주는 함수
+// 1. 닉네임 주는 함수 - 아마 안 쓸 것 같음
 export function showNicknameFirst({ commit, getters, dispatch }) {
   axios({
     url: api.accounts.currentUserInfo(/*userid 넣어줘야 함*/),

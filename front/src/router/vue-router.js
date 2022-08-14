@@ -42,7 +42,8 @@ const router = createRouter({
       component: ReportsDetailView,
       meta: {
         transition: 'reportIn'
-      }
+      },
+      props: true,
     },
     { 
       name: 'chat', 

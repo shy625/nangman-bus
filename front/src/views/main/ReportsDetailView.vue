@@ -3,10 +3,10 @@
   <div class="report-bg-img"></div>
   <div class="report-detail">
     <el-scrollbar>
-      <ReportDetailHeader></ReportDetailHeader>
-      <ReportDetailMostPopularChat></ReportDetailMostPopularChat>
-      <ReportDetailUserData></ReportDetailUserData>
-      <ReportDetailBusData></ReportDetailBusData>
+      헤더: <ReportDetailHeader></ReportDetailHeader>
+      인기 채팅: <ReportDetailMostPopularChat></ReportDetailMostPopularChat>
+      유저데이터: <ReportDetailUserData></ReportDetailUserData>
+      버스데이터: <ReportDetailBusData></ReportDetailBusData>
     </el-scrollbar>
   </div>
 </div>
@@ -16,6 +16,26 @@ import ReportDetailHeader from './components/ReportDetailHeader.vue'
 import ReportDetailMostPopularChat from './components/ReportDetailMostPopularChat.vue'
 import ReportDetailUserData from './components/ReportDetailUserData.vue'
 import ReportDetailBusData from './components/ReportDetailBusData.vue'
+import { ref } from 'vue'
+
+// 데이터 정의
+const report = ref({
+  reportDetail: {
+
+  }
+})
+
+// 데이터 받아오기
+// function reportDetailGetting(userId) {
+//   axios({
+//     url: api.reports.
+//   })
+// }
+
+// 라우터 prop 테스트
+// const userId = ref({ id: this.$route.params.id })
+// console.log(userId.value.id)
+
 </script>
 <style>
 .report-bg-img {
