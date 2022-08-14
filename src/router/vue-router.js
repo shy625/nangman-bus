@@ -46,7 +46,7 @@ const router = createRouter({
     },
     { 
       name: 'chat', 
-      path: '/chat/:roomId', 
+      path: '/chat/:sessionId', 
       component: ChatView, 
     },
   ]
