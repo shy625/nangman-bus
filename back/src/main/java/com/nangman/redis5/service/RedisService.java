@@ -2,6 +2,7 @@ package com.nangman.redis5.service;
 
 import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
+import com.nangman.db.entity.BusStop;
 import com.nangman.redis5.dto.ChattingRoomDto;
 import com.nangman.redis5.dto.RandomBusDto;
 import com.nangman.redis5.dto.RoomUserDto;
@@ -45,14 +46,20 @@ public interface RedisService {
     void updateMyEmotion(String sessionId, String userId, int emotion);
     // 6. 사용자 목록 조회?
     List<RoomUserDto> roomUserList(String sessionId);
+
+    List<BusStop> getBusStops(String sessionId);
     // 7. createChat(채팅 메시지 전송)
     String createChat(String sessionId, String userId, String createdTime, String chat);
     // 3. joinRoom(채팅방 입장)
-    void joinRoom(String sessionId, String userId, RoomUserDto roomUserDto);
+    void joinRoom(String sessionId, RoomUserDto roomUserDto);
+
+    ChatDto.ChatLog getChattingLog(String sessionId);
     // 4. exitRoom(채팅방 퇴장)
     void exitRoom(String sessionId, String userId);
     // 하차정류장 설정
-    void setOutBusStop(String sessionId, String userId, String outBusStop);
+    void setOutBusStop(String sessionId, String userId, String busStopNodeId);
+
+
 
     List<String> getSessionList();
 }
