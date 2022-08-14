@@ -208,6 +208,9 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public boolean isAccessibleRoom(double lat, double lng, String sessionId) {
         String key = sessionId + KEY_ROOM;
+
+        if(!redisTemplate.hasKey(key)) return false;
+
         String busValue = (String) redisTemplate.opsForHash().get(key, SUBKEY_BUS_INFO);
 
         String[] busInfo = busValue.split(SPLIT_STR);
@@ -265,18 +268,21 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public void upLike(String sessionId, String chatId) {
         String key = sessionId + KEY_LIKE;
+        if(!redisTemplate.hasKey(key)) return;
         redisTemplate.opsForHash().increment(key, chatId, 1);
     }
 
     @Override
     public void downLike(String sessionId, String chatId) {
         String key = sessionId + KEY_LIKE;
+        if(!redisTemplate.hasKey(key)) return;
         redisTemplate.opsForHash().increment(key, chatId, -1);
     }
 
     @Override
     public int getLike(String sessionId, String chatId) {
         String key = sessionId + KEY_LIKE;
+        if(!redisTemplate.hasKey(key)) return -1;
         String subKey = chatId;
         String str = (String) redisTemplate.opsForHash().get(key, subKey);
         return Integer.parseInt(str);
@@ -285,6 +291,7 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public void updateMyEmotion(String sessionId, String userId, int emotion) {
         String key = sessionId + KEY_ROOM;
+        if(!redisTemplate.hasKey(key)) return;
         String value = (String) redisTemplate.opsForHash().get(key, userId);
         String[] userInfo = value.split(SPLIT_STR);
         userInfo[USER_INFO_STATE] = Integer.toString(emotion);
@@ -298,6 +305,7 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public List<RoomUserDto> roomUserList(String sessionId) {
         String key = sessionId + KEY_ROOM;
+        if(!redisTemplate.hasKey(key)) return null;
         List<RoomUserDto> list = new ArrayList<>();
         //이건 모든 서브키-밸류값 가져오는거
         Map<Object, Object> values = redisTemplate.opsForHash().entries(key);
@@ -330,6 +338,7 @@ public class RedisServiceImpl implements RedisService{
     public String createChat(String sessionId, String userId, String CreatedTime, String chat) {
         String keyChat = sessionId + KEY_CHAT;
         String keyLike = sessionId + KEY_LIKE;
+        if(!redisTemplate.hasKey(keyChat)) return null;
         int count = Integer.parseInt((String) redisTemplate.opsForHash().get(keyChat, COUNT));
         count++;
         String subKey = Integer.toString(count);
@@ -350,6 +359,7 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public void joinRoom(String sessionId, String userId, RoomUserDto roomUserDto) {
         String key = sessionId + KEY_ROOM;
+        if(!redisTemplate.hasKey(key)) return;
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
         userList = userList + SPLIT_STR + userId;
         redisTemplate.opsForHash().put(key, SUBKEY_USER_LIST, userList);
@@ -373,6 +383,7 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public void exitRoom(String sessionId, String userId) {
         String key = sessionId + KEY_ROOM;
+        if(!redisTemplate.hasKey(key)) return;
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
 //        userList = userList + ":" + userId;
 //        redisTemplate.opsForHash().put(key, "userList", userList);
@@ -391,6 +402,7 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public void setOutBusStop(String sessionId, String userId, String outBusStop) {
         String key = sessionId + KEY_ROOM;
+        if(!redisTemplate.hasKey(key)) return;
         String subKey = userId;
         String value = (String) redisTemplate.opsForHash().get(key, subKey);
         String[] userInfo = value.split(SPLIT_STR);
@@ -404,11 +416,12 @@ public class RedisServiceImpl implements RedisService{
 
     @Override
     public List<String> getSessionList() {
-        Set<String> redisKeys = redisTemplate.keys("*_chat");
+        String findAllRoom = "*" + KEY_ROOM;
+        Set<String> redisKeys = redisTemplate.keys(findAllRoom);
         List<String> keysList = new ArrayList<>();
         Iterator<String> iter = redisKeys.iterator();
         while (iter.hasNext()) {
-            String key = iter.next();
+            String key = iter.next().replace(KEY_ROOM, "");
             keysList.add(key);
         }
         return keysList;
