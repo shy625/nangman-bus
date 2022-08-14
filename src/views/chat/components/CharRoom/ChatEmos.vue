@@ -57,6 +57,9 @@ onMounted(() => {
 .emo-list.collapsed {
   height: 0;
 }
+.emo-toggle {
+  font-family: Pretendard;
+}
 .emo-emoji {
   width: 50px;
 }

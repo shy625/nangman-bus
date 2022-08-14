@@ -30,7 +30,7 @@
                 <span v-else class="bus-comment-mood"> <span class="bus-comment-mood">시끌벅적</span>해요!</span>
               </div>
             </div>
-            <div class="bus-getin">
+            <div class="bus-getin" @click="clickBusGetIn(room.sessionId)">
               >
             </div>
           </div>
@@ -44,6 +44,9 @@
 import axios from "axios"
 import { ref } from 'vue'
 import api from "../../api/api"
+import { useStore } from "vuex"
+
+const store = useStore()
 const data = ref({
   rooms: [],
   lat: 0,
@@ -96,9 +99,10 @@ function getLocation() {
   }
 }
 
-// const clickBusGetIn = sessionId => {
-  
-// }
+const clickBusGetIn = sessionId => {
+  // console.log(sessionId)
+  store.dispatch('chatStore/fetchSessionId', sessionId)
+}
 // 위치바뀌면 감지
 navigator.geolocation.watchPosition(function(position) {
   data.value.lat = position.coords.latitude

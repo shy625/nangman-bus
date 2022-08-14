@@ -25,3 +25,7 @@ export function boardDate(state) {
 export function boardTime(state) {
   return state.board.createTime
 }
+
+export function sessionId(state) {
+  return state.sessionId
+}
