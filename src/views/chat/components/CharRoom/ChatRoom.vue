@@ -1,47 +1,15 @@
 <template>
   <BusStops></BusStops>
-  <button id="connBtn">connect</button>
-  <button id="disconnBtn">disconnect</button>
   <div id="chatRoom" class="chatroom">
     <div class="chat-list">
       <!-- <div class="other-chat-wrapper">
-        <div class="chat-icon">O</div>
+        <img src="../../../../assets/emo-default.png" class="chat-icon">
         <div class="chat-content">
           <div class="chat-nick">가우르구라</div>
           <div class="chat-chatting">
             <div class="chatting">안녕하세요 즐입니다요~</div>
             <div class="chatting-side">
               <img src="../../../../assets/like.png" alt="like" class="chatting-like">
-              <div class="chatting-time">10:30</div>
-            </div>
-          </div>
-          <div class="chat-chatting">
-            <div class="chatting">즐즐~</div>
-            <div class="chatting-side">
-              <div class="side-like">
-                <img src="../../../../assets/like.png" alt="like" class="chatting-like">
-                <div class="like-number">5</div>
-              </div>
-              <div class="chatting-time">10:30</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="other-chat-wrapper">
-        <div class="chat-icon">O</div>
-        <div class="chat-content">
-          <div class="chat-nick">헤라클레스</div>
-          <div class="chat-chatting">
-            <div class="chatting">안녕하세요</div>
-            <div class="chatting-side">
-              <img src="" alt="" class="chatting-like">
-              <div class="chatting-time">10:30</div>
-            </div>
-          </div>
-          <div class="chat-chatting">
-            <div class="chatting">ㅋㅋㅋㅋ가우르구라님 즐~~~~~!!!!!!!!!!!!!!!!!!!!!!!</div>
-            <div class="chatting-side">
-              <img src="" alt="" class="chatting-like">
               <div class="chatting-time">10:30</div>
             </div>
           </div>
@@ -64,13 +32,13 @@
     </div>
   </div>
   <!-- <BanModal></BanModal> -->
-  <!-- <EnterModal></EnterModal> -->
+  <EnterModal></EnterModal>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 // import BanModal from './BanModal.vue'
-// import EnterModal from './EnterModal.vue'
+import EnterModal from './EnterModal.vue'
 import * as SockJS from "sockjs-client"
 import * as StompJs from "@stomp/stompjs"
 import { ref, onMounted, computed } from 'vue'
@@ -84,16 +52,43 @@ const chatData = ref({
 })
 
 onMounted(() => {
+  const chatRoom = document.querySelector('#chatRoom')
+  const busstop = document.querySelector('#busstop')
   // 나중에 조건걸어서 ban-active할 수 있도록!
   // const banModal = document.querySelector('#banModal')
   // const chatRoom = document.querySelector('#chatRoom')
   // const busstop = document.querySelector('#busstop')
-  // const enterModal = document.querySelector('#enterModal')
-
   // banModal.classList.add('ban')
   // chatRoom.classList.add('ban-active')
-  // enterModal.classList.add('enter')
   // busstop.classList.add('ban-active')
+  
+  // 엔터 모달
+  const enterModal = document.querySelector('#enterModal')
+  enterModal.classList.add('enter-in')
+  enterModal.classList.add('enter')
+  chatRoom.classList.add('chatroom-blur')
+  busstop.classList.add('chatroom-blur')
+  const enterBtns = document.querySelectorAll('.enter-btn .el-button')
+  enterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // const enterInput = document.querySelector('.enter-input')
+      // const payload = {
+      //   userId: chatData.value.userId,
+      //   // message: enterInput.value,
+      // }
+      client.publish({
+        destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/in',
+        body: chatData.value.userId,
+      })
+      // console.log('클릭함')
+      chatRoom.classList.remove('chatroom-blur')
+      busstop.classList.remove('chatroom-blur')
+      enterModal.classList.add('enter-out')
+      enterModal.addEventListener('animationend', () => {
+        enterModal.style = 'position: fixed;transform: scale(0);'
+      })
+    })
+  })
 
   // 소켓
   const client = new StompJs.Client({
@@ -115,41 +110,51 @@ onMounted(() => {
   }
 
   client.onConnect = function () {
-    // console.log("socket connection success")
     client.subscribe(
       "/sub/chat/rooms/" + chatData.value.sessionId + "/message",
       message => {
         const payload = JSON.parse(message.body)
         const chatList = document.querySelector('.chat-list')
-        console.log(chatList)
+
+        const chattingSide = document.createElement('div')
+        const chattingLike = document.createElement('img')
+        const chattingTime = document.createElement('div')
+        const chatChatting = document.createElement('div')
+        const chatting = document.createElement('div')
+        chattingSide.classList.add('chatting-side')
+        chattingLike.classList.add('chatting-like')
+        chattingTime.classList.add('chatting-time')
+        chatChatting.classList.add('chat-chatting')
+        chatting.classList.add('chatting')
+        // 채팅 내용
+        chatting.innerText = payload.message
+        // 좋아요
+        chattingLike.src = `${require('../../../../assets/like-outline.png')}`
+        chattingLike.alt = 'outline'
+        chattingLike.addEventListener('click', e => {
+          if (e.target.alt === 'outline') {  // 좋아요 +1
+            e.target.src = `${require('../../../../assets/like-filled.png')}`
+            e.target.alt = 'filled'
+          } else {                           // 좋아요 -1
+            e.target.src = `${require('../../../../assets/like-outline.png')}`
+            e.target.alt = 'outline'
+          }
+        })
+        // 시간
+        chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
+
         console.log('받음', payload)
         if (payload.userId === chatData.value.userId) {
           console.log('내꺼')
           const myChatWrapper = document.createElement('div')
           myChatWrapper.classList.add('my-chat-wrapper')
-          const chattingSide = document.createElement('div')
-          chattingSide.classList.add('chatting-side')
-          const chattingLike = document.createElement('img')
-          chattingLike.classList.add('chatting-like')
-          const chattingTime = document.createElement('div')
-          chattingTime.classList.add('chatting-time')
-          const chatChatting = document.createElement('div')
-          chatChatting.classList.add('chat-chatting')
-          const chatting = document.createElement('div')
-          chatting.classList.add('chatting')
-
-          // 채팅 내용
-          chatting.innerText = payload.message
-          // 좋아요
-          chattingLike.src = `${require('../../../../assets/like-outline.png')}`
-          // 시간
-          chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
 
           myChatWrapper.append(chattingSide, chatChatting)
           chattingSide.append(chattingLike, chattingTime)
           chatChatting.append(chatting)
           chatList.append(myChatWrapper)
-        } else {
+        } 
+        else {
           console.log('남꺼')
           const otherChatWrapper = document.createElement('div')
           otherChatWrapper.classList.add('other-chat-wrapper')
@@ -159,27 +164,11 @@ onMounted(() => {
           chatContent.classList.add('chat-content')
           const chatNick = document.createElement('div')
           chatNick.classList.add('chat-nick')
-          const chatChatting = document.createElement('div')
-          chatChatting.classList.add('chat-chatting')
-          const chatting = document.createElement('div')
-          chatting.classList.add('chatting')
-          const chattingSide = document.createElement('div')
-          chattingSide.classList.add('chatting-side')
-          const chattingLike = document.createElement('img')
-          chattingLike.classList.add('chatting-like')
-          const chattingTime = document.createElement('div')
-          chattingTime.classList.add('chatting-time')
           
           // 기분(상태)
           chatIcon.innerText = 'O'
           // 닉네임
           chatNick.innerText = '상대닉'
-          // 채팅 내용
-          chatting.innerText = payload.message
-          // 좋아요
-          chattingLike.src = `${require('../../../../assets/like-outline.png')}`
-          // 시간
-          chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
 
           otherChatWrapper.append(chatIcon, chatContent)
           chatContent.append(chatNick, chatChatting)
@@ -190,18 +179,32 @@ onMounted(() => {
         chatList.scrollTo(0, chatList.scrollHeight)
       }
     )
+    client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/user',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload)
+      }
+    )
   }
 
   // 채팅방 입장
-  const connBtn = document.getElementById("connBtn");
-  connBtn.addEventListener("click", () => {
-    client.activate()
-  })
+  client.activate()
+  
   // 퇴장
-  const disconnBtn = document.getElementById("disconnBtn");
-  disconnBtn.addEventListener("click", () => {
+  const chatHeaderBack = document.querySelector('.chat-header-back')
+  chatHeaderBack.addEventListener('click', () => {
+    const payload = {
+      userId: chatData.value.userId,
+      message: null,
+    }
+    client.publish({
+      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
+      body: JSON.stringify(payload)
+    })
     client.deactivate()
   })
+
   // 메시지 전송
   const chatSend = document.querySelector(".chat-send");
   chatSend.addEventListener("click", () => {
@@ -229,7 +232,7 @@ onMounted(() => {
 .chat-list {
   padding: 1px;
   height: 95%;
-  max-height: 620px;
+  max-height: 660px;
   background-color: #F5F5F5;
   overflow: scroll;
 }
@@ -294,6 +297,10 @@ onMounted(() => {
   display: flex;
   flex-grow: 1;
   background-color: #FFD96A;
+}
+.chat-icon {
+  height: 25px;
+  margin-right: 4px;
 }
 .input-content {
   margin: 4px 8px;

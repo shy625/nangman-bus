@@ -33,6 +33,7 @@ export default {
     getBoards: busId => HOST + BOARDS + busId,
 
     getIsAccessible: (sessionId, lat, lng) => HOST + REDIS + 'isAccessibleRoom/' + lat + '/' + lng + '/' + sessionId,
+    getRoomInfo: sessionId => HOST + REDIS + 'rooms/' + sessionId,
   }
 //   articles: {
 //     // /articles/

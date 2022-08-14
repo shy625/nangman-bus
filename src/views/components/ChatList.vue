@@ -37,18 +37,16 @@
         </div>
       </div>
     </div>
-    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" v-on:click="getRooms(37.49797, 127.02763)">
+    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.49797, 127.02763)">
   </div>
 </template>
 <script setup>
-import axios from "axios"
-import { ref } from 'vue'
-import api from "../../api/api"
+import { ref, computed } from 'vue'
 import { useStore } from "vuex"
 
 const store = useStore()
 const data = ref({
-  rooms: [],
+  rooms: computed(() => store.getters['chatStore/rooms']),
   lat: 0,
   lng: 0,
 })
@@ -61,30 +59,25 @@ function getRooms(lat, lng) {
   chatListRefresh.addEventListener('animationend', () => {
     chatListRefresh.classList.remove('refresh-rotate')
   })
+
   const busList = document.querySelector('.buslist')
   busList.classList.remove('buslist-in')
   busList.classList.add('buslist-out')
   busList.addEventListener('animationend', () => {
-    axios({
-      url: api.main.selectrooms(lat, lng),
-      method: "get",
-    })
-      .then(res => {
-        data.value.rooms = res.data
-        busList.classList.remove('buslist-out')
-        busList.classList.add('buslist-in')
-        // console.log('데이터')
-      })
-      .catch(err => {
-      console.log(err)
-    })
+    const data = {
+      lat: lat,
+      lng: lng,
+    }
+    busList.classList.remove('buslist-out')
+    busList.classList.add('buslist-in')
+    store.dispatch('chatStore/fetchRooms', data)
   })
 }
 
 function getLocation() {
   if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(position => {
-      getRooms(position.coords.latitude, position.coords.longitude)
+      // console.log(position.coords.latitude, position.coords.longitude)
       data.value.lat = position.coords.latitude
       data.value.lng = position.coords.longitude
     }, error => {
@@ -101,19 +94,21 @@ function getLocation() {
 
 const clickBusGetIn = sessionId => {
   // console.log(sessionId)
-  store.dispatch('chatStore/fetchSessionId', sessionId)
+  const geoData = {
+    sessionId: sessionId,
+    // lat: data.value.lat,
+    // lng: data.value.lng,
+    lat: 37.49797, 
+    lng: 127.02763,
+  }
+  store.dispatch('chatStore/fetchSessionId', geoData)
 }
 // 위치바뀌면 감지
 navigator.geolocation.watchPosition(function(position) {
+  // console.log(position.coords.latitude, position.coords.longitude)
   data.value.lat = position.coords.latitude
   data.value.lng = position.coords.longitude
 })
-//3. List형식으로 방의 정보를 받아서 저장해야되고
-//4. List로 받은것을 template에 넣어줘야됨
-
-
-//5. 약간 데이터 수정이 필요
-
 
 </script>
 <style>

@@ -4,7 +4,10 @@ const state = () => ({
   boards: [],
   board: '',
 
-  sessionId: localStorage.getItem('sessionId') || 'session_1660458737_3',
+  rooms: [],
+  roomInfo: {},
+
+  sessionId: localStorage.getItem('sessionId') || 'session_1660483514_0',
 })
 
 export default state

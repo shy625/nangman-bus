@@ -16,7 +16,65 @@
 </template>
 <script setup>
 import ChatList from './ChatList.vue'
+import { useStore } from 'vuex'
+import { ref } from 'vue'
 
+const store = useStore()
+const data = ref({
+  lat: 0,
+  lng: 0,
+})
+function getLocation() {
+  if (navigator.geolocation) { // GPS를 지원하면
+    navigator.geolocation.getCurrentPosition(position => {
+      // console.log(position.coords.latitude, position.coords.longitude)
+      data.value.lat = position.coords.latitude
+      data.value.lng = position.coords.longitude
+    }, error => {
+      console.error(error)
+    }, {
+      enableHighAccuracy: false,
+      maximumAge: 0,
+      timeout: Infinity
+    })
+  } else {
+    alert('GPS를 허용해 주세요.')
+  }
+}
+getLocation()
+navigator.geolocation.watchPosition(function(position) {
+  // console.log(position.coords.latitude, position.coords.longitude)
+  data.value.lat = position.coords.latitude
+  data.value.lng = position.coords.longitude
+})
+
+// 채팅리스트 버튼
+const clickChatList = () => {
+  const chatList = document.querySelector('.chatlist-cover')
+  if (chatList.classList.contains('chatlist-in')) {
+    chatList.classList.remove('chatlist-in')
+    chatList.classList.add('chatlist-out')
+    setTimeout(() => {
+      chatList.classList.remove('chatlist-active')
+    }, 600);
+  } else {
+    // console.log(11)
+    const geoData = {
+      lat: data.value.lat,
+      lng: data.value.lng,
+    }
+    store.dispatch('chatStore/fetchRooms', geoData)
+    chatList.classList.remove('chatlist-out')
+    chatList.classList.add('chatlist-active')
+    chatList.classList.add('chatlist-in')
+  }
+  const footerChatList = document.querySelector('.footer-chatlist')
+  if (chatList.classList.contains('chatlist-in')) {
+    footerChatList.src = `${require('../../assets/bus-clicked.png')}`
+    } else {
+    footerChatList.src = `${require('../../assets/bus-unclicked.png')}`
+  }
+}
 // 풋터 버튼 클릭할 때 색 바꾸기
 // 실패... 시간만 날림 ㅜ
 // const footerData = ref({
@@ -55,28 +113,6 @@ import ChatList from './ChatList.vue'
 //     // console.log(footerReportsBtn)
 //   }
 // }
-
-// 채팅리스트 버튼
-const clickChatList = () => {
-  const chatList = document.querySelector('.chatlist-cover')
-  if (chatList.classList.contains('chatlist-in')) {
-    chatList.classList.remove('chatlist-in')
-    chatList.classList.add('chatlist-out')
-    setTimeout(() => {
-      chatList.classList.remove('chatlist-active')
-    }, 600);
-  } else {
-    chatList.classList.remove('chatlist-out')
-    chatList.classList.add('chatlist-active')
-    chatList.classList.add('chatlist-in')
-  }
-  const footerChatList = document.querySelector('.footer-chatlist')
-  if (chatList.classList.contains('chatlist-in')) {
-    footerChatList.src = `${require('../../assets/bus-clicked.png')}`
-    } else {
-    footerChatList.src = `${require('../../assets/bus-unclicked.png')}`
-  }
-}
 </script>
 <style>
 .chatlist-active {

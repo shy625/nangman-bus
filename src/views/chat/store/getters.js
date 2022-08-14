@@ -29,3 +29,7 @@ export function boardTime(state) {
 export function sessionId(state) {
   return state.sessionId
 }
+
+export function rooms(state) {
+  return state.rooms
+}
