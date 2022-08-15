@@ -44,7 +44,7 @@ public class SocketDto {
 
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ChatLike {
+    public static class SubChatLike {
         private Long chatId;
         private Integer count;
     }

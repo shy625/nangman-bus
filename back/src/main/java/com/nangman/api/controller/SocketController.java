@@ -60,8 +60,8 @@ public class SocketController {
     public void registerChatLike(@DestinationVariable String sessionId, @DestinationVariable Long chatId) {
         redisService.upLike(sessionId, String.valueOf(chatId));
         int likeCount = redisService.getLike(sessionId, String.valueOf(chatId));
-        SocketDto.ChatLike chatLikeDto = new SocketDto.ChatLike(chatId, likeCount);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
+        SocketDto.SubChatLike subChatLikeDto = new SocketDto.SubChatLike(chatId, likeCount);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", subChatLikeDto);
     }
 
     // 채팅 좋아요 취소
@@ -69,8 +69,8 @@ public class SocketController {
     public void cancelChatLike(@DestinationVariable String sessionId, @DestinationVariable Long chatId) {
         redisService.downLike(sessionId, String.valueOf(chatId));
         int likeCount = redisService.getLike(sessionId, String.valueOf(chatId));
-        SocketDto.ChatLike chatLikeDto = new SocketDto.ChatLike(chatId, likeCount);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
+        SocketDto.SubChatLike subChatLikeDto = new SocketDto.SubChatLike(chatId, likeCount);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", subChatLikeDto);
     }
 
     // 버스가 현재 위치한 정류장 업데이트
