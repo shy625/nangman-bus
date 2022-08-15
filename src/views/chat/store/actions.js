@@ -99,6 +99,21 @@ export function fetchBoards({ commit }, busId) {
     })
 }
 
+export function fetchIsAccessible({ commit }, geoData) {
+  axios({
+    url: api.chat.getIsAccessible(geoData.sessionId, geoData.lat, geoData.lng),
+    method: 'get'
+  })
+    .then(res => {
+      console.log('이즈 엑세서블?', res.data)
+      if (res.data) {
+        commit('SET_IS_ACCESSIBLE', res.data)
+      } else {
+        commit('SET_IS_ACCESSIBLE_CNT_PLUS')
+      }
+    })
+}
+
 export function fetchSessionId({ commit, dispatch }, data) {
   axios({
     url: api.chat.getIsAccessible(data.room.sessionId, data.lat, data.lng),
@@ -147,4 +162,9 @@ export function fetchRooms({ commit }, data) {
       commit('SET_ROOMS', res.data)
     })
     .catch(err => console.log(err))
+}
+
+export function fetchChatLog({ commit }, log) {
+  console.log('패치로그')
+  commit('SET_CHAT_LOG', log)
 }

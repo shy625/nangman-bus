@@ -43,7 +43,7 @@ const chatViewData = ref({
   busNum: computed(() => store.getters['chatStore/busNum']),
   sessionId: computed(() => store.getters['chatStore/sessionId']),
   lat: 0,
-  lnt: 0
+  lng: 0
 })
 navigator.geolocation.watchPosition(function(position) {
   // console.log(position.coords.latitude, position.coords.longitude)

@@ -26,3 +26,16 @@ export function SET_ROOMS(state, rooms) {
 export function SET_ROOM_INFO(state, roomInfo) {
   state.roomInfo = roomInfo
 }
+
+export function SET_CHAT_LOG(state, log) {
+  state.roomInfo.chatRoomInfo.chatLogs.push(log)
+}
+
+export function SET_IS_ACCESSIBLE(state, data) {
+  state.isAccessible = data
+  state.isAccessibleCnt = 0
+}
+
+export function SET_IS_ACCESSIBLE_CNT_PLUS(state) {
+  state.isAccessibleCnt += 1
+}

@@ -38,11 +38,15 @@ export function busstopInfos(state) {
   return state.roomInfo.busStopInfoList
 }
 
-export function busId() {
-  // return state.room.busId
-  return 22
+export function busId(state) {
+  return state.room.busId
+  // return 24
 }
 
 export function busNum(state) {
   return state.roomInfo.chatRoomInfo?.routeNo
+}
+
+export function isAccessibleCnt(state) {
+  return state.isAccessibleCnt
 }

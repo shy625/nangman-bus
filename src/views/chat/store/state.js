@@ -7,7 +7,9 @@ const state = () => ({
   rooms: [],
   roomInfo: {},
 
-  sessionId: localStorage.getItem('sessionID') || '',
+  sessionId: localStorage.getItem('sessionID') || 'session_1660483514_2',
+  isAccessible: '',
+  isAccessibleCnt: 0,
 })
 
 export default state

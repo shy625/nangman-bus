@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.49797, 127.02763)">
+    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.73382, 126.7316)">
   </div>
 </template>
 <script setup>
@@ -93,13 +93,13 @@ function getLocation() {
 }
 
 const clickBusGetIn = room => {
-  // console.log(sessionId)
+  console.log(room)
   const geoData = {
     room: room,
     // lat: data.value.lat,
     // lng: data.value.lng,
-    lat: 37.49797, 
-    lng: 127.02763,
+    lat: 37.73382, 
+    lng: 126.7316,
   }
   store.dispatch('chatStore/fetchSessionId', geoData)
 }

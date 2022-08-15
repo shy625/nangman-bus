@@ -48,48 +48,19 @@ const store = useStore()
 const chatData = ref({
   userId: computed(() => store.getters['chatStore/userId']),
   sessionId: computed(() => store.getters['chatStore/sessionId']),
+  isAccessibleCnt: computed(() => store.getters['chatStore/isAccessibleCnt']),
   message: "",
+  lat: 0,
+  lng: 0,
+})
+
+navigator.geolocation.watchPosition(function(position) {
+  // console.log(position.coords.latitude, position.coords.longitude)
+  chatData.value.lat = position.coords.latitude
+  chatData.value.lng = position.coords.longitude
 })
 
 onMounted(() => {
-  const chatRoom = document.querySelector('#chatRoom')
-  const busstop = document.querySelector('#busstop')
-  // 나중에 조건걸어서 ban-active할 수 있도록!
-  // const banModal = document.querySelector('#banModal')
-  // const chatRoom = document.querySelector('#chatRoom')
-  // const busstop = document.querySelector('#busstop')
-  // banModal.classList.add('ban')
-  // chatRoom.classList.add('ban-active')
-  // busstop.classList.add('ban-active')
-  
-  // 엔터 모달
-  const enterModal = document.querySelector('#enterModal')
-  enterModal.classList.add('enter-in')
-  enterModal.classList.add('enter')
-  chatRoom.classList.add('chatroom-blur')
-  busstop.classList.add('chatroom-blur')
-  const enterBtns = document.querySelectorAll('.enter-btn .el-button')
-  enterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // const enterInput = document.querySelector('.enter-input')
-      // const payload = {
-      //   userId: chatData.value.userId,
-      //   // message: enterInput.value,
-      // }
-      client.publish({
-        destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/in',
-        body: chatData.value.userId,
-      })
-      // console.log('클릭함')
-      chatRoom.classList.remove('chatroom-blur')
-      busstop.classList.remove('chatroom-blur')
-      enterModal.classList.add('enter-out')
-      enterModal.addEventListener('animationend', () => {
-        enterModal.style = 'position: fixed;transform: scale(0);'
-      })
-    })
-  })
-
   // 소켓
   const client = new StompJs.Client({
     brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
@@ -110,11 +81,20 @@ onMounted(() => {
   }
 
   client.onConnect = function () {
+    // 채팅 메세지 구독
     client.subscribe(
       "/sub/chat/rooms/" + chatData.value.sessionId + "/message",
       message => {
         const payload = JSON.parse(message.body)
         const chatList = document.querySelector('.chat-list')
+        const chatLog = {
+          chatId: payload.chatId,
+          userId: payload.userId,
+          createdTime: payload.createdTime,
+          content: payload.message,
+          like: 0
+        }
+        store.dispatch('chatStore/fetchChatLog', chatLog)
 
         const chattingSide = document.createElement('div')
         const chattingLike = document.createElement('img')
@@ -141,7 +121,7 @@ onMounted(() => {
           }
         })
         // 시간
-        chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
+        chattingTime.innerText = payload.createdTime.split(' ')[1].slice(0, 5)
 
         console.log('받음', payload)
         if (payload.userId === chatData.value.userId) {
@@ -179,11 +159,12 @@ onMounted(() => {
         chatList.scrollTo(0, chatList.scrollHeight)
       }
     )
+    // 채팅 입/퇴장 구독
     client.subscribe(
       '/sub/chat/rooms/' + chatData.value.sessionId + '/user',
       message => {
         const payload = JSON.parse(message.body)
-        console.log(payload)
+        console.log(payload, '입/퇴장')
       }
     )
   }
@@ -191,18 +172,43 @@ onMounted(() => {
   // 채팅방 입장
   client.activate()
 
-  // 퇴장
-  const chatHeaderBack = document.querySelector('.chat-header-back')
-  chatHeaderBack.addEventListener('click', () => {
-    const payload = {
-      userId: chatData.value.userId,
-      message: null,
-    }
-    client.publish({
-      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
-      body: JSON.stringify(payload)
+  const chatRoom = document.querySelector('#chatRoom')
+  const busstop = document.querySelector('#busstop')
+  // 나중에 조건걸어서 ban-active할 수 있도록!
+  // const banModal = document.querySelector('#banModal')
+  // const chatRoom = document.querySelector('#chatRoom')
+  // const busstop = document.querySelector('#busstop')
+  // banModal.classList.add('ban')
+  // chatRoom.classList.add('ban-active')
+  // busstop.classList.add('ban-active')
+  
+  // 엔터 모달
+  const enterModal = document.querySelector('#enterModal')
+  enterModal.classList.add('enter-in')
+  enterModal.classList.add('enter')
+  chatRoom.classList.add('chatroom-blur')
+  busstop.classList.add('chatroom-blur')
+  const enterBtns = document.querySelectorAll('.enter-btn .el-button')
+  enterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const enterInput = document.querySelector('.enter-input')
+      const payload = {
+        userId: chatData.value.userId,
+        message: enterInput.value,
+      }
+      // console.log(payload)
+      client.publish({
+        destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/in',
+        body: JSON.stringify(payload),
+      })
+      // console.log('클릭함')
+      chatRoom.classList.remove('chatroom-blur')
+      busstop.classList.remove('chatroom-blur')
+      enterModal.classList.add('enter-out')
+      enterModal.addEventListener('animationend', () => {
+        enterModal.style = 'position: fixed;transform: scale(0);'
+      })
     })
-    client.deactivate()
   })
 
   // 메시지 전송
@@ -221,6 +227,42 @@ onMounted(() => {
       chatData.value.message = ""
     }
   })
+  
+  // 퇴장
+  const chatHeaderBack = document.querySelector('.chat-header-back')
+  chatHeaderBack.addEventListener('click', () => {
+    const payload = {
+      userId: chatData.value.userId,
+      message: null,
+    }
+    client.publish({
+      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
+      body: JSON.stringify(payload)
+    })
+    client.deactivate()
+  })
+
+  // 거리벗어나면 강퇴
+  setInterval(() => {
+  const geoData = {
+    sessionId: chatData.value.sessionId,
+    lat: chatData.value.lat,
+    lng: chatData.value.lng
+  }
+  store.dispatch('chatStore/fetchIsAccessible', geoData)
+  // 퇴장
+  // if (chatData.value.isAccessibleCnt > 1) {
+  //   const payload = {
+  //     userId: chatData.value.userId,
+  //     message: null,
+  //   }
+  //   client.publish({
+  //     destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
+  //     body: JSON.stringify(payload)
+  //   })
+  //   client.deactivate()
+  // }
+}, 60000)
 })
 </script>
 <style>
@@ -234,7 +276,7 @@ onMounted(() => {
 .chat-list {
   padding: 1px;
   height: 95%;
-  max-height: 700px;
+  max-height: 657px;
   background-color: #F5F5F5;
   overflow: scroll;
 }
