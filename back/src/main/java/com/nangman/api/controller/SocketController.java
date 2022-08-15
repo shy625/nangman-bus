@@ -49,7 +49,7 @@ public class SocketController {
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.PubChat pubChatDto) {
         log.info("sendChatMessage() ChatPub - userId : " + pubChatDto.getUserId() + " message : " + pubChatDto.getMessage());
         String createdTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String chatId = redisService.createChat(sessionId, String.valueOf(pubChatDto.getUserId()), createdTime, pubChatDto.getMessage());
+        String chatId = redisService.createChat(sessionId, pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
         SocketDto.SubChat subChatDto = new SocketDto.SubChat(Long.valueOf(chatId), pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
         log.info("sendChatMessage() ChatSub - userId : " + subChatDto.getUserId() + " message : " + subChatDto.getMessage());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", subChatDto);
@@ -58,8 +58,8 @@ public class SocketController {
     // 채팅 좋아요 등록
     @MessageMapping("/chat/rooms/{sessionId}/like/up")
     public void registerChatLike(@DestinationVariable String sessionId, SocketDto.ChatLike chatLikeDto) {
-        redisService.upLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
-        int likeCount = redisService.getLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
+        redisService.upLike(sessionId, chatLikeDto.getChatId());
+        int likeCount = redisService.getLike(sessionId, chatLikeDto.getChatId());
         chatLikeDto.setCount(likeCount);
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
@@ -67,8 +67,8 @@ public class SocketController {
     // 채팅 좋아요 취소
     @MessageMapping("/chat/rooms/{sessionId}/like/down")
     public void cancelChatLike(@DestinationVariable String sessionId, SocketDto.ChatLike chatLikeDto) {
-        redisService.downLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
-        int likeCount = redisService.getLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
+        redisService.downLike(sessionId, chatLikeDto.getChatId());
+        int likeCount = redisService.getLike(sessionId, chatLikeDto.getChatId());
         chatLikeDto.setCount(likeCount);
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }

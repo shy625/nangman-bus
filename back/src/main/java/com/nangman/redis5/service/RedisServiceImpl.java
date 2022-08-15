@@ -261,24 +261,24 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void upLike(String sessionId, String chatId) {
+    public void upLike(String sessionId, Long chatId) {
         String key = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(key)) return;
-        redisTemplate.opsForHash().increment(key, chatId, 1);
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
+        redisTemplate.opsForHash().increment(key, String.valueOf(chatId), 1);
     }
 
     @Override
-    public void downLike(String sessionId, String chatId) {
+    public void downLike(String sessionId, Long chatId) {
         String key = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(key)) return;
-        redisTemplate.opsForHash().increment(key, chatId, -1);
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
+        redisTemplate.opsForHash().increment(key, String.valueOf(chatId), -1);
     }
 
     @Override
-    public int getLike(String sessionId, String chatId) {
+    public int getLike(String sessionId, Long chatId) {
         String key = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(key)) return -1;
-        String subKey = chatId;
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return -1;
+        String subKey = String.valueOf(chatId);
         String str = (String) redisTemplate.opsForHash().get(key, subKey);
         return Integer.parseInt(str);
     }
@@ -363,17 +363,17 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public String createChat(String sessionId, String userId, String CreatedTime, String chat) {
+    public String createChat(String sessionId, Long userId, String chat, String createdTime) {
         String keyChat = sessionId + KEY_CHAT;
         String keyLike = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(keyChat)) return null;
-        int count = Integer.parseInt((String) redisTemplate.opsForHash().get(keyChat, COUNT));
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(keyChat))) return null;
+        int count = Integer.parseInt(String.valueOf(redisTemplate.opsForHash().get(keyChat, COUNT)));
         count++;
         String subKey = Integer.toString(count);
         StringBuilder value = new StringBuilder();
         value.append(userId)
                 .append(SPLIT_STR)
-                .append(CreatedTime)
+                .append(createdTime)
                 .append(SPLIT_STR)
                 .append(chat);
         redisTemplate.opsForHash().put(keyChat, subKey, value.toString());
