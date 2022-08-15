@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @ApiModel("Socket model")
 public class SocketDto {
@@ -42,9 +43,11 @@ public class SocketDto {
         private String createdTime;
     }
 
+    @Setter
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class SubChatLike {
+    public static class ChatLike {
         private Long chatId;
         private Integer count;
     }

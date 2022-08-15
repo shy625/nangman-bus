@@ -56,21 +56,21 @@ public class SocketController {
     }
 
     // 채팅 좋아요 등록
-    @MessageMapping("/chat/rooms/{sessionId}/{chatId}/like/up")
-    public void registerChatLike(@DestinationVariable String sessionId, @DestinationVariable Long chatId) {
-        redisService.upLike(sessionId, String.valueOf(chatId));
-        int likeCount = redisService.getLike(sessionId, String.valueOf(chatId));
-        SocketDto.SubChatLike subChatLikeDto = new SocketDto.SubChatLike(chatId, likeCount);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", subChatLikeDto);
+    @MessageMapping("/chat/rooms/{sessionId}/like/up")
+    public void registerChatLike(@DestinationVariable String sessionId, SocketDto.ChatLike chatLikeDto) {
+        redisService.upLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
+        int likeCount = redisService.getLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
+        chatLikeDto.setCount(likeCount);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
 
     // 채팅 좋아요 취소
-    @MessageMapping("/chat/rooms/{sessionId}/{chatId}/like/down")
-    public void cancelChatLike(@DestinationVariable String sessionId, @DestinationVariable Long chatId) {
-        redisService.downLike(sessionId, String.valueOf(chatId));
-        int likeCount = redisService.getLike(sessionId, String.valueOf(chatId));
-        SocketDto.SubChatLike subChatLikeDto = new SocketDto.SubChatLike(chatId, likeCount);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", subChatLikeDto);
+    @MessageMapping("/chat/rooms/{sessionId}/like/down")
+    public void cancelChatLike(@DestinationVariable String sessionId, SocketDto.ChatLike chatLikeDto) {
+        redisService.downLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
+        int likeCount = redisService.getLike(sessionId, String.valueOf(chatLikeDto.getChatId()));
+        chatLikeDto.setCount(likeCount);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/like", chatLikeDto);
     }
 
     // 버스가 현재 위치한 정류장 업데이트
