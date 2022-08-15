@@ -29,6 +29,8 @@ onBeforeMount(() => {
   const time = store.getters.reportsDetailCreateTime
   console.log(busNum)
 })
+// 만약 store.getters.뭐시기 가 안되면
+// store.getters['mainPage/뭐시기'] 로 접근해야 함
 
 </script>
 <style>
