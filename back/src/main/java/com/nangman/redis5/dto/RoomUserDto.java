@@ -13,7 +13,7 @@ public class RoomUserDto {
 
     private Long userId;
     private String nickName;
-    private String birth;
+    private Boolean isTodayBirth;
     private Integer emotion;
-    private String outBusStop;
+    private Long outBusStopId;
 }
