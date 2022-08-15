@@ -25,3 +25,15 @@ export function boardDate(state) {
 export function boardTime(state) {
   return state.board.createTime
 }
+
+export function sessionId(state) {
+  return state.sessionId
+}
+
+export function rooms(state) {
+  return state.rooms
+}
+
+export function busstopInfos(state) {
+  return state.roomInfo.busStopInfoList
+}
