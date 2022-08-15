@@ -67,9 +67,10 @@ public class SocketDto {
         private String busStopName;
     }
 
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ChatUserEmotion {
+    public static class UserEmotion {
         private Long userId;
         private Integer emotion;    // 0 : 무표정, 1 : 화나요, 2 : 기분좋아요, 3 : 우울해요
     }

@@ -79,11 +79,10 @@ public class SocketController {
     }
 
     // 사용자 감정 상태 설정 - 0 : 무표정, 1 : 화나요, 2 : 기분좋아요, 3 : 우울해요
-    @MessageMapping("/chat/rooms/{sessionId}/{userId}/emotion")
-    public void setUserEmotion(@DestinationVariable String sessionId, @DestinationVariable Long userId, int emotion) {
-        redisService.updateMyEmotion(sessionId, String.valueOf(userId), emotion);
-        SocketDto.ChatUserEmotion chatUserEmotionDto = new SocketDto.ChatUserEmotion(userId, emotion);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/emotion", chatUserEmotionDto);
+    @MessageMapping("/chat/rooms/{sessionId}/emotion")
+    public void setUserEmotion(@DestinationVariable String sessionId, SocketDto.UserEmotion userEmotionDto) {
+        redisService.updateMyEmotion(sessionId, String.valueOf(userEmotionDto.getUserId()), userEmotionDto.getEmotion());
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/emotion", userEmotionDto);
     }
 
     // 사용자 하차 정류장 설정
