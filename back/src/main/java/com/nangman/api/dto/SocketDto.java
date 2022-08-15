@@ -63,11 +63,12 @@ public class SocketDto {
         private String nextName;
     }
 
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ChatBusStop {
+    public static class UserOutBusStop {
+        private Long userId;
         private Long busStopId;
-        private String busStopName;
     }
 
     @Getter

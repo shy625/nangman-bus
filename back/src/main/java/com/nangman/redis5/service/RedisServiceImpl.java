@@ -440,17 +440,17 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void setOutBusStop(String sessionId, String userId, String busStopNodeId) {
+    public void setOutBusStop(String sessionId, Long userId, Long busStopId) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return;
-        String subKey = userId;
-        String value = (String) redisTemplate.opsForHash().get(key, subKey);
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
+        String subKey = String.valueOf(userId);
+        String value = String.valueOf(redisTemplate.opsForHash().get(key, subKey));
         String[] userInfo = value.split(SPLIT_STR);
         StringBuilder newUserInfo = new StringBuilder();
         newUserInfo.append(userInfo[USER_INFO_NICKNAME]).append(SPLIT_STR)
                 .append(userInfo[USER_INFO_BIRTH]).append(SPLIT_STR)
                 .append(userInfo[USER_INFO_STATE]).append(SPLIT_STR)
-                .append(busStopNodeId);
+                .append(busStopId);
         redisTemplate.opsForHash().put(key, subKey, newUserInfo.toString());
     }
 

@@ -58,7 +58,7 @@ public interface RedisService {
     // 4. exitRoom(채팅방 퇴장)
     void exitRoom(String sessionId, Long userId);
     // 하차정류장 설정
-    void setOutBusStop(String sessionId, String userId, String busStopNodeId);
+    void setOutBusStop(String sessionId, Long userId, Long busStopId);
 
 
 
