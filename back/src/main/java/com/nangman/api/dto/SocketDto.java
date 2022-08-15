@@ -25,7 +25,9 @@ public class SocketDto {
     }
 
     @Getter
-    public static class ChatPub {
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PubChat {
         private Long userId;
         private String message;
     }
@@ -33,7 +35,7 @@ public class SocketDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class ChatSub {
+    public static class SubChat {
         private Long chatId;
         private Long userId;
         private String message;
