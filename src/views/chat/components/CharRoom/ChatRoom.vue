@@ -232,7 +232,7 @@ onMounted(() => {
 .chat-list {
   padding: 1px;
   height: 95%;
-  max-height: 660px;
+  max-height: 700px;
   background-color: #F5F5F5;
   overflow: scroll;
 }

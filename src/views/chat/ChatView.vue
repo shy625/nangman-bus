@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'main' }" class="chat-header-back">
           &lt;
         </router-link>
-        <div class="chat-header-title">5006번 버스</div>
+        <div class="chat-header-title">{{ chatViewData.busNum }}번<span style="color:black"> 낭만버스</span></div>
       </div>
       <hr class="chat-header-hr">
     </header>
@@ -39,7 +39,8 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 const chatViewData = ref({
-  busId: computed(() => store.getters['chatStore/busId'])
+  busId: computed(() => store.getters['chatStore/busId']),
+  busNum: computed(() => store.getters['chatStore/busNum'])
 })
 
 onMounted(() => {
@@ -92,7 +93,7 @@ getLocation()
   flex-direction: column;
 }
 .el-carousel__arrow {
-  top: 80% !important;
+  top: 75% !important;
   z-index: 1;
   opacity: 0.3;
   background-color: #FFD96A !important;
@@ -117,6 +118,7 @@ getLocation()
 }
 .chat-header-title {
   color: #F34949;
+  font-family: BMHANNAPro;
 }
 .chat-header-hr {
   margin: 0px 32px;

@@ -41,3 +41,7 @@ export function busstopInfos(state) {
 export function busId(state) {
   return state.room.busId
 }
+
+export function busNum(state) {
+  return state.roomInfo.chatRoomInfo.routeNo
+}
