@@ -12,6 +12,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
@@ -48,7 +51,10 @@ public class SocketController {
     @MessageMapping("/chat/rooms/{sessionId}/message")
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.PubChat pubChatDto) {
         log.info("sendChatMessage() ChatPub - userId : " + pubChatDto.getUserId() + " message : " + pubChatDto.getMessage());
-        String createdTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalTime nowTime = zdt.toLocalTime();
+        String createdTime = String.valueOf(nowTime);
+//        String createdTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String chatId = redisService.createChat(sessionId, pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
         SocketDto.SubChat subChatDto = new SocketDto.SubChat(Long.valueOf(chatId), pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
         log.info("sendChatMessage() ChatSub - userId : " + subChatDto.getUserId() + " message : " + subChatDto.getMessage());
