@@ -4,8 +4,6 @@ const USER = 'user/'
 const REDIS = 'redis/'
 const REPORTS = 'reports/'
 const BOARDS = 'boards/'
-// const ARTICLES = 'articles/'
-// const COMMENTS = 'comments/'
 
 export default {
   reports: {
@@ -33,6 +31,9 @@ export default {
     createBoard: () => HOST + BOARDS,
     deleteBoard: boardId => HOST + BOARDS + boardId,
     getBoards: busId => HOST + BOARDS + busId,
+
+    getIsAccessible: (sessionId, lat, lng) => HOST + REDIS + 'isAccessibleRoom/' + lat + '/' + lng + '/' + sessionId,
+    getRoomInfo: sessionId => HOST + REDIS + 'rooms/' + sessionId,
   }
 //   articles: {
 //     // /articles/

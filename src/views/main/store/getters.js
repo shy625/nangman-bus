@@ -4,7 +4,7 @@
 // }
 
 export function nickname(state) {
-  return state.nickname
+  return '오케아누스' || state.nickname
 }
 
 export function isRouletted(state) {

@@ -38,9 +38,8 @@
 import { useStore } from 'vuex'
 import { onBeforeMount } from 'vue'
 
-onBeforeMount(() => {
-  const store = useStore()
-})
+const store = useStore()
+
 </script>
 <style>
 .report-detail-bus {
