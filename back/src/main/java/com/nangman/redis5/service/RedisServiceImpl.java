@@ -421,16 +421,16 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void exitRoom(String sessionId, String userId) {
+    public void exitRoom(String sessionId, Long userId) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return;
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
 //        userList = userList + ":" + userId;
 //        redisTemplate.opsForHash().put(key, "userList", userList);
         String[] users = userList.split(SPLIT_STR);
         StringBuilder newUserList = new StringBuilder();
         for(String str : users) {
-            if(str.equals(userId)) continue;
+            if(str.equals(String.valueOf(userId))) continue;
             newUserList.append(str).append(SPLIT_STR);
         }
         newUserList.setLength(newUserList.length() - 1);

@@ -24,18 +24,23 @@ public class SocketController {
 
     // 채팅 입장
     @MessageMapping("/chat/rooms/{sessionId}/in")
-    public void enterChatRoom(@DestinationVariable String sessionId, Long userId) {
+    public void enterChatRoom(@DestinationVariable String sessionId, SocketDto.PubUserInOut pubUserInOutDto) {
+        Long userId = pubUserInOutDto.getUserId();
+        String message = pubUserInOutDto.getMessage();
         chatInOutRecordService.insertInRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, userId));
-        SocketDto.ChatUserInOut chatUserInOutDto = new SocketDto.ChatUserInOut(userId, 1);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserInOutDto);
+        redisService.joinRoom(sessionId, userId);
+        SocketDto.SubUserInOut subUserInOutDto = new SocketDto.SubUserInOut(userId, 1, message);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", subUserInOutDto);
     }
 
     // 채팅 퇴장
     @MessageMapping("/chat/rooms/{sessionId}/out")
-    public void leaveChatRoom(@DestinationVariable String sessionId, Long userId) {
+    public void leaveChatRoom(@DestinationVariable String sessionId, SocketDto.PubUserInOut pubUserInOutDto) {
+        Long userId = pubUserInOutDto.getUserId();
         chatInOutRecordService.insertOutRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, userId));
-        SocketDto.ChatUserInOut chatUserInOutDto = new SocketDto.ChatUserInOut(userId, 2);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", chatUserInOutDto);
+        redisService.exitRoom(sessionId, userId);
+        SocketDto.SubUserInOut subUserInOutDto = new SocketDto.SubUserInOut(userId, 2, null);
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", subUserInOutDto);
     }
 
     // 채팅 - 일반

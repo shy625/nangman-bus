@@ -9,6 +9,22 @@ import lombok.NoArgsConstructor;
 public class SocketDto {
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PubUserInOut {
+        private Long userId;
+        private String message;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SubUserInOut {
+        private Long userId;
+        private Integer inOut;  // 1 : in, 2 : out
+        private String message;
+    }
+
+    @Getter
     public static class ChatPub {
         private Long userId;
         private String message;
@@ -29,13 +45,6 @@ public class SocketDto {
     public static class ChatLike {
         private Long chatId;
         private Integer count;
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ChatUserInOut {
-        private Long userId;
-        private Integer inOut;  // 1 : in, 2 : out
     }
 
     @AllArgsConstructor
