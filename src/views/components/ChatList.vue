@@ -30,7 +30,7 @@
                 <span v-else class="bus-comment-mood"> <span class="bus-comment-mood">시끌벅적</span>해요!</span>
               </div>
             </div>
-            <div class="bus-getin" @click="clickBusGetIn(room.sessionId)">
+            <div class="bus-getin" @click="clickBusGetIn(room)">
               >
             </div>
           </div>
@@ -92,10 +92,10 @@ function getLocation() {
   }
 }
 
-const clickBusGetIn = sessionId => {
+const clickBusGetIn = room => {
   // console.log(sessionId)
   const geoData = {
-    sessionId: sessionId,
+    room: room,
     // lat: data.value.lat,
     // lng: data.value.lng,
     lat: 37.49797, 

@@ -1,7 +1,3 @@
-export function busId(state) { 
-  return state.busId
-}
-
 export function userId(state) { 
   return state.userId
 }
@@ -30,10 +26,18 @@ export function sessionId(state) {
   return state.sessionId
 }
 
+export function room(state) {
+  return state.room
+}
+
 export function rooms(state) {
   return state.rooms
 }
 
 export function busstopInfos(state) {
   return state.roomInfo.busStopInfoList
+}
+
+export function busId(state) {
+  return state.room.busId
 }

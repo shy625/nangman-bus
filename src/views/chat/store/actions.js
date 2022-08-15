@@ -60,20 +60,25 @@ export function fetchBoards({ commit }, busId) {
 
 export function fetchSessionId({ commit, dispatch }, data) {
   axios({
-    url: api.chat.getIsAccessible(data.sessionId, data.lat, data.lng),
+    url: api.chat.getIsAccessible(data.room.sessionId, data.lat, data.lng),
     method: 'get',
   })
     .then(res => {
-      console.log(res.data)
       if (res.data) {
-        commit('SET_SESSION_ID', data.sessionId)
+        commit('SET_ROOM', data.room)
         // 채팅방 데이터 받기 코드 밑으로!
-        dispatch('fetchRoomInfo', data.sessionId)
+        dispatch('fetchRoomInfo', data.room.sessionId)
+        return true
+      } else {
+        return false
       }
     })
     // 채팅방 입장
-    .then(() => {
-      router.push({ name: 'chat', params: { sessionId: data.sessionId }})
+    .then(res => {
+      if (res) {
+        console.log(res)
+        router.push({ name: 'chat', params: { sessionId: data.room.sessionId }})
+      }
     })
     .catch(err => {
       console.log(err)

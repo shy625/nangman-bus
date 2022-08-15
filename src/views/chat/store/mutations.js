@@ -8,9 +8,10 @@ export function SET_BOARDS_CREATE(state, boards) {
   state.boards = boards.reverse().slice(0, -1)
 }
 
-export function SET_SESSION_ID(state, sessionId) {
-  state.sessionId = sessionId
-  localStorage.setItem('sessionID', sessionId)
+export function SET_ROOM(state, room) {
+  state.sessionId = room.sessionId
+  localStorage.setItem('sessionID', room.sessionId)
+  state.room = room
 }
 
 export function SET_ROOMS(state, rooms) {
