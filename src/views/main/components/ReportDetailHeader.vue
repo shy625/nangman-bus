@@ -5,16 +5,30 @@
     </router-link>
     <div class="detail-header-cover">
       <div class="detail-header-title">
-        <span class="detail-header-number">5006번</span> 낭만버스
+        <span class="detail-header-number">{{ busNum }}번</span> 낭만버스
       </div>
       <div class="detail-header-date">
-        2022년 8월 11일 오후 10시 24분
+        {{ day.substr(0, 4) }}년 
+        {{ day.substr(5, 2)>9 ? day.substr(5, 2) : day.substr(5, 2)%10 }}월 
+        {{ day.substr(8, 2) }}일 
+        {{ time.substr(0, 2) }}시 
+        {{ time.substr(3, 2) }}분
       </div>
     </div>
   </div>
   <hr class="detail-header-hr">
 </template>
 <script setup>
+import { useStore } from 'vuex'
+import { onBeforeMount } from 'vue';
+
+onBeforeMount(() => {
+  const store = useStore()
+  const busNum = store.getters.reportsDetailBus
+  const day = store.getters.reportsDetailCreateDay
+  const time = store.getters.reportsDetailCreateTime
+  console.log(busNum)
+})
 
 </script>
 <style>

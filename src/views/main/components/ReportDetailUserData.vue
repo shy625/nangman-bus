@@ -6,7 +6,7 @@
           총 채팅 수
         </div>
         <div class="user-text-content">
-          500회
+          {{ store.getters.reportsDetailTotalChatCount }}
         </div>
       </div>
       <img src="../../../assets/report-message.png" alt="exampleImg" class="detail-user-img">
@@ -18,7 +18,7 @@
           함께한 시간
         </div>
         <div class="user-text-content">
-          1시간 15분
+          {{ store.getters.reportsDetailMyAccessHour }}시간 {{ store.getters.reportsDetailMyAccessMinute }}분
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
           스쳐 지나간 사람들
         </div>
         <div class="user-text-content">
-          40명
+          40명{{ store.getters.reportsDetailTotalUserCount }}명
         </div>
       </div>
       <img src="../../../assets/report-people.png" alt="exampleImg" class="detail-user-img">
@@ -40,7 +40,7 @@
           채팅방 화력
         </div>
         <div class="user-text-content">
-          10회/분
+          10회/분{{ store.getters.reportsDetailChatPerMinute }}
         </div>
       </div>
     </div>
@@ -48,6 +48,12 @@
   <hr class="report-detail-hr-small">
 </template>
 <script setup>
+import { useStore } from 'vuex'
+import { onBeforeMount } from 'vue'
+
+onBeforeMount(() => {
+  const store = useStore()
+})
 
 </script>
 <style>

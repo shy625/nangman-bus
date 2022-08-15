@@ -4,7 +4,7 @@
       이날, 가장 많은 <span class="popular-chat-pink">사랑</span>을 받은 채팅은<br>
       <div class="popular-chat-big">
         "<br>
-        저 오늘 첫 출근이에요 정말 너무 기대되네요 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ<br>
+        {{ popularChat }}<br>
         "
       </div>
       였답니다!
@@ -13,6 +13,13 @@
   <hr class="report-detail-hr-small">
 </template>
 <script setup>
+import { useStore } from 'vuex'
+import { onBeforeMount } from 'vue';
+
+onBeforeMount(() => {
+  const store = useStore()
+  const popularChat = store.getters.reportsDetailContent
+})
 
 </script>
 <style>
