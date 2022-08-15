@@ -78,12 +78,13 @@ public class BusServiceImpl implements BusService{
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
                 JSONObject response = (JSONObject)jsonObject.get("response");
-                if (response.get("body") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
                 JSONObject body = (JSONObject)response.get("body");
-                if (body.get("items") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
                 JSONObject items = (JSONObject)body.get("items");
                 if (items.get("item") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
-                JSONArray jsonBusList = (JSONArray)items.get("item");
+                JSONArray jsonBusList = new JSONArray();
+                Object checker = items.get("item");
+                if (checker instanceof JSONObject) jsonBusList.add(checker);
+                else jsonBusList = (JSONArray) checker;
                 for (int i = 0; i < jsonBusList.size(); i++){
                     JSONObject item = (JSONObject) jsonBusList.get(i);
                     if (item.get("vehicleno") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
