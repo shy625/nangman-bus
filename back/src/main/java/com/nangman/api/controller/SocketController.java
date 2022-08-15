@@ -74,9 +74,8 @@ public class SocketController {
     }
 
     // 버스가 현재 위치한 정류장 업데이트
-    public void sendCurrentBusStop(String sessionId, Long busStopId, String busStopName) {
-        SocketDto.ChatBusStop chatBusStopDto = new SocketDto.ChatBusStop(busStopId, busStopName);
-        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/busStop", chatBusStopDto);
+    public void sendCurrentBusStop(String sessionId, SocketDto.SubBusStop subBusStopDto) {
+        template.convertAndSend("/sub/chat/rooms/" + sessionId + "/busStop", subBusStopDto);
     }
 
     // 사용자 감정 상태 설정 - 0 : 무표정, 1 : 화나요, 2 : 기분좋아요, 3 : 우울해요

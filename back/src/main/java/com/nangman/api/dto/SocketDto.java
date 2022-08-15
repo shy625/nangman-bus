@@ -51,6 +51,17 @@ public class SocketDto {
 
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class SubBusStop {
+        private Long prevId;
+        private String prevName;
+        private Long curId;
+        private String curName;
+        private Long nextId;
+        private String nextName;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ChatBusStop {
         private Long busStopId;
         private String busStopName;
