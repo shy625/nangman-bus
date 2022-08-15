@@ -1,11 +1,15 @@
 package com.nangman.api.service;
 
+import com.nangman.api.controller.SocketController;
 import com.nangman.api.dto.RoomDto;
+import com.nangman.api.dto.SocketDto;
 import com.nangman.common.constants.ErrorCode;
 import com.nangman.common.exception.CustomException;
 import com.nangman.db.entity.Bus;
+import com.nangman.db.entity.BusStop;
 import com.nangman.db.entity.Route;
 import com.nangman.db.repository.BusRepository;
+import com.nangman.db.repository.BusStopRepository;
 import com.nangman.db.repository.RouteRepository;
 import com.nangman.redis5.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +44,11 @@ public class BusServiceImpl implements BusService{
 
     private final RedisService redisService;
 
+    private final SocketController socketController;
+
+    private final BusStopRepository busStopRepository;
+
+
     @Override
     @Transactional
     public void followBuses() {
@@ -56,6 +65,7 @@ public class BusServiceImpl implements BusService{
                     "&cityCode=" + cityCode +
                     "&routeId=" + code;
             String result = "";
+            int preOrder = 0;
             log.info(BASE_URL);
             try {
                 URL url = new URL(BASE_URL);
@@ -68,13 +78,12 @@ public class BusServiceImpl implements BusService{
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
                 JSONObject response = (JSONObject)jsonObject.get("response");
-                if (response.get("body") == null) return;
+                if (response.get("body") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
                 JSONObject body = (JSONObject)response.get("body");
-                if (body.get("items") == null) return;
+                if (body.get("items") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
                 JSONObject items = (JSONObject)body.get("items");
-                if (body.get("item") == null) return;
+                if (items.get("item") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
                 JSONArray jsonBusList = (JSONArray)items.get("item");
-
                 for (int i = 0; i < jsonBusList.size(); i++){
                     JSONObject item = (JSONObject) jsonBusList.get(i);
                     if (item.get("vehicleno") == null) throw new CustomException(ErrorCode.BUS_NOT_FOUND);
@@ -87,12 +96,14 @@ public class BusServiceImpl implements BusService{
                         bus.setRouteNo(route.getRouteNo());
                     }
                     else bus = busRepository.findBusByLicenseNo(licenseNo).get();
-
                     if (item.get("gpslong") != null) bus.setLng(Double.parseDouble((item.get("gpslong") + "")));
                     if (item.get("gpslati") != null) bus.setLat(Double.parseDouble((item.get("gpslati") + "")));
                     if (item.get("nodeid") != null) bus.setNodeId(item.get("nodeid") + "");
                     if (item.get("nodenm") != null) bus.setNodeName(item.get("nodenm") + "");
-                    if (item.get("nodeord") != null) bus.setNodeOrd(Integer.parseInt(item.get("nodeord") + ""));
+                    if (item.get("nodeord") != null) {
+                        preOrder = bus.getNodeOrd();
+                        bus.setNodeOrd(Integer.parseInt(item.get("nodeord") + ""));
+                    }
 
                     if (bus.getSessionId() == null){
                         String sessionId = "session_";
@@ -108,11 +119,36 @@ public class BusServiceImpl implements BusService{
                         redisService.createChattingRoom(bus);
                     }
                     else redisService.updateBudData(bus);
+                    //Socket Controller에 이전과 다음 정류장 정보 보내주기
+                    if (bus.getNodeOrd() == 0 || (preOrder != 0 && preOrder != bus.getNodeOrd()))
+                        socketController.sendCurrentBusStop(bus.getSessionId() ,createSubBusStop(route.getId(), Integer.parseInt(item.get("nodeord") + "")));
                     busRepository.save(bus);
                 }
             }catch(Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public SocketDto.SubBusStop createSubBusStop(long routeId, int currentOrder){
+        SocketDto.SubBusStop subBusStop = new SocketDto.SubBusStop();
+        List<BusStop> busStopList = busStopRepository.findBusStopByRouteId(routeId);
+        for (BusStop busStop : busStopList){
+            if (busStop.getNodeOrd() == currentOrder - 1){
+                subBusStop.setPrevId(busStop.getId());
+                subBusStop.setPrevName(busStop.getNodeName());
+            }
+            if (busStop.getNodeOrd() == currentOrder){
+                subBusStop.setCurId(busStop.getId());
+                subBusStop.setCurName(busStop.getNodeName());
+
+            }
+            if (busStop.getNodeOrd() == currentOrder + 1){
+                subBusStop.setNextId(busStop.getId());
+                subBusStop.setNextName(busStop.getNodeName());
+            }
+        }
+        return subBusStop;
     }
 }
