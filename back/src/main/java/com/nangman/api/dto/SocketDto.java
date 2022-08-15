@@ -52,6 +52,7 @@ public class SocketDto {
         private Integer count;
     }
 
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SubBusStop {

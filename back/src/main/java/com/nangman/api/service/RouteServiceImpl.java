@@ -116,7 +116,8 @@ public class RouteServiceImpl implements RouteService{
                 if (item.get("endvehicletime") != null) route.setEndTime(item.get("endvehicletime") + "");
                 if (item.get("routetp") != null) route.setRouteType(item.get("routetp") + "");
             }
-            if (route.getCode() == null)  throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
+            if (route.getCode() == null)  throw new CustomException(ErrorCode.ROUTE_NOT_FOUND);
+            if (routeRepository.findRouteByCode(route.getCode()).isPresent()) throw new CustomException(ErrorCode.ROUTE_IS_DUPLICATED);
             route.setCityCode(cityCode.get(request.getCityName()));
             route.setRouteNo(request.getNo());
             routeRepository.save(route);
