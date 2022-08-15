@@ -72,6 +72,7 @@ public class BusServiceImpl implements BusService{
                 JSONObject body = (JSONObject)response.get("body");
                 if (body.get("items") == null) return;
                 JSONObject items = (JSONObject)body.get("items");
+                if (body.get("item") == null) return;
                 JSONArray jsonBusList = (JSONArray)items.get("item");
 
                 for (int i = 0; i < jsonBusList.size(); i++){

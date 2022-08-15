@@ -3,10 +3,7 @@ package com.nangman.api.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -18,6 +15,7 @@ public class ChatDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @ToString
     public static class MsgLog{
 
         @ApiModelProperty(name="채팅 id", example="1")
@@ -40,6 +38,7 @@ public class ChatDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @ToString
     public static class ChatLog{
         @ApiModelProperty(name="채팅방 세션 id", example="session_123123124325")
         private String sessionId;

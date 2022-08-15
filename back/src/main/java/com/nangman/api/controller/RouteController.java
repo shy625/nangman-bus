@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,9 +30,9 @@ public class RouteController {
             @ApiResponse(code = 404, message = "해당 노선 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<Route> addRoute(@RequestBody @ApiParam(value = "추가하고자 하는 버스의 노선번호와 도시이름", required = true)
+    public ResponseEntity<RouteDto.Info> addRoute(@RequestBody @ApiParam(value = "추가하고자 하는 버스의 노선번호와 도시이름", required = true)
                                               RouteDto.Request request) {
-        return new ResponseEntity<Route>(
+        return new ResponseEntity<RouteDto.Info>(
                 routeService.followBus(request), HttpStatus.OK);
     }
 
@@ -50,17 +51,16 @@ public class RouteController {
     }
 
 
-    @GetMapping("route/detail")
+    @GetMapping("route/detail/{code}")
     @ApiOperation(value = "노선 상세 조회", notes = "선택한 노선의 상세 정보 및 정류소")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = ReportDto.class),
             @ApiResponse(code = 404, message = "해당 노선 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<Route> getDetail(@RequestBody @ApiParam(value = "얻고자 하는 버스의 노선번호와 도시이름", required = true)
-                                               RouteDto.Request request) {
-        return new ResponseEntity<Route>(
-                routeService.getRoute(request), HttpStatus.OK);
+    public ResponseEntity<RouteDto.Info> getDetail(@PathVariable @ApiParam(value = "노선코드", required = true) String code) {
+        return new ResponseEntity<RouteDto.Info>(
+                routeService.getRoute(code), HttpStatus.OK);
     }
 
     @GetMapping("route/")
@@ -70,8 +70,8 @@ public class RouteController {
             @ApiResponse(code = 404, message = "해당 노선 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<List<Route>> getAllRoutes() {
-        return new ResponseEntity<List<Route>>(
+    public ResponseEntity<List<RouteDto.Info>> getAllRoutes() {
+        return new ResponseEntity<List<RouteDto.Info>>(
                 routeService.getAll(), HttpStatus.OK);
     }
 }

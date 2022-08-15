@@ -11,9 +11,9 @@ import java.util.List;
 public interface RouteService {
 
     @Transactional
-    Route followBus(RouteDto.Request request);
+    RouteDto.Info followBus(RouteDto.Request request);
     @Transactional
     String unfollowBus(RouteDto.Request request);
-    Route getRoute(RouteDto.Request request);
-    List<Route> getAll();
+    RouteDto.Info getRoute(String code);
+    List<RouteDto.Info> getAll();
 }
