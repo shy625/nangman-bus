@@ -9,7 +9,7 @@
       </div>
       <div class="detail-header-date">
         {{ day.substr(0, 4) }}년 
-        {{ day.substr(5, 2)>9 ? day.substr(5, 2) : day.substr(5, 2)%10 }}월 
+        {{ day.substr(5, 2)>9 ? day.substr(5, 2) : day.substr(6, 1) }}월 
         {{ day.substr(8, 2) }}일 
         {{ time.substr(0, 2) }}시 
         {{ time.substr(3, 2) }}분
@@ -29,6 +29,8 @@ onBeforeMount(() => {
   const time = store.getters.reportsDetailCreateTime
   console.log(busNum)
 })
+// 만약 store.getters.뭐시기 가 안되면
+// store.getters['mainPage/뭐시기'] 로 접근해야 함
 
 </script>
 <style>
