@@ -2,129 +2,97 @@
   <BusStops></BusStops>
   <div id="chatRoom" class="chatroom">
     <div class="chat-list">
-      <!-- 닉네임 다르면 chat-list 밑에 추가 -->
-      <div class="other-chat-wrapper">
-        <div class="chat-icon">O</div>
+      <!-- <div class="other-chat-wrapper">
+        <img src="../../../../assets/emo-default.png" class="chat-icon">
         <div class="chat-content">
           <div class="chat-nick">가우르구라</div>
-            <!-- 닉네임 같으면 chat-content 밑에 추가 -->
           <div class="chat-chatting">
             <div class="chatting">안녕하세요 즐입니다요~</div>
             <div class="chatting-side">
-              <!-- 이거는 연속 채팅 중 마지막 채팅에 부여할 수 있도록? 안되면 일단 전부 부여 -->
               <img src="../../../../assets/like.png" alt="like" class="chatting-like">
               <div class="chatting-time">10:30</div>
             </div>
           </div>
-          <div class="chat-chatting">
-            <div class="chatting">즐즐~</div>
-            <div class="chatting-side">
-              <div class="side-like">
-                <img src="../../../../assets/like.png" alt="like" class="chatting-like">
-                <div class="like-number">5</div>
-              </div>
-              <div class="chatting-time">10:30</div>
-            </div>
-          </div>
         </div>
       </div>
-      <!-- 상대 채팅 -->
-      <div class="other-chat-wrapper">
-        <div class="chat-icon">O</div>
-        <div class="chat-content">
-          <div class="chat-nick">헤라클레스</div>
-            <!-- 닉네임 같으면 chat-content 밑에 추가 -->
-          <div class="chat-chatting">
-            <div class="chatting">안녕하세요</div>
-            <div class="chatting-side">
-              <!-- 이거는 연속 채팅 중 마지막 채팅에 부여할 수 있도록? 안되면 일단 전부 부여 -->
-              <img src="" alt="" class="chatting-like">
-              <div class="chatting-time">10:30</div>
-            </div>
-          </div>
-          <div class="chat-chatting">
-            <div class="chatting">ㅋㅋㅋㅋ가우르구라님 즐~~~~~!!!!!!!!!!!!!!!!!!!!!!!</div>
-            <div class="chatting-side">
-              <img src="" alt="" class="chatting-like">
-              <div class="chatting-time">10:30</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 내 채팅 -->
       <div class="my-chat-wrapper">
-            <div class="chatting-side">
-              <img src="../../../../assets/like.png" alt="" class="chatting-like">
-              <div class="chatting-time">10:30</div>
-            </div>
-          <div class="chat-chatting">
-            <div class="chatting">ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가!</div>
-          </div>
-      </div>
+        <div class="chatting-side">
+          <img src="../../../../assets/like.png" alt="" class="chatting-like">
+          <div class="chatting-time">10:30</div>
+        </div>
+        <div class="chat-chatting">
+          <div class="chatting">ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가ㅋㅋㅋㅋ가!</div>
+        </div>
+      </div> -->
     </div>
     <div class="chat-input">
       <ChatEmos></ChatEmos>
-      <input class="input-content" type="text" placeholder="낭만! >_<">
-    </div>
-  </div>
-
-
-  <div class="chat">
-    <h1>Chat Test</h1>
-    <div>
-      <h3>My Name : {{ data.user }}</h3>
-      <h3>Chat Room : {{ data.room }}</h3>
-    </div>
-    <div>username : <input type="text" id="user" v-model="data.user" /></div>
-    <div>chatroom : <input type="text" id="room" v-model="data.room" /></div>
-    <div>
-      <button id="connBtn">connect</button>
-      <button id="disconnBtn">disconnect</button>
-    </div>
-    <div>
-      message : <input type="text" id="msg" v-model="data.message" />
-      <button id="sendBtn">send</button>
-    </div>
-    <div id="msgArea">
-      <!-- 채팅 내역 -->
+      <input class="input-content" v-model="chatData.message" type="text" placeholder="낭만! >_<">
+      <div class="chat-send">전송</div>
     </div>
   </div>
   <!-- <BanModal></BanModal> -->
-  <!-- <EnterModal></EnterModal> -->
+  <EnterModal></EnterModal>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 // import BanModal from './BanModal.vue'
-// import EnterModal from './EnterModal.vue'
+import EnterModal from './EnterModal.vue'
 import * as SockJS from "sockjs-client"
 import * as StompJs from "@stomp/stompjs"
-import { ref, onMounted } from 'vue'
-// import { useStore } from 'vuex'
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 
-// const store = useStore()
-const data = ref({
-  user: "",
-  room: "",
+const store = useStore()
+const chatData = ref({
+  userId: computed(() => store.getters['chatStore/userId']),
+  sessionId: computed(() => store.getters['chatStore/sessionId']),
   message: "",
-});
+})
 
 onMounted(() => {
+  const chatRoom = document.querySelector('#chatRoom')
+  const busstop = document.querySelector('#busstop')
   // 나중에 조건걸어서 ban-active할 수 있도록!
   // const banModal = document.querySelector('#banModal')
   // const chatRoom = document.querySelector('#chatRoom')
   // const busstop = document.querySelector('#busstop')
-  // const enterModal = document.querySelector('#enterModal')
-
   // banModal.classList.add('ban')
   // chatRoom.classList.add('ban-active')
-  // enterModal.classList.add('enter')
   // busstop.classList.add('ban-active')
+  
+  // 엔터 모달
+  const enterModal = document.querySelector('#enterModal')
+  enterModal.classList.add('enter-in')
+  enterModal.classList.add('enter')
+  chatRoom.classList.add('chatroom-blur')
+  busstop.classList.add('chatroom-blur')
+  const enterBtns = document.querySelectorAll('.enter-btn .el-button')
+  enterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // const enterInput = document.querySelector('.enter-input')
+      // const payload = {
+      //   userId: chatData.value.userId,
+      //   // message: enterInput.value,
+      // }
+      client.publish({
+        destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/in',
+        body: chatData.value.userId,
+      })
+      // console.log('클릭함')
+      chatRoom.classList.remove('chatroom-blur')
+      busstop.classList.remove('chatroom-blur')
+      enterModal.classList.add('enter-out')
+      enterModal.addEventListener('animationend', () => {
+        enterModal.style = 'position: fixed;transform: scale(0);'
+      })
+    })
+  })
 
   // 소켓
   const client = new StompJs.Client({
     brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
-    // brokerURL: "ws://localhost:8080/socket",
     connectHeaders: {
       login: "user",
       passcode: "password",
@@ -135,63 +103,122 @@ onMounted(() => {
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
-  });
+  })
 
-  // Fallback code
-  // if (typeof WebSocket !== "function") {
-  // For SockJS you need to set a factory that creates a new SockJS instance
-  // to be used for each (re)connect
   client.webSocketFactory = function () {
-    // Note that the URL is different from the WebSocket URL
-    return new SockJS("http://i7a704.p.ssafy.io:8080/socket");
-    // return new SockJS("http://localhost:8080/socket");
-  };
-  // }
+    return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
+  }
 
   client.onConnect = function () {
-    console.log("socket connection success");
     client.subscribe(
-      "/sub/chat/rooms/" + data.value.room + "/message",
-      (message) => {
-        const payload = JSON.parse(message.body);
-        console.log(payload);
-        let msgDiv = document.createElement("div");
-        // msgDiv.innerHTML =
-        //   "<span>[" + payload.writer + "]: </span><span>" + payload.message + "</span>";
-        msgDiv.innerHTML =
-          payload.userId +
-          " : " +
-          payload.message +
-          " : " +
-          payload.createdTime;
-        document.getElementById("msgArea").appendChild(msgDiv);
+      "/sub/chat/rooms/" + chatData.value.sessionId + "/message",
+      message => {
+        const payload = JSON.parse(message.body)
+        const chatList = document.querySelector('.chat-list')
+
+        const chattingSide = document.createElement('div')
+        const chattingLike = document.createElement('img')
+        const chattingTime = document.createElement('div')
+        const chatChatting = document.createElement('div')
+        const chatting = document.createElement('div')
+        chattingSide.classList.add('chatting-side')
+        chattingLike.classList.add('chatting-like')
+        chattingTime.classList.add('chatting-time')
+        chatChatting.classList.add('chat-chatting')
+        chatting.classList.add('chatting')
+        // 채팅 내용
+        chatting.innerText = payload.message
+        // 좋아요
+        chattingLike.src = `${require('../../../../assets/like-outline.png')}`
+        chattingLike.alt = 'outline'
+        chattingLike.addEventListener('click', e => {
+          if (e.target.alt === 'outline') {  // 좋아요 +1
+            e.target.src = `${require('../../../../assets/like-filled.png')}`
+            e.target.alt = 'filled'
+          } else {                           // 좋아요 -1
+            e.target.src = `${require('../../../../assets/like-outline.png')}`
+            e.target.alt = 'outline'
+          }
+        })
+        // 시간
+        chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
+
+        console.log('받음', payload)
+        if (payload.userId === chatData.value.userId) {
+          console.log('내꺼')
+          const myChatWrapper = document.createElement('div')
+          myChatWrapper.classList.add('my-chat-wrapper')
+
+          myChatWrapper.append(chattingSide, chatChatting)
+          chattingSide.append(chattingLike, chattingTime)
+          chatChatting.append(chatting)
+          chatList.append(myChatWrapper)
+        } 
+        else {
+          console.log('남꺼')
+          const otherChatWrapper = document.createElement('div')
+          otherChatWrapper.classList.add('other-chat-wrapper')
+          const chatIcon = document.createElement('div')
+          chatIcon.classList.add('chat-icon')
+          const chatContent = document.createElement('div')
+          chatContent.classList.add('chat-content')
+          const chatNick = document.createElement('div')
+          chatNick.classList.add('chat-nick')
+          
+          // 기분(상태)
+          chatIcon.innerText = 'O'
+          // 닉네임
+          chatNick.innerText = '상대닉'
+
+          otherChatWrapper.append(chatIcon, chatContent)
+          chatContent.append(chatNick, chatChatting)
+          chatChatting.append(chatting, chattingSide)
+          chattingSide.append(chattingLike, chattingTime)
+          chatList.append(otherChatWrapper)
+        }
+        chatList.scrollTo(0, chatList.scrollHeight)
       }
-    );
-  };
+    )
+    client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/user',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload)
+      }
+    )
+  }
 
-  const connBtn = document.getElementById("connBtn");
-  connBtn.addEventListener("click", () => {
-    client.activate();
-  });
+  // 채팅방 입장
+  client.activate()
 
-  const disconnBtn = document.getElementById("disconnBtn");
-  disconnBtn.addEventListener("click", () => {
-    client.deactivate();
-  });
-
-  const sendBtn = document.getElementById("sendBtn");
-  sendBtn.addEventListener("click", () => {
+  // 퇴장
+  const chatHeaderBack = document.querySelector('.chat-header-back')
+  chatHeaderBack.addEventListener('click', () => {
     const payload = {
-      userId: data.value.user,
-      message: data.value.message,
-    };
-    console.log(payload);
+      userId: chatData.value.userId,
+      message: null,
+    }
     client.publish({
-      destination: "/pub/chat/rooms/" + data.value.room + "/message",
+      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
+      body: JSON.stringify(payload)
+    })
+    client.deactivate()
+  })
+
+  // 메시지 전송
+  const chatSend = document.querySelector(".chat-send");
+  chatSend.addEventListener("click", () => {
+    const payload = {
+      userId: chatData.value.userId,
+      message: chatData.value.message,
+    }
+    console.log('전송', payload)
+    client.publish({
+      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/message",
       body: JSON.stringify(payload),
-    });
-    data.value.message = "";
-  });
+    })
+    chatData.value.message = ""
+  })
 })
 </script>
 <style>
@@ -205,7 +232,9 @@ onMounted(() => {
 .chat-list {
   padding: 1px;
   height: 95%;
+  max-height: 660px;
   background-color: #F5F5F5;
+  overflow: scroll;
 }
 .other-chat-wrapper {
   display: flex;
@@ -259,8 +288,7 @@ onMounted(() => {
   margin-right: 4px;
 }
 .chatting-like {
-  height: 13px;
-  width: 16px;
+  height: 12px;
 }
 .chatting-time {
   font-size: 0.6rem;
@@ -269,6 +297,10 @@ onMounted(() => {
   display: flex;
   flex-grow: 1;
   background-color: #FFD96A;
+}
+.chat-icon {
+  height: 25px;
+  margin-right: 4px;
 }
 .input-content {
   margin: 4px 8px;
@@ -283,6 +315,12 @@ onMounted(() => {
 .input-content::placeholder {
   text-align: center;
   font-family: BMHANNAAir;
+}
+.chat-send {
+  display: flex;
+  align-self: center;
+  margin-right: 8px;
+  font-family: Pretendard;
 }
 .ban-active {
   overflow: hidden;

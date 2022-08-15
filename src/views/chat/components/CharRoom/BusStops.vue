@@ -7,20 +7,22 @@
             이전
           </div>
           <div class="busstop-icon">
-            >>
+            <span class="busstop-icon-one">></span>
+            <span class="busstop-icon-two">></span>
           </div>
           <div class="busstop-big">
             현재
           </div>
           <div class="busstop-icon">
-            >>
+            <span class="busstop-icon-one">></span>
+            <span class="busstop-icon-two">></span>          
           </div>
           <div class="busstop-small">
             다음
           </div>
         </div>
         <div class="busstop-mini-below">
-          <div v-if="!data.isToggled">
+          <div v-if="!busData.isToggled">
             <img src="../../../../assets/list-up.png" alt="up">
           </div>
           <div v-else>
@@ -33,11 +35,16 @@
       <el-scrollbar height="30vh">
         <el-timeline>
           <el-timeline-item
-            v-for="(busstop, index) in busstops"
+            v-for="(busstop, index) in busData.busstopInfos"
             :key="index"
             :hide-timestamp="true"
           >
-            <div class="busstop-name">{{ busstop.content }}</div>
+            <div 
+              class="busstop-name" 
+              @click="clickBusstop"
+            >
+              {{ busstop.nodeName }}
+            </div>
           </el-timeline-item>
         </el-timeline>
       </el-scrollbar>
@@ -45,90 +52,29 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 
-let data = ref({ isToggled: false })
+const store = useStore()
+const busData = ref({ 
+  isToggled: false,
+  busstopInfos: computed(() => store.getters['chatStore/busstopInfos'])
+})
 
-// 더미데이터
-const busstops = [
-  {
-    content: 'Event start',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Approved',
-  },
-  {
-    content: 'Success',
-  },
-]
-
+const clickBusstop = e => {
+  // 하차정류장 지정 디스패치
+  console.log(e.target.innerText)
+}
 onMounted(() => {
   const busstopList = document.querySelector('#busstopList')
   const busToggle = document.querySelector('#busToggle')
   // busstopList.classList.add('collapsed')
   function busstopListToggle() {
       busstopList.classList.toggle('collapsed')
-      if (data.value.isToggled === true) {
-        data.value.isToggled = false
+      if (busData.value.isToggled === true) {
+        busData.value.isToggled = false
       } else {
-        data.value.isToggled = true
+        busData.value.isToggled = true
       }
   }
   busToggle.addEventListener('click', busstopListToggle)
@@ -191,5 +137,34 @@ onMounted(() => {
 }
 .busstop-name {
   font-family: Pretendard;
+  color: black;
+}
+.busstop-icon-one {
+  animation: busstopIconFadeOne 2s infinite;
+}
+@keyframes busstopIconFadeOne {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.busstop-icon-two {
+  animation: busstopIconFadeTwo 2s infinite;
+}
+@keyframes busstopIconFadeTwo {
+  from {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 </style>
