@@ -9,6 +9,8 @@ import com.nangman.db.entity.Route;
 import com.nangman.db.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.conn.routing.RouteInfo;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +73,7 @@ public class RouteServiceImpl implements RouteService{
 
     @Override
     @Transactional
-    public Route followBus(RouteDto.Request request){
+    public RouteDto.Info followBus(RouteDto.Request request){
         String BASE_URL = "http://apis.data.go.kr/1613000/BusRouteInfoInqireService/getRouteNoList?" +
                 "serviceKey=" + serviceKey +
                 "&pageNo=" + pageNo +
@@ -83,6 +86,7 @@ public class RouteServiceImpl implements RouteService{
         String result = "";
         List<BusStop> busStopList = null;
         Route route = new Route();
+        RouteDto.Info routeInfo = new RouteDto.Info();
 
         try {
             URL url = new URL(BASE_URL);
@@ -97,25 +101,49 @@ public class RouteServiceImpl implements RouteService{
             JSONObject response = (JSONObject)jsonObject.get("response");
             JSONObject body = (JSONObject)response.get("body");
             JSONObject items = (JSONObject)body.get("items");
-            JSONObject item = (JSONObject)items.get("item");
-            if (item == null) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
+            JSONArray jsonRouteList = new JSONArray();
+            Object checker = items.get("item");
+            if (checker instanceof JSONObject) jsonRouteList.add(checker);
+            else jsonRouteList = (JSONArray) checker;
+            if (jsonRouteList == null || jsonRouteList.size() == 0 ) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
+            for (int i = 0; i < jsonRouteList.size(); i++) {
+                JSONObject item = (JSONObject) jsonRouteList.get(i);
+                if (!item.get("routeno").toString().equals(request.getNo())) continue;
+                if (item.get("routeid") != null) route.setCode((String) item.get("routeid") + "");
+                if (item.get("startnodenm") != null) route.setStartBusStop(item.get("startnodenm") + "");
+                if (item.get("startvehicletime") != null) route.setStartTime(item.get("startvehicletime") + "");
+                if (item.get("endnodenm") != null) route.setEndBusStop(item.get("endnodenm") + "");
+                if (item.get("endvehicletime") != null) route.setEndTime(item.get("endvehicletime") + "");
+                if (item.get("routetp") != null) route.setRouteType(item.get("routetp") + "");
+            }
+            if (route.getCode() == null)  throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
             route.setCityCode(cityCode.get(request.getCityName()));
             route.setRouteNo(request.getNo());
-            if (item.get("routeid") != null) route.setCode((String)item.get("routeid") + "");
-            if (item.get("startnodenm") != null) route.setStartBusStop(item.get("startnodenm") + "");
-            if (item.get("startvehicletime") != null) route.setStartTime(item.get("startvehicletime") + "");
-            if (item.get("endnodenm") != null) route.setEndBusStop(item.get("endnodenm") +  "");
-            if (item.get("endvehicletime") != null) route.setEndTime(item.get("endvehicletime") + "");
-            if (item.get("routetp") != null) route.setRouteType(item.get("routetp") + "");
             routeRepository.save(route);
             busStopList = busStopService.addBusStop(route);
             route.setBusStops(busStopList);
             route = routeRepository.findRouteById(route.getId()).get();
+            routeInfo.setRouteNo(route.getRouteNo());
+            routeInfo.setRouteType(route.getRouteType());
+            routeInfo.setCode(route.getCode());
+            routeInfo.setCityCode(route.getCityCode());
+            routeInfo.setStartBusStop(route.getStartBusStop());
+            routeInfo.setEndBusStop(route.getEndBusStop());
+            routeInfo.setStartTime(route.getStartTime());
+            routeInfo.setEndTime(route.getEndTime());
+            List<RouteDto.BusstopInfo> busstopInfoList = new ArrayList<>();
+            for (BusStop busStop: route.getBusStops()){
+                RouteDto.BusstopInfo busstopInfo = new RouteDto.BusstopInfo();
+                busstopInfo.setNodeName(busStop.getNodeName());
+                busstopInfo.setNodeOrd(busStop.getNodeOrd());
+                busstopInfoList.add(busstopInfo);
+            }
+            routeInfo.setBusstopInfoList(busstopInfoList);
 
         }catch(Exception e) {
             e.printStackTrace();
         }
-        return route;
+        return routeInfo;
     }
 
     @Override
@@ -132,6 +160,7 @@ public class RouteServiceImpl implements RouteService{
 
         // 파싱한 데이터를 저장할 변수
         String result = "";
+        String code = "";
 
         try {
             URL url = new URL(BASE_URL);
@@ -146,11 +175,18 @@ public class RouteServiceImpl implements RouteService{
             JSONObject response = (JSONObject)jsonObject.get("response");
             JSONObject body = (JSONObject)response.get("body");
             JSONObject items = (JSONObject)body.get("items");
-            JSONObject item = (JSONObject)items.get("item");
-            if (item == null) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
-            String code = item.get("routeid") + "";
+            JSONArray jsonRouteList = new JSONArray();
+            Object checker = items.get("item");
+            if (checker instanceof JSONObject) jsonRouteList.add(checker);
+            else jsonRouteList = (JSONArray) checker;
+            if (jsonRouteList == null || jsonRouteList.size() == 0 ) throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
+            for (int i = 0; i < jsonRouteList.size(); i++) {
+                JSONObject item = (JSONObject) jsonRouteList.get(i);
+                if (!item.get("routeno").toString().equals(request.getNo())) continue;
+                code = item.get("routeid") + "";
+            }
+            if (code.equals(""))  throw new CustomException(ErrorCode.REPORT_NOT_FOUND);
             Route route = routeRepository.findRouteByCode(code).get();
-
             busStopService.deleteBusStopByRouteId(route.getId());
             routeRepository.deleteRouteById(route.getId());
 
@@ -162,46 +198,53 @@ public class RouteServiceImpl implements RouteService{
 
     @Override
     @Transactional(readOnly = true)
-    public Route getRoute(RouteDto.Request request) {
-        String BASE_URL = "http://apis.data.go.kr/1613000/BusRouteInfoInqireService/getRouteNoList?" +
-                "serviceKey=" + serviceKey +
-                "&pageNo=" + pageNo +
-                "&numOfRows=" + numOfRows +
-                "&_type=" + dataType +
-                "&cityCode=" + cityCode.get(request.getCityName()) +
-                "&routeNo=" + request.getNo();
-
-        // 파싱한 데이터를 저장할 변수
-        String result = "";
-        Route route = null;
-
-        try {
-            URL url = new URL(BASE_URL);
-
-            BufferedReader bf;
-
-            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-
-            result = bf.readLine();
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
-            JSONObject response = (JSONObject)jsonObject.get("response");
-            JSONObject body = (JSONObject)response.get("body");
-            JSONObject items = (JSONObject)body.get("items");
-            JSONObject item = (JSONObject)items.get("item");
-            if (item == null) throw new CustomException(ErrorCode.ROUTE_NOT_FOUND);
-            String code = item.get("routeid") + "";
-            route = routeRepository.findRouteByCode(code).get();
-
-        }catch(Exception e) {
-            e.printStackTrace();
+    public RouteDto.Info getRoute(String code) {
+        Route route = routeRepository.findRouteByCode(code).get();
+        RouteDto.Info routeInfo = new RouteDto.Info();
+        routeInfo.setRouteNo(route.getRouteNo());
+        routeInfo.setRouteType(route.getRouteType());
+        routeInfo.setCode(route.getCode());
+        routeInfo.setCityCode(route.getCityCode());
+        routeInfo.setStartBusStop(route.getStartBusStop());
+        routeInfo.setEndBusStop(route.getEndBusStop());
+        routeInfo.setStartTime(route.getStartTime());
+        routeInfo.setEndTime(route.getEndTime());
+        List<RouteDto.BusstopInfo> busstopInfoList = new ArrayList<>();
+        for (BusStop busStop: route.getBusStops()){
+            RouteDto.BusstopInfo busstopInfo = new RouteDto.BusstopInfo();
+            busstopInfo.setNodeName(busStop.getNodeName());
+            busstopInfo.setNodeOrd(busStop.getNodeOrd());
+            busstopInfoList.add(busstopInfo);
         }
-        return route;
+        routeInfo.setBusstopInfoList(busstopInfoList);
+        return routeInfo;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Route> getAll(){
-        return routeRepository.findAll();
+    public List<RouteDto.Info> getAll(){
+        List<Route> routeList = routeRepository.findAll();
+        List<RouteDto.Info> routeInfoList = new ArrayList<>();
+        for (Route route : routeList){
+            RouteDto.Info routeInfo = new RouteDto.Info();
+            routeInfo.setRouteNo(route.getRouteNo());
+            routeInfo.setRouteType(route.getRouteType());
+            routeInfo.setCode(route.getCode());
+            routeInfo.setCityCode(route.getCityCode());
+            routeInfo.setStartBusStop(route.getStartBusStop());
+            routeInfo.setEndBusStop(route.getEndBusStop());
+            routeInfo.setStartTime(route.getStartTime());
+            routeInfo.setEndTime(route.getEndTime());
+            List<RouteDto.BusstopInfo> busstopInfoList = new ArrayList<>();
+            for (BusStop busStop: route.getBusStops()){
+                RouteDto.BusstopInfo busstopInfo = new RouteDto.BusstopInfo();
+                busstopInfo.setNodeName(busStop.getNodeName());
+                busstopInfo.setNodeOrd(busStop.getNodeOrd());
+                busstopInfoList.add(busstopInfo);
+            }
+            routeInfo.setBusstopInfoList(busstopInfoList);
+            routeInfoList.add(routeInfo);
+        }
+        return routeInfoList;
     }
 }

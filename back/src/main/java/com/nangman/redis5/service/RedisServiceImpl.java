@@ -4,13 +4,17 @@ import com.nangman.api.dto.BusStopDto;
 import com.nangman.api.dto.ChatDto;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.entity.BusStop;
+import com.nangman.db.entity.User;
 import com.nangman.db.repository.RouteRepository;
+import com.nangman.db.repository.UserRepository;
 import com.nangman.redis5.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -65,6 +69,7 @@ public class RedisServiceImpl implements RedisService{
 
     private final StringRedisTemplate redisTemplate;
     private final RouteRepository routeRepository;
+    private final UserRepository userRepository;
 
     public void test01() {
         redisTemplate.opsForHash().put("key1", "subKey1", "hello");
@@ -153,10 +158,7 @@ public class RedisServiceImpl implements RedisService{
         String keyChat = sessionId + KEY_CHAT;
         String keyLike = sessionId + KEY_LIKE;
 
-
-
         ChatDto.ChatLog chatLog = getChatLog(sessionId);
-
 
         redisTemplate.delete(keyRoom);
         redisTemplate.delete(keyChat);
@@ -259,24 +261,24 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void upLike(String sessionId, String chatId) {
+    public void upLike(String sessionId, Long chatId) {
         String key = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(key)) return;
-        redisTemplate.opsForHash().increment(key, chatId, 1);
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
+        redisTemplate.opsForHash().increment(key, String.valueOf(chatId), 1);
     }
 
     @Override
-    public void downLike(String sessionId, String chatId) {
+    public void downLike(String sessionId, Long chatId) {
         String key = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(key)) return;
-        redisTemplate.opsForHash().increment(key, chatId, -1);
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
+        redisTemplate.opsForHash().increment(key, String.valueOf(chatId), -1);
     }
 
     @Override
-    public int getLike(String sessionId, String chatId) {
+    public int getLike(String sessionId, Long chatId) {
         String key = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(key)) return -1;
-        String subKey = chatId;
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return -1;
+        String subKey = String.valueOf(chatId);
         String str = (String) redisTemplate.opsForHash().get(key, subKey);
         return Integer.parseInt(str);
     }
@@ -298,7 +300,7 @@ public class RedisServiceImpl implements RedisService{
     @Override
     public List<RoomUserDto> roomUserList(String sessionId) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return null;
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return null;
         List<RoomUserDto> list = new ArrayList<>();
         //이건 모든 서브키-밸류값 가져오는거
         Map<Object, Object> values = redisTemplate.opsForHash().entries(key);
@@ -315,9 +317,9 @@ public class RedisServiceImpl implements RedisService{
                     String[] userInfo = value.split(SPLIT_STR);
 
                     dto.setNickName(userInfo[USER_INFO_NICKNAME]);
-                    dto.setBirth(userInfo[USER_INFO_BIRTH]);
+                    dto.setIsTodayBirth(Boolean.valueOf(userInfo[USER_INFO_BIRTH]));
                     dto.setEmotion(Integer.parseInt(userInfo[USER_INFO_STATE]));
-                    dto.setOutBusStop(userInfo[USER_INFO_BUS_STOP]);
+                    dto.setOutBusStopId(Long.valueOf(userInfo[USER_INFO_BUS_STOP]));
                     dto.setUserId(Long.parseLong(userId));
 
                     list.add(dto);
@@ -361,17 +363,17 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public String createChat(String sessionId, String userId, String CreatedTime, String chat) {
+    public String createChat(String sessionId, Long userId, String chat, String createdTime) {
         String keyChat = sessionId + KEY_CHAT;
         String keyLike = sessionId + KEY_LIKE;
-        if(!redisTemplate.hasKey(keyChat)) return null;
-        int count = Integer.parseInt((String) redisTemplate.opsForHash().get(keyChat, COUNT));
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(keyChat))) return null;
+        int count = Integer.parseInt(String.valueOf(redisTemplate.opsForHash().get(keyChat, COUNT)));
         count++;
         String subKey = Integer.toString(count);
         StringBuilder value = new StringBuilder();
         value.append(userId)
                 .append(SPLIT_STR)
-                .append(CreatedTime)
+                .append(createdTime)
                 .append(SPLIT_STR)
                 .append(chat);
         redisTemplate.opsForHash().put(keyChat, subKey, value.toString());
@@ -383,27 +385,32 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void joinRoom(String sessionId, RoomUserDto roomUserDto) {
+    public void joinRoom(String sessionId, Long userId) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return;
-        String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
-        userList = userList + SPLIT_STR + Long.toString(roomUserDto.getUserId());
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            return;
+        }
+        String userList = String.valueOf(redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST));
+        userList += SPLIT_STR + userId;
         redisTemplate.opsForHash().put(key, SUBKEY_USER_LIST, userList);
         redisTemplate.opsForHash().increment(key, SUBKEY_USER_NUM, 1);
-        // userId로 검색해서 SQL에서 닉네임, 생일 가져워서 넣어주고 상태 디폴트 0, 하차정류장 null 해줘야됨
-//        Optional<User> user = userRepository.findByIdAndIsDeletedFalse(Long.parseLong(userId));
-//        User myUser = user.get();
-//        String value = myUser.getNickname() + splitStr + myUser.getUserBirthday() + splitStr + "0" + splitStr + "null";
-        // value = UserRepository.getNickName
+
+        User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
+        LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        boolean isTodayBirth = false;
+        if (userBirth.getMonth().equals(LocalDate.now().getMonth())
+                && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
+            isTodayBirth = true;
+        }
         StringBuilder value = new StringBuilder();
-        value.append(roomUserDto.getNickName())
+        value.append(user.getNickname().getNickname())      // 무조건 있음
              .append(SPLIT_STR)
-             .append(roomUserDto.getBirth())
+             .append(isTodayBirth)// "false" : 오늘 생일 x, "true" : 오늘 생일
              .append(SPLIT_STR)
-             .append(Integer.toString(roomUserDto.getEmotion()))
+             .append(0)     // 감정 - 0 : default
              .append(SPLIT_STR)
-             .append(roomUserDto.getOutBusStop());
-        redisTemplate.opsForHash().put(key, Long.toString(roomUserDto.getUserId()), value.toString());
+             .append(0);    // 하차 정류장 - 0 : default
+        redisTemplate.opsForHash().put(key, Long.toString(userId), value.toString());
     }
 
     @Override
@@ -414,16 +421,16 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void exitRoom(String sessionId, String userId) {
+    public void exitRoom(String sessionId, Long userId) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return;
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
         String userList = (String) redisTemplate.opsForHash().get(key, SUBKEY_USER_LIST);
 //        userList = userList + ":" + userId;
 //        redisTemplate.opsForHash().put(key, "userList", userList);
         String[] users = userList.split(SPLIT_STR);
         StringBuilder newUserList = new StringBuilder();
         for(String str : users) {
-            if(str.equals(userId)) continue;
+            if(str.equals(String.valueOf(userId))) continue;
             newUserList.append(str).append(SPLIT_STR);
         }
         newUserList.setLength(newUserList.length() - 1);
@@ -433,17 +440,17 @@ public class RedisServiceImpl implements RedisService{
     }
 
     @Override
-    public void setOutBusStop(String sessionId, String userId, String busStopNodeId) {
+    public void setOutBusStop(String sessionId, Long userId, Long busStopId) {
         String key = sessionId + KEY_ROOM;
-        if(!redisTemplate.hasKey(key)) return;
-        String subKey = userId;
-        String value = (String) redisTemplate.opsForHash().get(key, subKey);
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) return;
+        String subKey = String.valueOf(userId);
+        String value = String.valueOf(redisTemplate.opsForHash().get(key, subKey));
         String[] userInfo = value.split(SPLIT_STR);
         StringBuilder newUserInfo = new StringBuilder();
         newUserInfo.append(userInfo[USER_INFO_NICKNAME]).append(SPLIT_STR)
                 .append(userInfo[USER_INFO_BIRTH]).append(SPLIT_STR)
                 .append(userInfo[USER_INFO_STATE]).append(SPLIT_STR)
-                .append(busStopNodeId);
+                .append(busStopId);
         redisTemplate.opsForHash().put(key, subKey, newUserInfo.toString());
     }
 
