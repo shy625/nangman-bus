@@ -40,37 +40,37 @@ import { useStore } from 'vuex'
 const store = useStore()
 const chatViewData = ref({
   busId: computed(() => store.getters['chatStore/busId']),
-  busNum: computed(() => store.getters['chatStore/busNum'])
+  busNum: computed(() => store.getters['chatStore/busNum']),
+  sessionId: computed(() => store.getters['chatStore/sessionId']),
+  lat: 0,
+  lnt: 0
+})
+navigator.geolocation.watchPosition(function(position) {
+  // console.log(position.coords.latitude, position.coords.longitude)
+  chatViewData.value.lat = position.coords.latitude
+  chatViewData.value.lng = position.coords.longitude
 })
 
 onMounted(() => {
+  navigator.geolocation.getCurrentPosition(position => {
+    console.log(position)
+    // 채팅창에서 새로고침할 경우, 채팅방 정보 다시 요청
+    const payload = {
+      room: { sessionId: chatViewData.value.sessionId },
+      // lat: position.coords.latitude,
+      // lng: position.coords.longitude,
+      lat: 37.49797,
+      lng: 127.02763,
+    }
+    console.log(payload)
+    store.dispatch('chatStore/fetchSessionId', payload)
+  })
+
   const leftBtn = document.querySelector('.el-carousel__arrow--left')
   leftBtn.addEventListener('click', () => {
     store.dispatch('chatStore/fetchBoards', chatViewData.value.busId)
   })
 })
-
-function getLocation() {
-  if (navigator.geolocation) { // GPS를 지원하면
-    navigator.geolocation.getCurrentPosition(position => {
-      console.log('위도: '
-       + position.coords.latitude + ' / 경도: ' + position.coords.longitude)
-    }, error => {
-      console.error(error)
-    }, {
-      enableHighAccuracy: false,
-      maximumAge: 0,
-      timeout: Infinity
-    })
-  } else {
-    alert('GPS를 지원하지 않습니다.')
-  }
-}
-getLocation()
-// 위치바뀌면 감지
-// let watchId = navigator.geolocation.watchPosition(function(position) {
-//   console.log(position.coords)
-// })
 </script>
 
 <style>

@@ -212,12 +212,14 @@ onMounted(() => {
       userId: chatData.value.userId,
       message: chatData.value.message,
     }
-    console.log('전송', payload)
-    client.publish({
-      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/message",
-      body: JSON.stringify(payload),
-    })
-    chatData.value.message = ""
+    if (payload.message.length > 0) {
+      console.log('전송', payload)
+      client.publish({
+        destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/message",
+        body: JSON.stringify(payload),
+      })
+      chatData.value.message = ""
+    }
   })
 })
 </script>
@@ -292,6 +294,7 @@ onMounted(() => {
 }
 .chatting-time {
   font-size: 0.6rem;
+  font-family: Pretendard;
 }
 .chat-input {
   display: flex;

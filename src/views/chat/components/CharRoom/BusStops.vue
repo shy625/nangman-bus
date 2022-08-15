@@ -115,7 +115,7 @@ onMounted(() => {
 .busstop-small {
   text-align: center;
   width: 60px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 .busstop-big {
   text-align: center;

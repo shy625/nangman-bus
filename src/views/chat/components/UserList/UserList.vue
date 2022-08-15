@@ -1,11 +1,11 @@
 <template>
-  <button @click="getin">입장test</button>
-  <button @click="getoff">퇴장test</button>
+  <!-- <button @click="getin">입장test</button>
+  <button @click="getoff">퇴장test</button> -->
 
   <div id="users" class="users">
     <div class="users-title">
       <div class="user-count">
-        승객 {{ profileData.countUser }}명
+        승객&nbsp;<span style="color:#F34949">{{ profileData.countUser }}</span>명
       </div>
       <!-- <div class="option-whisper">
         <img class="whisper-img" src="" alt="귓">
@@ -115,34 +115,34 @@ onMounted(() => {
   })
 })
 // 유저 추가
-const getin = () => {
-  const addUser = document.createElement('div')
-  addUser.classList.add('test-user')
-  const addIcon = document.createElement('div')
-  addIcon.classList.add('test-icon')
-  const img = document.createElement('img')
-  img.src = `${require('../../../../assets/user-pink.png')}`
-  img.alt = 'yellow'
-  img.classList.add('user-icon')
-  const addName = document.createElement('div')
-  addName.classList.add('test-name')
-  addName.innerText = '아몰라몰라'
+// const getin = () => {
+//   const addUser = document.createElement('div')
+//   addUser.classList.add('test-user')
+//   const addIcon = document.createElement('div')
+//   addIcon.classList.add('test-icon')
+//   const img = document.createElement('img')
+//   img.src = `${require('../../../../assets/user-pink.png')}`
+//   img.alt = 'yellow'
+//   img.classList.add('user-icon')
+//   const addName = document.createElement('div')
+//   addName.classList.add('test-name')
+//   addName.innerText = '아몰라몰라'
 
-  const testUsers = document.querySelector('.test-users')
-  addUser.append(addIcon, addName)
-  addIcon.append(img)
-  testUsers.prepend(addUser)
-  addUser.classList.add('add-user')
-}
-// 유저 삭제
-const getoff = () => {
-  // 내거 찾아서 -> 삭제 이벤트 넣고 -> 삭제
-  const delUser = document.querySelector('.test-user')
-  delUser.classList.add('remove-user')
-  delUser.addEventListener('animationend', () => {
-    delUser.remove()
-  })
-}
+//   const testUsers = document.querySelector('.test-users')
+//   addUser.append(addIcon, addName)
+//   addIcon.append(img)
+//   testUsers.prepend(addUser)
+//   addUser.classList.add('add-user')
+// }
+// // 유저 삭제
+// const getoff = () => {
+//   // 내거 찾아서 -> 삭제 이벤트 넣고 -> 삭제
+//   const delUser = document.querySelector('.test-user')
+//   delUser.classList.add('remove-user')
+//   delUser.addEventListener('animationend', () => {
+//     delUser.remove()
+//   })
+// }
 </script>
 <style>
 .add-user {
