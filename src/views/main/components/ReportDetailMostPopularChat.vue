@@ -4,7 +4,7 @@
       이날, 가장 많은 <span class="popular-chat-pink">사랑</span>을 받은 채팅은<br>
       <div class="popular-chat-big">
         "<br>
-        {{ popularChat }}<br>
+        {{ content }}<br>
         "
       </div>
       였답니다!
@@ -14,12 +14,11 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { onBeforeMount } from 'vue';
+// import { onBeforeMount } from 'vue';
 
-onBeforeMount(() => {
   const store = useStore()
-  const popularChat = store.getters.reportsDetailContent
-})
+  const content = store.getters['mainPage/reportsDetailContent']
+
 
 </script>
 <style>

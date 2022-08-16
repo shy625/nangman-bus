@@ -20,15 +20,14 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { onBeforeMount } from 'vue';
+// import { onBeforeMount } from 'vue';
 
-onBeforeMount(() => {
   const store = useStore()
-  const busNum = store.getters.reportsDetailBus
-  const day = store.getters.reportsDetailCreateDay
-  const time = store.getters.reportsDetailCreateTime
+  const busNum = store.getters['mainPage/reportsDetailBus']
+  const day = store.getters['mainPage/reportsDetailCreateDay']
+  const time = store.getters['mainPage/reportsDetailCreateTime']
   console.log(busNum)
-})
+
 // 만약 store.getters.뭐시기 가 안되면
 // store.getters['mainPage/뭐시기'] 로 접근해야 함
 

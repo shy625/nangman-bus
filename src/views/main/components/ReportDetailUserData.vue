@@ -6,7 +6,7 @@
           총 채팅 수
         </div>
         <div class="user-text-content">
-          {{ store.getters.reportsDetailTotalChatCount }}
+          {{ totalChatCount }}
         </div>
       </div>
       <img src="../../../assets/report-message.png" alt="exampleImg" class="detail-user-img">
@@ -18,7 +18,7 @@
           함께한 시간
         </div>
         <div class="user-text-content">
-          {{ store.getters.reportsDetailMyAccessHour }}시간 {{ store.getters.reportsDetailMyAccessMinute }}분
+          {{ hour }}시간 {{ minute }}분
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
           스쳐 지나간 사람들
         </div>
         <div class="user-text-content">
-          40명{{ store.getters.reportsDetailTotalUserCount }}명
+          {{ totalUserCount }}명
         </div>
       </div>
       <img src="../../../assets/report-people.png" alt="exampleImg" class="detail-user-img">
@@ -40,7 +40,7 @@
           채팅방 화력
         </div>
         <div class="user-text-content">
-          10회/분{{ store.getters.reportsDetailChatPerMinute }}
+          {{ chatPerMinute }}회/분
         </div>
       </div>
     </div>
@@ -49,11 +49,15 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { onBeforeMount } from 'vue'
+// import { onMounted } from 'vue'
 
-onBeforeMount(() => {
+
   const store = useStore()
-})
+  const totalChatCount = store.getters['mainPage/reportsDetailTotalChatCount']
+  const hour = store.getters['mainPage/reportsDetailMyAccessHour']
+  const minute = store.getters['mainPage/reportsDetailMyAccessMinute']
+  const totalUserCount = store.getters['mainPage/reportsDetailTotalUserCount']
+  const chatPerMinute = store.getters['mainPage/reportsDetailChatPerMinute']
 
 </script>
 <style>
