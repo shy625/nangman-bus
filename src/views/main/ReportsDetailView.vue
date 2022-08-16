@@ -3,10 +3,10 @@
   <div class="report-bg-img"></div>
   <div class="report-detail">
     <el-scrollbar>
-      헤더: <ReportDetailHeader></ReportDetailHeader>
-      인기 채팅: <ReportDetailMostPopularChat></ReportDetailMostPopularChat>
-      유저데이터: <ReportDetailUserData></ReportDetailUserData>
-      버스데이터: <ReportDetailBusData></ReportDetailBusData>
+      <ReportDetailHeader></ReportDetailHeader>
+      <ReportDetailMostPopularChat></ReportDetailMostPopularChat>
+      <ReportDetailUserData></ReportDetailUserData>
+      <ReportDetailBusData></ReportDetailBusData>
     </el-scrollbar>
   </div>
 </div>

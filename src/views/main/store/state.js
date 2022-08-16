@@ -6,7 +6,7 @@ const state = () => ({
   isRouletted: '',
 
   // 낭만보고서 들어갈 내용
-  reportDetail: {
+  reportsDetail: {
     id: 1, //보고서id
     bus: '5007', //버스번호
     createDay: '2022-08-11', //보고서작성날짜

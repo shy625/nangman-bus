@@ -6,7 +6,7 @@
           총 채팅 수
         </div>
         <div class="user-text-content">
-          {{ store.getters.reportsDetailTotalChatCount }}
+          240회{{ store.getters.reportsDetailTotalChatCount }}
         </div>
       </div>
       <img src="../../../assets/report-message.png" alt="exampleImg" class="detail-user-img">
@@ -18,7 +18,7 @@
           함께한 시간
         </div>
         <div class="user-text-content">
-          {{ store.getters.reportsDetailMyAccessHour }}시간 {{ store.getters.reportsDetailMyAccessMinute }}분
+          {{ store.getters.reportsDetailMyAccessHour }}1시간 {{ store.getters.reportsDetailMyAccessMinute }}10분
         </div>
       </div>
     </div>
@@ -49,11 +49,11 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { onBeforeMount } from 'vue'
+// import { onBeforeMount } from 'vue'
 
-onBeforeMount(() => {
   const store = useStore()
-})
+// onBeforeMount(() => {
+// })
 
 </script>
 <style>

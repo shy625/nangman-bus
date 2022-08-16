@@ -14,12 +14,12 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { onBeforeMount } from 'vue';
-
-onBeforeMount(() => {
+import { computed } from 'vue';
   const store = useStore()
-  const popularChat = store.getters.reportsDetailContent
-})
+  const popularChat = computed(() => store.getters['mainPage/reportsDetailContent'])
+
+// onBeforeMount(() => {
+// })
 
 </script>
 <style>
