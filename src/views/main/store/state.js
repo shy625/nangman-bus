@@ -3,6 +3,6 @@ const state = () => ({
   mostlyBus: [],
   recentlyBus: [],
   randomBus: [],
-  isRouletted: '1',
+  isRouletted: '',
 })
 export default state

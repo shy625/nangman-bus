@@ -1,20 +1,22 @@
 <template>
-<div class="home">
-  <el-scrollbar>
-    <div class="home-welcome">
-      <div class="welcome-nickname">
-        <span class="welcome-bold">{{ homeData.nickname }}</span>님,<br>
-        오늘은 어떤 낭만을<br>
-        기대하세요?
-      </div>
-      <img src="../../assets/bus-clicked-horizon.png" alt="unclickedBus" class="welcome-chaticon-img">
+  <div>
+    <div class="home">
+      <el-scrollbar>
+        <div class="home-welcome">
+          <div class="welcome-nickname">
+            <span class="welcome-bold">{{ homeData.nickname }}</span>님,<br>
+            오늘은 어떤 낭만을<br>
+            기대하세요?
+          </div>
+          <img src="../../assets/bus-clicked-horizon.png" alt="unclickedBus" class="welcome-chaticon-img">
+        </div>
+        <MostlyBus></MostlyBus>
+        <RecentlyBus></RecentlyBus>
+        <RandomBus></RandomBus>
+      </el-scrollbar>
     </div>
-    <MostlyBus></MostlyBus>
-    <RecentlyBus></RecentlyBus>
-    <RandomBus></RandomBus>
-  </el-scrollbar>
-</div>
-<RouletteComponent v-if="homeData.isRouletted"></RouletteComponent>
+    <RouletteComponent></RouletteComponent>
+  </div>
 </template>
 <script setup>
 import RouletteComponent from './components/RouletteComponent.vue'

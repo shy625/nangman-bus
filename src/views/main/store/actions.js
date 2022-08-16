@@ -158,7 +158,7 @@ export function fetchCurrentUser({ commit, getters, dispatch }, userId) {
       commit('SET_CURRENT_USER', res.data)
     })
     .then(() => {
-      if (getters.isRouletted === 'N') {
+      if (getters.isRouletted === false) {
         const rouletteContainer = document.querySelector('.roulette-container')
         const home = document.querySelector('.home')
         home.classList.add('home-blur')
@@ -184,6 +184,6 @@ export function changeIsRouletted({ commit }, userId) {
     method: 'put'
   })
     .then(() => {
-      commit('SET_IS_ROULETTED', 'Y')
+      commit('SET_IS_ROULETTED', true)
     })
 }
