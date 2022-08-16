@@ -6,6 +6,7 @@
           버스 목록
         </div>
         <hr class="chatlist-title-line">
+        <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.73382, 126.7316)">
       </div>
       <div class="buslist">
         <div v-if="!!!data.rooms.length" class="buslist-notfound">
@@ -37,7 +38,6 @@
         </div>
       </div>
     </div>
-    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.73382, 126.7316)">
   </div>
 </template>
 <script setup>
@@ -126,8 +126,10 @@ navigator.geolocation.watchPosition(function(position) {
   margin: 71.150px 0 45px 0;
   padding: 16px 32px;
   border: 3px solid #F34949;
+  border-bottom: none;
   border-radius: 5px;
-  height: 100vh;
+  height: 83vh;
+  overflow: scroll;
 }
 .chatlist-title {
   display: flex;
@@ -139,20 +141,21 @@ navigator.geolocation.watchPosition(function(position) {
 }
 .chatlist-title-line {
   display: block;
-  width: 70%;
+  width: 50%;
   height: 1px;
   border: 0;
   border-top: 1px solid black;
 }
 .chatlist-title-refresh {
   width: 30px;
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 120px;
+  /* position: fixed; */
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
+  /* top: 10%; */
 }
 .buslist {
   margin-top: 32px;
+  overflow: scroll;
 }
 .bus-cover {
   display: flex;
@@ -256,10 +259,10 @@ navigator.geolocation.watchPosition(function(position) {
 }
 @keyframes refreshRotate {
   from {
-    transform: translateX(-50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: translateX(-50%) rotate(359deg) ;
+    transform: rotate(359deg) ;
   }
 }
 </style>
