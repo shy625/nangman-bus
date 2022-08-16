@@ -1,0 +1,28 @@
+{
+  "name": "front",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.2",
+    "@fortawesome/free-solid-svg-icons": "^6.1.2",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
+    "axios": "^0.27.2",
+    "element-plus": "^2.2.10",
+    "vue": "^3.2.37",
+    "vue-axios": "^3.4.1",
+    "vue-router": "^4.1.2",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.0.0",
+    "unplugin-auto-import": "^0.10.1",
+    "unplugin-vue-components": "^0.21.2",
+    "vite": "^3.0.0"
+  }
+}

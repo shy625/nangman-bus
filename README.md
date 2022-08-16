@@ -1,24 +1,8 @@
-# nangman-front
+### 0727
 
-## Project setup
-```
-npm install
-```
+레디스용 브렌치 생성
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+생성 이유
+1. 리눅스 환경에서만 Redis가 동작함
+2. 스프링부트에 Redis를 연동하면 로컬에서 무슨 에러가 날 지 모름
+3. 따라서 브렌치를 생성해서 Redis 관련 환경설정은 여기서만 할 예정
