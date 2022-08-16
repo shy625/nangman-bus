@@ -4,7 +4,7 @@
       <div class="modal-profile">
         <div class="profile-exit">X</div>
         <div class="modal-profile-title">
-          <div class="modal-profile-icon">O</div>
+          <img src="../../../../assets/user-pink.png" class="modal-profile-icon" style="height: 80px;width:80px">
           <div class="modal-profile-nick">
             <div class="modal-profile-nickname">헤라클레스</div>
             <div class="modal-profile-birth"></div>
@@ -15,32 +15,49 @@
             ?
           </div>
           <div class="modal-profile-detail">
-            <div class="profile-detail-title">나와 함께한 시간</div>
+            <div class="profile-detail-title">나와<br>함께한 시간</div>
             <div>
-              <span class="profile-detail-content">10</span><span>회</span>
+              <span class="profile-detail-content">{{ profileData.countNumTogether}}</span><span>회</span>
             </div>
-            <ProfileTooltip></ProfileTooltip>
+            <div class="profile-tooltip">
+              함께 낭만채팅을 이용한 횟수에요.
+            </div>
           </div>
           <div class="modal-profile-detail">
-            <div class="profile-detail-title">나와 함께한 시간</div>
+            <div class="profile-detail-title">한달 간<br>이 버스를 탄 횟수</div>
             <div>
-              <span class="profile-detail-content">10</span><span>회</span>
+              <span class="profile-detail-content">{{ profileData.countMonthlyUsed }}</span><span>회</span>
             </div>
-            <ProfileTooltip></ProfileTooltip>
+            <div class="profile-tooltip">
+              한달 간 이 버스에서 낭만채팅을 이용한 횟수에요.
+            </div>
           </div>
           <div class="modal-profile-detail">
-            <div class="profile-detail-title">나와 함께한 시간</div>
+            <div class="profile-detail-title">지금<br>이 버스에 있던 시간</div>
             <div>
-              <span class="profile-detail-content">10</span><span>회</span>
+              <!-- v-if 시간 값 없으면 안나오게 -->
+              <span class="profile-detail-content">
+                {{ profileData.inHour }}
+              </span>
+              <span>시간</span>
+              <span class="profile-detail-content">
+                {{ profileData.inMinute }}
+              </span>
+              <span>분</span>
             </div>
-            <ProfileTooltip></ProfileTooltip>
+            <div class="profile-tooltip">
+              지금 이 버스에서 낭만채팅을 이용한 누적 시간이에요.
+            </div>          
           </div>
           <div class="modal-profile-detail">
-            <div class="profile-detail-title">나와 함께한 시간</div>
+            <div class="profile-detail-title">내릴<br>정류장</div>
             <div>
-              <span class="profile-detail-content">10</span><span>회</span>
+              <span v-if="!profileData.getoffRoute" class="profile-detail-content" style="font-style: italic">선택하지 않았어요</span>
+              <span v-else class="profile-detail-content">{{ profileData.getoffRoute }}</span>
             </div>
-            <ProfileTooltip></ProfileTooltip>
+            <div class="profile-tooltip">
+              선택한 하차 정류장이에요.
+            </div>
           </div>
         </div>
       </div>
@@ -49,8 +66,17 @@
 </template>
 
 <script setup>
-import ProfileTooltip from './ProfileTooltip.vue'
 import { ref, onMounted } from 'vue'
+// import { useStore } from 'vuex'
+
+// const store = useStore()
+const profileData = ref({
+  countNumTogether: 13,
+  countMonthlyUsed: 19,
+  inHour: 1,
+  inMinute: 23,
+  getoffRoute: '경남아너스빌 11단지',
+})
 
 onMounted(() => {
   const profileHint = document.querySelector('.profile-hint')
@@ -165,10 +191,34 @@ onMounted(() => {
 .modal-profile-title {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: 12px 0px 24px 0px;
 }
 .modal-profile-icon {
-  font-size: 2rem;
+  animation: profileIconShake 5s infinite;
+}
+@keyframes profileIconShake {
+  from,
+  25% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  3%,
+  8%,
+  13%,
+  18%,
+  23% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+  }
+  5%,
+  10%,
+  15%,
+  20% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
 }
 .modal-profile-nick {
   font-size: 1.3rem;
@@ -183,6 +233,9 @@ onMounted(() => {
   font-size: 1.1rem;
   position: relative;
 }
+.profile-detail-title {
+  margin-bottom: 12px;
+}
 .profile-detail-content {
   color: #FF9090;
 }
@@ -190,25 +243,63 @@ onMounted(() => {
   position: absolute;
   top: 12px;
   right: 12px;
-  background-color: black;
+  background-color: #F34949;
   color: white;
   border-radius: 50%;
   width: 18px;
   height: 18px;
 }
 .modal-profile-detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
 }
 .profile-exit {
   position: fixed;
-  bottom: -80px;
+  bottom: -45px;
   left: 50%;
-  background-color: black;
+  background-color: #F34949;
   color: #f5f5f5;
   padding: 8px;
   border-radius: 5px;
 }
 .profile-exit:hover {
   cursor: pointer;
+}
+.profile-tooltip {
+  padding: 0;
+  height: 0;
+  position: absolute;
+  bottom: 120%;
+  left: 28px;
+  font-size: .7rem;
+  background-color: #FFD96A;
+  color: black;
+  text-align: left;
+  border-radius: 5px;
+  max-width: 65%;
+  z-index: -1;
+  transition: all .25s;
+  font-family: Pretendard;
+}
+.profile-tooltip::after {
+  display: none;
+  content: " ";
+  position: absolute;
+  border-style: solid;
+  border-width: 5px;
+  top: 100%;
+  left: 40%;
+  border-color: #FFD96A transparent transparent transparent;
+}
+.tooltip-active {
+  padding: 4px;
+  z-index: 1;
+  height: 45px;
+  transition: all .3s ;
+}
+.tooltip-active.profile-tooltip::after {
+  display: block;
 }
 </style>

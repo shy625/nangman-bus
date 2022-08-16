@@ -99,11 +99,13 @@ const clickBusGetIn = room => {
     // lat: data.value.lat,
     // lng: data.value.lng,
     // 강남역
-    lat: 37.496486063,
-    lng: 127.028361548,
+    // lat: 37.496486063,
+    // lng: 127.028361548,
     // 3100
     // lat: 37.73382, 
     // lng: 126.7316,
+    lat: 37.26633,
+    lng: 127.08227
   }
   store.dispatch('chatStore/fetchSessionId', geoData)
 }
