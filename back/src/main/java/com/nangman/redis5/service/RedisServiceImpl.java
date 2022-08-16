@@ -399,11 +399,13 @@ public class RedisServiceImpl implements RedisService{
         redisTemplate.opsForHash().increment(key, SUBKEY_USER_NUM, 1);
 
         User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
-        LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         boolean isTodayBirth = false;
-        if (userBirth.getMonth().equals(LocalDate.now().getMonth())
-                && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
-            isTodayBirth = true;
+        if (user.getUserBirthday() != null) {
+            LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (userBirth.getMonth().equals(LocalDate.now().getMonth())
+                    && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
+                isTodayBirth = true;
+            }
         }
         StringBuilder value = new StringBuilder();
         value.append(user.getNickname().getNickname())      // 무조건 있음
