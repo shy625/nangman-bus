@@ -19,6 +19,7 @@ public class BusStopDto {
         private Integer nodeOrd;
         private String nodeId;  // 정류소 id
         private Integer upDown = 0;     // 상하행 구분 [0 : 없음, 1 : 상행, 2 : 하행]
+        private String busStopId;
     }
 
 }
