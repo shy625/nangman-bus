@@ -140,11 +140,12 @@ public class RedisServiceImpl implements RedisService{
                     .append(str.getUpDown()).append(SPLIT_STR);
 //                    .append(str.getRoute()).append(SPLIT_STR);
         }
-        createRouteInfo.setLength(createRouteInfo.length() -1);
+        if(createRouteInfo.length() > 0)
+            createRouteInfo.setLength(createRouteInfo.length() -1);
 //        createBusInfo.append(bus.getCode());
 
-        redisTemplate.opsForHash().put(keyRoom, SUBKEY_BUS_INFO, createBusInfo.toString());
         redisTemplate.opsForHash().put(keyRoom, SUBKEY_ROUTE_INFO, createRouteInfo.toString());
+        redisTemplate.opsForHash().put(keyRoom, SUBKEY_BUS_INFO, createBusInfo.toString());
         redisTemplate.opsForHash().put(keyRoom, SUBKEY_USER_LIST, " ");
         redisTemplate.opsForHash().put(keyRoom, SUBKEY_USER_NUM, "0");
 
@@ -186,7 +187,9 @@ public class RedisServiceImpl implements RedisService{
             if(dist < BUS_CHECK_DIST) {
                 ChattingRoomDto.ListInfo dto = new ChattingRoomDto.ListInfo();
                 dto.setDistance((int) dist);
+                System.out.println(str);
                 System.out.println(redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM));
+                if(redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM) == null) break;
                 dto.setInUsers(Integer.parseInt((String) redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM)));
                 dto.setSessionId(str.replace(KEY_ROOM, ""));
                 dto.setRouteId(busInfo[BUS_INFO_ROUTE_ID]);
@@ -465,6 +468,11 @@ public class RedisServiceImpl implements RedisService{
             keysList.add(key);
         }
         return keysList;
+    }
+
+    @Override
+    public boolean isRoomInRedis(String sessionId) {
+        return redisTemplate.hasKey(sessionId + KEY_ROOM);
     }
 
 

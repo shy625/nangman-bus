@@ -32,6 +32,7 @@ public class ChatServiceImpl implements ChatService{
     @Override
     @Transactional
     public void InsertChatLogs(ChatDto.ChatLog chatLog) {
+        log.info(chatLog.toString());
         //report init
         Report report = reportService.creatReport();
         Room room = roomRepository.findRoomBySessionId(chatLog.getSessionId()).get();
