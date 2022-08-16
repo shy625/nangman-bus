@@ -52,8 +52,7 @@ public class SocketController {
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.PubChat pubChatDto) {
         log.info("sendChatMessage() ChatPub - userId : " + pubChatDto.getUserId() + " message : " + pubChatDto.getMessage());
         ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        LocalTime nowTime = zdt.toLocalTime();
-        String createdTime = String.valueOf(nowTime);
+        String createdTime = String.valueOf(zdt.toLocalDateTime());
 //        String createdTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String chatId = redisService.createChat(sessionId, pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
         SocketDto.SubChat subChatDto = new SocketDto.SubChat(Long.valueOf(chatId), pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
