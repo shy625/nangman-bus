@@ -11,7 +11,7 @@
       <div class="buslist">
         <div v-if="!!!data.rooms.length" class="buslist-notfound">
           <h1>주변에<br>낭만버스가<br>보이지 않아요</h1>
-          <p style="font-size: 1.3rem">하단의 새로고침 버튼을 눌러보세요!</p>
+          <p style="font-size: 1.3rem">상단의 새로고침 버튼을 눌러보세요!</p>
         </div>
         <div v-for="room in data.rooms" :key="room.sessionId">
           <div class="bus-cover">
@@ -98,8 +98,12 @@ const clickBusGetIn = room => {
     room: room,
     // lat: data.value.lat,
     // lng: data.value.lng,
-    lat: 37.73382, 
-    lng: 126.7316,
+    // 강남역
+    lat: 37.496486063,
+    lng: 127.028361548,
+    // 3100
+    // lat: 37.73382, 
+    // lng: 126.7316,
   }
   store.dispatch('chatStore/fetchSessionId', geoData)
 }

@@ -1,5 +1,5 @@
-export function userId(state) { 
-  return state.userId
+export function userId() { 
+  return Number(localStorage.getItem('accountUserId'))
 }
 
 export function boards(state) {
@@ -49,4 +49,8 @@ export function busNum(state) {
 
 export function isAccessibleCnt(state) {
   return state.isAccessibleCnt
+}
+
+export function client(state) {
+  return state.client
 }

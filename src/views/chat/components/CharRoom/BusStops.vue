@@ -61,7 +61,10 @@ import { useStore } from 'vuex'
 const store = useStore()
 const busData = ref({ 
   isToggled: false,
-  busstopInfos: computed(() => store.getters['chatStore/busstopInfos'])
+  busstopInfos: computed(() => store.getters['chatStore/busstopInfos']),
+  client: computed(() => store.getters['chatStore/client']),
+  userId: computed(() => store.getters['chatStore/userId']),
+  sessionId: computed(() => store.getters['chatStore/sessionId']),
 })
 
 const clickBusstop = e => {
@@ -72,7 +75,19 @@ const clickBusstop = e => {
     e.target.classList.remove('busstop-pulse')
   }, 500)
   e.target.scrollIntoView({ block: 'center', behavior: 'smooth' })  // 타겟 스크롤 포커스! -> 현재 정류장 기준으로!
+
+  // 버스 하차 정류장 pub
+  const payload = {
+    userId: busData.value.userId,
+    busStopId: 12,
+  }
+  console.log('하차 전송')
+  busData.value.client.publish({
+    destination: '/pub/chat/rooms/' + busData.value.sessionId + '/outBusStop',
+    body: JSON.stringify(payload),
+  })
 }
+
 onMounted(() => {
   const busstopList = document.querySelector('#busstopList')
   const busToggle = document.querySelector('#busToggle')

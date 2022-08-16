@@ -10,6 +10,7 @@ const state = () => ({
   sessionId: localStorage.getItem('sessionID') || 'session_1660483514_2',
   isAccessible: '',
   isAccessibleCnt: 0,
+  client: '',
 })
 
 export default state

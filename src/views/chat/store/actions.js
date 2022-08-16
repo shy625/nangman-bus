@@ -1,6 +1,8 @@
 import axios from 'axios'
 import api from '../../../api/api.js'
 import router from '@/router/vue-router.js'
+import * as SockJS from "sockjs-client"
+import * as StompJs from "@stomp/stompjs"
 
 export function createBoard({ commit }, credentials) {
   axios({
@@ -165,6 +167,28 @@ export function fetchRooms({ commit }, data) {
 }
 
 export function fetchChatLog({ commit }, log) {
-  console.log('패치로그')
+  console.log('chatlog fetch')
   commit('SET_CHAT_LOG', log)
+}
+
+export function fetchClient({ commit }) {
+  const client = new StompJs.Client({
+    brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
+    connectHeaders: {
+      login: "user",
+      passcode: "password",
+    },
+    debug: function (str) {
+      console.log(str);
+    },
+    reconnectDelay: 5000,
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  })
+
+  client.webSocketFactory = function () {
+    return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
+  }
+  
+  commit('SET_CLIENT', client)
 }

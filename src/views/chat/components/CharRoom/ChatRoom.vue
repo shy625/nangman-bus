@@ -39,8 +39,8 @@ import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 // import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
-import * as SockJS from "sockjs-client"
-import * as StompJs from "@stomp/stompjs"
+// import * as SockJS from "sockjs-client"
+// import * as StompJs from "@stomp/stompjs"
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -52,6 +52,7 @@ const chatData = ref({
   message: "",
   lat: 0,
   lng: 0,
+  client: computed(() => store.getters['chatStore/client'])
 })
 
 navigator.geolocation.watchPosition(function(position) {
@@ -61,28 +62,29 @@ navigator.geolocation.watchPosition(function(position) {
 })
 
 onMounted(() => {
+  store.dispatch('chatStore/fetchClient')
   // 소켓
-  const client = new StompJs.Client({
-    brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
-    connectHeaders: {
-      login: "user",
-      passcode: "password",
-    },
-    debug: function (str) {
-      console.log(str);
-    },
-    reconnectDelay: 5000,
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
-  })
+  // const client = new StompJs.Client({
+  //   brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
+  //   connectHeaders: {
+  //     login: "user",
+  //     passcode: "password",
+  //   },
+  //   debug: function (str) {
+  //     console.log(str);
+  //   },
+  //   reconnectDelay: 5000,
+  //   heartbeatIncoming: 4000,
+  //   heartbeatOutgoing: 4000,
+  // })
 
-  client.webSocketFactory = function () {
-    return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
-  }
+  // client.webSocketFactory = function () {
+  //   return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
+  // }
 
-  client.onConnect = function () {
+  chatData.value.client.onConnect = function () {
     // 채팅 메세지 구독
-    client.subscribe(
+    chatData.value.client.subscribe(
       "/sub/chat/rooms/" + chatData.value.sessionId + "/message",
       message => {
         const payload = JSON.parse(message.body)
@@ -112,16 +114,33 @@ onMounted(() => {
         chattingLike.src = `${require('../../../../assets/like-outline.png')}`
         chattingLike.alt = 'outline'
         chattingLike.addEventListener('click', e => {
+          // 좋아요 pub
           if (e.target.alt === 'outline') {  // 좋아요 +1
             e.target.src = `${require('../../../../assets/like-filled.png')}`
             e.target.alt = 'filled'
+            const payload = {
+              chatId: chatLog.chatId,
+              count: null,
+            }
+            chatData.value.client.publish({
+              destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/up',
+              body: JSON.stringify(payload),
+            })
           } else {                           // 좋아요 -1
             e.target.src = `${require('../../../../assets/like-outline.png')}`
             e.target.alt = 'outline'
+            const payload = {
+              chatId: chatLog.chatId,
+              count: null,
+            }
+            chatData.value.client.publish({
+              destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/down',
+              body: JSON.stringify(payload),
+            })
           }
         })
         // 시간
-        chattingTime.innerText = payload.createdTime.split(' ')[1].slice(0, 5)
+        chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
 
         console.log('받음', payload)
         if (payload.userId === chatData.value.userId) {
@@ -138,7 +157,7 @@ onMounted(() => {
           console.log('남꺼')
           const otherChatWrapper = document.createElement('div')
           otherChatWrapper.classList.add('other-chat-wrapper')
-          const chatIcon = document.createElement('div')
+          const chatIcon = document.createElement('img')
           chatIcon.classList.add('chat-icon')
           const chatContent = document.createElement('div')
           chatContent.classList.add('chat-content')
@@ -146,7 +165,7 @@ onMounted(() => {
           chatNick.classList.add('chat-nick')
           
           // 기분(상태)
-          chatIcon.innerText = 'O'
+          chatIcon.src = `${require('../../../../assets/emo-default.png')}`
           // 닉네임
           chatNick.innerText = '상대닉'
 
@@ -160,17 +179,49 @@ onMounted(() => {
       }
     )
     // 채팅 입/퇴장 구독
-    client.subscribe(
+    chatData.value.client.subscribe(
       '/sub/chat/rooms/' + chatData.value.sessionId + '/user',
       message => {
         const payload = JSON.parse(message.body)
-        console.log(payload, '입/퇴장')
+        console.log(payload, '입/퇴장 구독')
+      }
+    )
+    // 좋아요 구독 -> 됨
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/like',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '좋아요 구독')
+      }
+    )
+    // 실시간 버스 정류장 -> 들어왔을 때 무조건 하나 보내줘야함
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/busStop',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '실시간 버스 정류장 구독')
+      }
+    )
+    // 사용자 하차 정류장
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/outBusStop',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '사용자 하차 정류장 구독')
+      }
+    )
+    // 사용자 감정 상태
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/emotion',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '사용자 감정 상태 구독')
       }
     )
   }
 
   // 채팅방 입장
-  client.activate()
+  chatData.value.client.activate()
 
   const chatRoom = document.querySelector('#chatRoom')
   const busstop = document.querySelector('#busstop')
@@ -197,7 +248,8 @@ onMounted(() => {
         message: enterInput.value,
       }
       // console.log(payload)
-      client.publish({
+      // 입장 pub
+      chatData.value.client.publish({
         destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/in',
         body: JSON.stringify(payload),
       })
@@ -220,7 +272,7 @@ onMounted(() => {
     }
     if (payload.message.length > 0) {
       console.log('전송', payload)
-      client.publish({
+      chatData.value.client.publish({
         destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/message",
         body: JSON.stringify(payload),
       })
@@ -228,18 +280,18 @@ onMounted(() => {
     }
   })
   
-  // 퇴장
+  // 퇴장 pub
   const chatHeaderBack = document.querySelector('.chat-header-back')
   chatHeaderBack.addEventListener('click', () => {
     const payload = {
       userId: chatData.value.userId,
       message: null,
     }
-    client.publish({
+    chatData.value.client.publish({
       destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
       body: JSON.stringify(payload)
     })
-    client.deactivate()
+    chatData.value.client.deactivate()
   })
 
   // 거리벗어나면 강퇴
@@ -250,17 +302,17 @@ onMounted(() => {
     lng: chatData.value.lng
   }
   store.dispatch('chatStore/fetchIsAccessible', geoData)
-  // 퇴장
+  // 퇴장 pub
   // if (chatData.value.isAccessibleCnt > 1) {
   //   const payload = {
   //     userId: chatData.value.userId,
   //     message: null,
   //   }
-  //   client.publish({
+  //   chatData.value.client.publish({
   //     destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
   //     body: JSON.stringify(payload)
   //   })
-  //   client.deactivate()
+  //   chatData.value.client.deactivate()
   // }
 }, 60000)
 })

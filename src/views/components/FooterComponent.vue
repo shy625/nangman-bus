@@ -60,8 +60,10 @@ const clickChatList = () => {
   } else {
     // console.log(11)
     const geoData = {
-      lat: data.value.lat,
-      lng: data.value.lng,
+      // lat: data.value.lat,
+      // lng: data.value.lng,
+      lat: 37.496486063,
+      lng: 127.028361548,
     }
     store.dispatch('chatStore/fetchRooms', geoData)
     chatList.classList.remove('chatlist-out')
