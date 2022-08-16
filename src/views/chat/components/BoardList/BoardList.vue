@@ -47,10 +47,10 @@ const boardData = ref({
 onMounted(() => {
   const boardContent = document.querySelector('#boardContent')
   function boardContentToggle() {
-      boardContent.classList.toggle('collapsed')
+    boardContent.classList.toggle('collapsed')
   }
   if (boardContent) {
-    boardContent.addEventListener('click', boardContentToggle)
+    boardContent.addEventListener('click', boardContentToggle, false)
   }
 })
 
@@ -112,33 +112,9 @@ const clickCreateBtn = () => {
       content: textarea.value,
       userId: boardData.value.userId,
     }
-    store.dispatch('chatStore/createBoard', credentials)
-
     boardScrollView.removeChild(boardContent)
     createBtn.style.display = 'inline-flex'
-    const createBoardContent = document.createElement('div')
-    createBoardContent.classList.add('board-content')
-    // 배경색 입력
-    createBoardContent.setAttribute('style', `background-color: ${boardData.value.boardColor}`)
-    const boardContentBody = document.createElement('div')
-    boardContentBody.classList.add('board-content-body')
-    // 내용 입력
-    boardContentBody.innerText = textarea.value
-    const boardContentDate = document.createElement('div')
-    boardContentDate.classList.add('board-content-date')
-    const createDate = document.createElement('div')
-    createDate.classList.add('create-date')
-    // 날짜 입력
-    createDate.innerText = boardData.value.boardDate
-    const createTime = document.createElement('div')
-    createTime.classList.add('create-time')
-    // 시간 입력
-    createTime.innerText = boardData.value.boardTime
-
-    createBoardContent.append(boardContentBody, boardContentDate)
-    boardContentDate.append(createDate, createTime)
-    boardScrollView.append(createBoardContent)
-    createBoardContent.classList.add('submit-board')
+    store.dispatch('chatStore/createBoard', credentials)
   })
 }
 </script>

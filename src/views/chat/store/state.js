@@ -1,13 +1,16 @@
 const state = () => ({
-  userId: localStorage.getItem('userId') || 1,
-  busId: localStorage.getItem('busId') || 1,
+  userId: Number(localStorage.getItem('accountUserId')) || '',
   boards: [],
   board: '',
 
+  room: {},
   rooms: [],
   roomInfo: {},
 
-  sessionId: localStorage.getItem('sessionId') || 'session_1660483514_0',
+  sessionId: localStorage.getItem('sessionID') || 'session_1660483514_2',
+  isAccessible: '',
+  isAccessibleCnt: 0,
+  client: '',
 })
 
 export default state

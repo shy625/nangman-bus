@@ -38,7 +38,7 @@
           autofocus
           required
         />
-        <button
+        <!-- <button
           style="
             margin-left: 10px;
             border: none;
@@ -54,7 +54,7 @@
           disabled
         >
           인증요청
-        </button>
+        </button> -->
       </div>
     </div>
 

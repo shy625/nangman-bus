@@ -16,7 +16,6 @@
   font-size: .65rem;
   background-color: black;
   color: white;
-  text-align: left;
   border-radius: 5px;
   max-width: 65%;
   z-index: -1;
@@ -36,7 +35,7 @@
   padding: 4px;
   z-index: 1;
   height: 30px;
-  transition: all .3s ;
+  transition: all .3s;
 }
 .tooltip-active.profile-tooltip::after {
   display: block;

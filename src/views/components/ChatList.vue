@@ -6,11 +6,12 @@
           버스 목록
         </div>
         <hr class="chatlist-title-line">
+        <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.73382, 126.7316)">
       </div>
       <div class="buslist">
         <div v-if="!!!data.rooms.length" class="buslist-notfound">
           <h1>주변에<br>낭만버스가<br>보이지 않아요</h1>
-          <p style="font-size: 1.3rem">하단의 새로고침 버튼을 눌러보세요!</p>
+          <p style="font-size: 1.3rem">상단의 새로고침 버튼을 눌러보세요!</p>
         </div>
         <div v-for="room in data.rooms" :key="room.sessionId">
           <div class="bus-cover">
@@ -30,14 +31,13 @@
                 <span v-else class="bus-comment-mood"> <span class="bus-comment-mood">시끌벅적</span>해요!</span>
               </div>
             </div>
-            <div class="bus-getin" @click="clickBusGetIn(room.sessionId)">
+            <div class="bus-getin" @click="clickBusGetIn(room)">
               >
             </div>
           </div>
         </div>
       </div>
     </div>
-    <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.49797, 127.02763)">
   </div>
 </template>
 <script setup>
@@ -92,14 +92,18 @@ function getLocation() {
   }
 }
 
-const clickBusGetIn = sessionId => {
-  // console.log(sessionId)
+const clickBusGetIn = room => {
+  console.log(room)
   const geoData = {
-    sessionId: sessionId,
+    room: room,
     // lat: data.value.lat,
     // lng: data.value.lng,
-    lat: 37.49797, 
-    lng: 127.02763,
+    // 강남역
+    lat: 37.496486063,
+    lng: 127.028361548,
+    // 3100
+    // lat: 37.73382, 
+    // lng: 126.7316,
   }
   store.dispatch('chatStore/fetchSessionId', geoData)
 }
@@ -126,8 +130,10 @@ navigator.geolocation.watchPosition(function(position) {
   margin: 71.150px 0 45px 0;
   padding: 16px 32px;
   border: 3px solid #F34949;
+  border-bottom: none;
   border-radius: 5px;
-  height: 100vh;
+  height: 83vh;
+  overflow: scroll;
 }
 .chatlist-title {
   display: flex;
@@ -139,20 +145,21 @@ navigator.geolocation.watchPosition(function(position) {
 }
 .chatlist-title-line {
   display: block;
-  width: 70%;
+  width: 50%;
   height: 1px;
   border: 0;
   border-top: 1px solid black;
 }
 .chatlist-title-refresh {
   width: 30px;
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 120px;
+  /* position: fixed; */
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
+  /* top: 10%; */
 }
 .buslist {
   margin-top: 32px;
+  overflow: scroll;
 }
 .bus-cover {
   display: flex;
@@ -256,10 +263,10 @@ navigator.geolocation.watchPosition(function(position) {
 }
 @keyframes refreshRotate {
   from {
-    transform: translateX(-50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: translateX(-50%) rotate(359deg) ;
+    transform: rotate(359deg) ;
   }
 }
 </style>

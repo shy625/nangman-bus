@@ -3,7 +3,7 @@ const state = () => ({
   mostlyBus: [],
   recentlyBus: [],
   randomBus: [],
-  isRouletted: '1',
+  isRouletted: '',
 
   // 낭만보고서 들어갈 내용
   reportDetail: {

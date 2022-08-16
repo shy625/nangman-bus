@@ -1,16 +1,16 @@
 <template>
-  <button @click="getin">입장test</button>
-  <button @click="getoff">퇴장test</button>
+  <!-- <button @click="getin">입장test</button>
+  <button @click="getoff">퇴장test</button> -->
 
   <div id="users" class="users">
     <div class="users-title">
       <div class="user-count">
-        승객 {{ profileData.countUser }}명
+        승객&nbsp;<span style="color:#F34949">{{ profileData.countUser }}</span>명
       </div>
-      <div class="option-whisper">
+      <!-- <div class="option-whisper">
         <img class="whisper-img" src="" alt="귓">
         <div class="whisper-text">귓속말 거부</div>
-      </div>
+      </div> -->
     </div>
     <div class="user-list">
       <el-scrollbar height="70vh">
@@ -115,67 +115,73 @@ onMounted(() => {
   })
 })
 // 유저 추가
-const getin = () => {
-  const addUser = document.createElement('div')
-  addUser.classList.add('test-user')
-  const addIcon = document.createElement('div')
-  addIcon.classList.add('test-icon')
-  const img = document.createElement('img')
-  img.src = `${require('../../../../assets/user-pink.png')}`
-  img.alt = 'yellow'
-  img.classList.add('user-icon')
-  const addName = document.createElement('div')
-  addName.classList.add('test-name')
-  addName.innerText = '아몰라몰라'
+// const getin = () => {
+//   const addUser = document.createElement('div')
+//   addUser.classList.add('test-user')
+//   const addIcon = document.createElement('div')
+//   addIcon.classList.add('test-icon')
+//   const img = document.createElement('img')
+//   img.src = `${require('../../../../assets/user-pink.png')}`
+//   img.alt = 'yellow'
+//   img.classList.add('user-icon')
+//   const addName = document.createElement('div')
+//   addName.classList.add('test-name')
+//   addName.innerText = '아몰라몰라'
 
-  const testUsers = document.querySelector('.test-users')
-  addUser.append(addIcon, addName)
-  addIcon.append(img)
-  testUsers.append(addUser)
-  addUser.classList.add('add-user')
-}
-// 유저 삭제
-const getoff = () => {
-  // 내거 찾아서 -> 삭제 이벤트 넣고 -> 삭제
-  const delUser = document.querySelector('.test-user')
-  delUser.classList.add('remove-user')
-  delUser.addEventListener('animationend', () => {
-    delUser.remove()
-  })
-}
+//   const testUsers = document.querySelector('.test-users')
+//   addUser.append(addIcon, addName)
+//   addIcon.append(img)
+//   testUsers.prepend(addUser)
+//   addUser.classList.add('add-user')
+// }
+// // 유저 삭제
+// const getoff = () => {
+//   // 내거 찾아서 -> 삭제 이벤트 넣고 -> 삭제
+//   const delUser = document.querySelector('.test-user')
+//   delUser.classList.add('remove-user')
+//   delUser.addEventListener('animationend', () => {
+//     delUser.remove()
+//   })
+// }
 </script>
 <style>
 .add-user {
-  animation: bounce 1s;
+  animation: addUserBounce 1s;
 }
-@keyframes bounce {
+@keyframes addUserBounce {
   from,
   60%,
   75%,
   90%,
   to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   from {
     opacity: 0;
-    transform: translate3d(0, 3000px, 0) scaleY(5);
+    -webkit-transform: translate3d(3000px, 0, 0) scaleX(3);
+    transform: translate3d(3000px, 0, 0) scaleX(3);
   }
 
   60% {
     opacity: 1;
-    transform: translate3d(0, -20px, 0) scaleY(0.9);
+    -webkit-transform: translate3d(-25px, 0, 0) scaleX(1);
+    transform: translate3d(-25px, 0, 0) scaleX(1);
   }
 
   75% {
-    transform: translate3d(0, 10px, 0) scaleY(0.95);
+    -webkit-transform: translate3d(10px, 0, 0) scaleX(0.98);
+    transform: translate3d(10px, 0, 0) scaleX(0.98);
   }
 
   90% {
-    transform: translate3d(0, -5px, 0) scaleY(0.985);
+    -webkit-transform: translate3d(-5px, 0, 0) scaleX(0.995);
+    transform: translate3d(-5px, 0, 0) scaleX(0.995);
   }
 
   to {
+    -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
   }
 }
@@ -204,9 +210,9 @@ const getoff = () => {
   font-size: 1.1rem;
 }
 .steer {
-  animation: swing 4s infinite;
+  animation: steerSwing 4s infinite;
 }
-@keyframes swing {
+@keyframes steerSwing {
   5% {
     -webkit-transform: rotate3d(0, 0, 1, 15deg);
     transform: rotate3d(0, 0, 1, 15deg);
