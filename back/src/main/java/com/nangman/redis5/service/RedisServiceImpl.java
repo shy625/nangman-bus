@@ -79,6 +79,7 @@ public class RedisServiceImpl implements RedisService{
     public void updateBudData(Bus bus) {
         //현규가 버스 entity 업데이트하면 ㄱ
         String keyRoom = bus.getSessionId() + KEY_ROOM;
+        if(!redisTemplate.hasKey(keyRoom)) return;
         StringBuilder createBusInfo = new StringBuilder();
         createBusInfo.append(bus.getLicenseNo())
                 .append(SPLIT_STR)
