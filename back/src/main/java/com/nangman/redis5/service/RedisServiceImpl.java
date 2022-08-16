@@ -40,7 +40,7 @@ public class RedisServiceImpl implements RedisService{
     private static  final int BUSSTOP_INFO_NODEORD = 4;
     private static  final int BUSSTOP_INFO_NODEID = 5;
     private static  final int BUSSTOP_INFO_UPDOWN = 6;
-    private static  final int BUSSTOP_INFO_ROUTE = 7;
+    private static  final int BUSSTOP_INFO_ID = 7;
 
 
     private static final int CHAT_INFO_USER_ID = 0;
@@ -137,8 +137,8 @@ public class RedisServiceImpl implements RedisService{
                     .append(str.getNodeName()).append(SPLIT_ROUTE_STR)
                     .append(str.getNodeOrd()).append(SPLIT_ROUTE_STR)
                     .append(str.getNodeId()).append(SPLIT_ROUTE_STR)
-                    .append(str.getUpDown()).append(SPLIT_STR);
-//                    .append(str.getRoute()).append(SPLIT_STR);
+                    .append(str.getUpDown()).append(SPLIT_ROUTE_STR)
+                    .append(str.getId()).append(SPLIT_STR);
         }
         if(createRouteInfo.length() > 0)
             createRouteInfo.setLength(createRouteInfo.length() -1);
@@ -350,6 +350,7 @@ public class RedisServiceImpl implements RedisService{
             busStopDto.setNodeOrd(Integer.parseInt(str[BUSSTOP_INFO_NODEORD]));
             busStopDto.setNodeId(str[BUSSTOP_INFO_NODEID]);
             busStopDto.setUpDown(Integer.parseInt(str[BUSSTOP_INFO_UPDOWN]));
+            busStopDto.setBusStopId(str[BUSSTOP_INFO_ID]);
 
             busStopList.add(busStopDto);
         }
