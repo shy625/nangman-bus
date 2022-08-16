@@ -66,6 +66,4 @@ public interface RedisService {
     void setOutBusStop(String sessionId, Long userId, Long busStopId);
 
     List<String> getSessionList();
-
-    boolean isRoomInRedis(String sessionId);
 }

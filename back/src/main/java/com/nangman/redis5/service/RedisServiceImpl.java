@@ -470,10 +470,6 @@ public class RedisServiceImpl implements RedisService{
         return keysList;
     }
 
-    @Override
-    public boolean isRoomInRedis(String sessionId) {
-        return redisTemplate.hasKey(sessionId + KEY_ROOM);
-    }
 
 
     // 두 좌표 사이의 거리를 구하는 함수
