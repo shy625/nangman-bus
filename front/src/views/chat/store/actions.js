@@ -85,6 +85,9 @@ export function fetchBoards({ commit }, busId) {
     })
     .then(() => {
       const boardScrollView = document.querySelector('#boardScroll .el-scrollbar__view')
+      if (boardScrollView.lastElementChild.classList.contains('board-content')) {
+        boardScrollView.removeChild(boardScrollView.lastElementChild)
+      }
       const boardScroll = document.querySelector('#boardScroll .el-scrollbar__wrap')
       boardScroll.scrollTo(0, boardScrollView.scrollHeight)
       const boardContents = document.querySelectorAll('.board-content')

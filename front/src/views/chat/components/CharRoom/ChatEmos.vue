@@ -1,24 +1,33 @@
 <template>
   <div class="emo">
     <div id="emoToggle" class="emo-toggle">
-      기쁨
+      <img src="../../../../assets/emo-default.png" alt="emo" class="toggle-title">
       <div id="emoList" class="emo-list">
-        <div class="emo-emoji" v-for="(emo, idx) in emos"
+        <div class="emo-emoji" v-for="(emo, idx) in emosData.emos"
           :key="idx"
         >
-          {{ emo }}
+          <img :src="emo" :alt="idx" class="emoji-img">
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
-// 더미데이터
-const emos = ['기쁨', '슬픔', '취함', '우울']
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 
-// state에 현재 emo 저장해두고, 그거랑 비교해서 같은거 찾아서 toggle에 넣기
-// + 그거는 emoList에 안뜨게 거르기
+const store = useStore()
+const emosData = ref({
+  client: computed(() => store.getters['chatStore/client']),
+  userId: computed(() => store.getters['chatStore/userId']),
+  emos: [  // 0: 무표정, 1: 화남, 2: 기쁨, 3: 우울
+    `${require('../../../../assets/emo-default.png')}`,
+    `${require('../../../../assets/emo-angry.png')}`,
+    `${require('../../../../assets/emo-happy.png')}`,
+    `${require('../../../../assets/emo-blue.png')}`,
+  ],
+  sessionId: computed(() => store.getters['chatStore/sessionId'])
+})
 
 onMounted(() => {
   const emoList = document.querySelector('#emoList')
@@ -28,6 +37,25 @@ onMounted(() => {
       emoList.classList.toggle('collapsed')
   }
   emoToggle.addEventListener('click', emoListToggle)
+
+  // 기본 이미지 클릭한 거로 바꾸기
+  const emojis = document.querySelectorAll('.emoji-img')
+  const toggleTitle = document.querySelector('.toggle-title')
+  emojis.forEach(emoji => {
+    emoji.addEventListener('click', e => {
+      toggleTitle.src = e.target.src
+      // 감정 상태 pub
+      console.log('감정 번호', e.target.alt)
+      const payload = {
+        userId: emosData.value.userId,
+        emotion: e.target.alt,
+      }
+      emosData.value.client.publish({
+        destination: '/pub/chat/rooms/' + emosData.value.sessionId + '/emotion',
+        body: JSON.stringify(payload),
+      })
+    })
+  })
 })
 </script>
 <style>
@@ -47,13 +75,22 @@ onMounted(() => {
   position: absolute;
   bottom: 40px;
   overflow: hidden;
-  height: 70px;
+  height: 115px;
   transition: all 0.2s;
 }
 .emo-list.collapsed {
   height: 0;
 }
+.emo-toggle {
+  font-family: Pretendard;
+}
+.toggle-title {
+  height: 20px;
+}
 .emo-emoji {
   width: 50px;
+}
+.emoji-img {
+  height: 25px;
 }
 </style>
