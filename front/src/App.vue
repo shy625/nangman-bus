@@ -1,31 +1,13 @@
 <template>
-
-  <!-- <mainview/> -->
-<!-- <router-link :to="{ name: 'test'}">TEST</router-link> -->
-<!-- <router-link :to="{ name: 'chat', params: { roomId: 1 }}">채팅방</router-link> -->
-
-<!-- <router-view v-slot="{ Component, route }">
-  <transition :name="route.meta.transition" :mode="route.meta.mode">
+<router-view v-slot="{ Component, route }">
+  <transition :name="route.meta.transition || 'fade'">
     <component :is="Component"></component>
   </transition>
-</router-view> -->
-<router-view></router-view>
-
+</router-view>
 </template>
 
-<script>
-import MainView from './views/main/MainView.vue'
-export default {
-  name: 'App',
+<script setup>
 
-  components: {
-    MainView
-  },
-
-  data: () => ({
-
-  }),
-}
 </script>
 
 <style>
@@ -48,18 +30,46 @@ body {
   margin: 0;
   font-family: BMHANNAAir, BMHANNAPro, Pretendard;
 }
-.slide-fade-enter {
-  transform: translateY(-15px);
-  opacity: 0;
+a {
+  text-decoration: none;
 }
 
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all .15s ease;
+.fade-leave-active {
+  transition: all 0.3s;
+}
+.fade-enter-active {
+  transition: all 0.3s;
+  transition-delay: 0.3s;
 }
 
-.slide-fade-leave-to {
-  transform: translateY(15px);
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.reportIn-enter-from {
+  opacity: 0;
+  transform: scale3d(0.3, 0.3, 0.3);
+}
+.reportIn-leave-to {
+  opacity: 0;
+}
+.reportIn-leave-active {
+  transition: all 0.3s;
+}
+.reportIn-enter-active {
+  transition: all 0.3s;
+  transition-delay: 0.3s;
+}
+.reportIn-enter-to {
+  opacity: 1;
+  transform: scale3d(1, 1, 1);
+}
+.reportIn-leave-from {
+  opacity: 1;
 }
 </style>

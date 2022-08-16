@@ -6,7 +6,8 @@
           버스 목록
         </div>
         <hr class="chatlist-title-line">
-        <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(37.73382, 126.7316)">
+        <img src="../../assets/refresh.png" alt="refresh" class="chatlist-title-refresh" @click="getRooms(data.lat, data.lng)">
+        <!-- 37.73382, 126.7316 -->
       </div>
       <div class="buslist">
         <div v-if="!!!data.rooms.length" class="buslist-notfound">
@@ -96,14 +97,16 @@ const clickBusGetIn = room => {
   console.log(room)
   const geoData = {
     room: room,
-    // lat: data.value.lat,
-    // lng: data.value.lng,
+    lat: data.value.lat,
+    lng: data.value.lng,
     // 강남역
-    lat: 37.496486063,
-    lng: 127.028361548,
+    // lat: 37.496486063,
+    // lng: 127.028361548,
     // 3100
     // lat: 37.73382, 
     // lng: 126.7316,
+    // lat: 37.26633,
+    // lng: 127.08227
   }
   store.dispatch('chatStore/fetchSessionId', geoData)
 }
