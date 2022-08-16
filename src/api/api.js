@@ -8,7 +8,7 @@ const BOARDS = 'boards/'
 export default {
   reports: {
     reportsList: () => HOST + REPORTS,
-    reportsdetail: (reportsId) => HOST + REPORTS + 'detail/' + reportsId + '/'
+    reportsDetail: (reportsId) => HOST + REPORTS + 'detail/' + reportsId + '/'
   },
   accounts: {
     login: () => HOST + USER + 'login/',

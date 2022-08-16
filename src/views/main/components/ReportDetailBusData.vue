@@ -7,7 +7,7 @@
           지금까지<br>이 버스를<br>거쳐간 승객 수
         </div>
         <div class="withuser-sub">
-          500명
+          500{{ store.getters.reportsDetailAccumulateUserCount }}명
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
           내가<br>이 버스를<br>탄 횟수
         </div>
         <div class="withuser-sub">
-          20회
+          20{{ store.getters.reportsDetailPersonalCount }}회
         </div>
       </div>
       <div class="bus-mycount">
@@ -27,7 +27,7 @@
           이 버스의<br>방명록<br>갯수
         </div>
         <div class="withuser-sub">
-          20개
+          20{{ store.getters.reportsDetailBoardCount }}개
         </div>
       </div>
     </div>
@@ -35,6 +35,10 @@
   <hr class="report-detail-hr-small">
 </template>
 <script setup>
+import { useStore } from 'vuex'
+import { onBeforeMount } from 'vue'
+
+const store = useStore()
 
 </script>
 <style>
