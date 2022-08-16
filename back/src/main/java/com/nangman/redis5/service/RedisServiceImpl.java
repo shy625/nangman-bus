@@ -396,13 +396,13 @@ public class RedisServiceImpl implements RedisService{
 //        String value = myUser.getNickname() + splitStr + myUser.getUserBirthday() + splitStr + "0" + splitStr + "null";
         // value = UserRepository.getNickName
         StringBuilder value = new StringBuilder();
-        value.append(roomUserDto.getNickName())
+        value.append(roomUserDto.getNickName())// SQL에서 찾아서 줌
              .append(SPLIT_STR)
-             .append(roomUserDto.getBirth())
+             .append(roomUserDto.getBirth()) // SQL에서 찾아서 줌 "false": 오늘 생일 아님, "true": 오늘 생일임
              .append(SPLIT_STR)
-             .append(Integer.toString(roomUserDto.getEmotion()))
+             .append(Integer.toString(roomUserDto.getEmotion())) // 디폴트 0;
              .append(SPLIT_STR)
-             .append(roomUserDto.getOutBusStop());
+             .append(roomUserDto.getOutBusStop()); // 디폴트 "0"
         redisTemplate.opsForHash().put(key, Long.toString(roomUserDto.getUserId()), value.toString());
     }
 
@@ -497,7 +497,7 @@ public class RedisServiceImpl implements RedisService{
                 count++;
             }
         }
-        if(count > 10) return NOISY;
+        if(count > 5) return NOISY;
         return ICED;
     }
 
