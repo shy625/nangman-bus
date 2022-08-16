@@ -243,7 +243,7 @@ onMounted(() => {
   position: absolute;
   top: 12px;
   right: 12px;
-  background-color: #F34949;
+  background-color: #FFD96A;
   color: white;
   border-radius: 50%;
   width: 18px;
@@ -257,12 +257,15 @@ onMounted(() => {
 }
 .profile-exit {
   position: fixed;
-  bottom: -45px;
+  bottom: 30px;
   left: 50%;
-  background-color: #F34949;
-  color: #f5f5f5;
-  padding: 8px;
+  background-color: #f5f5f5;
+  color: black;
+  font-weight: bold;
+  padding: 6px 8px;
   border-radius: 5px;
+  z-index: 3;
+  
 }
 .profile-exit:hover {
   cursor: pointer;

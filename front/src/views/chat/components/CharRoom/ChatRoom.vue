@@ -39,8 +39,6 @@ import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 // import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
-// import * as SockJS from "sockjs-client"
-// import * as StompJs from "@stomp/stompjs"
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -62,25 +60,8 @@ navigator.geolocation.watchPosition(function(position) {
 })
 
 onMounted(() => {
+  // 소켓 생성
   store.dispatch('chatStore/fetchClient')
-  // 소켓
-  // const client = new StompJs.Client({
-  //   brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
-  //   connectHeaders: {
-  //     login: "user",
-  //     passcode: "password",
-  //   },
-  //   debug: function (str) {
-  //     console.log(str);
-  //   },
-  //   reconnectDelay: 5000,
-  //   heartbeatIncoming: 4000,
-  //   heartbeatOutgoing: 4000,
-  // })
-
-  // client.webSocketFactory = function () {
-  //   return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
-  // }
 
   chatData.value.client.onConnect = function () {
     // 채팅 메세지 구독
@@ -303,17 +284,17 @@ onMounted(() => {
   }
   store.dispatch('chatStore/fetchIsAccessible', geoData)
   // 퇴장 pub
-  // if (chatData.value.isAccessibleCnt > 1) {
-  //   const payload = {
-  //     userId: chatData.value.userId,
-  //     message: null,
-  //   }
-  //   chatData.value.client.publish({
-  //     destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
-  //     body: JSON.stringify(payload)
-  //   })
-  //   chatData.value.client.deactivate()
-  // }
+  if (chatData.value.isAccessibleCnt > 1) {
+    const payload = {
+      userId: chatData.value.userId,
+      message: null,
+    }
+    chatData.value.client.publish({
+      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
+      body: JSON.stringify(payload)
+    })
+    chatData.value.client.deactivate()
+  }
 }, 60000)
 })
 </script>
@@ -323,12 +304,20 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   margin: 0px 32px;
-  height: 720px;
+
+  /* 이전 버전 */
+  /* height: 720px; */ 
 }
 .chat-list {
   padding: 1px;
   height: 95%;
-  max-height: 657px;
+
+  /* 이전 버전 */
+  /* max-height: 657px; */
+
+  /* 현재 버전 */
+  max-height: 70vh;
+
   background-color: #F5F5F5;
   overflow: scroll;
 }

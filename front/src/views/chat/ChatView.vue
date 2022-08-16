@@ -57,10 +57,10 @@ onMounted(() => {
     // 채팅창에서 새로고침할 경우, 채팅방 정보 다시 요청
     const payload = {
       room: { sessionId: chatViewData.value.sessionId },
-      // lat: position.coords.latitude,
-      // lng: position.coords.longitude,
-      lat: 37.49797,
-      lng: 127.02763,
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+      // lat: 37.49797,
+      // lng: 127.02763,
     }
     // console.log(payload)
     store.dispatch('chatStore/fetchSessionId', payload)
