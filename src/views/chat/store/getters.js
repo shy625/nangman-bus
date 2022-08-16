@@ -1,9 +1,5 @@
-export function busId(state) { 
-  return state.busId
-}
-
-export function userId(state) { 
-  return state.userId
+export function userId() { 
+  return Number(localStorage.getItem('accountUserId'))
 }
 
 export function boards(state) {
@@ -30,10 +26,31 @@ export function sessionId(state) {
   return state.sessionId
 }
 
+export function room(state) {
+  return state.room
+}
+
 export function rooms(state) {
   return state.rooms
 }
 
 export function busstopInfos(state) {
   return state.roomInfo.busStopInfoList
+}
+
+export function busId(state) {
+  return state.room.busId
+  // return 24
+}
+
+export function busNum(state) {
+  return state.roomInfo.chatRoomInfo?.routeNo
+}
+
+export function isAccessibleCnt(state) {
+  return state.isAccessibleCnt
+}
+
+export function client(state) {
+  return state.client
 }

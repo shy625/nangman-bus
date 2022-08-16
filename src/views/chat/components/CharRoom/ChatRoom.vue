@@ -39,8 +39,8 @@ import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 // import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
-import * as SockJS from "sockjs-client"
-import * as StompJs from "@stomp/stompjs"
+// import * as SockJS from "sockjs-client"
+// import * as StompJs from "@stomp/stompjs"
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -48,73 +48,55 @@ const store = useStore()
 const chatData = ref({
   userId: computed(() => store.getters['chatStore/userId']),
   sessionId: computed(() => store.getters['chatStore/sessionId']),
+  isAccessibleCnt: computed(() => store.getters['chatStore/isAccessibleCnt']),
   message: "",
+  lat: 0,
+  lng: 0,
+  client: computed(() => store.getters['chatStore/client'])
+})
+
+navigator.geolocation.watchPosition(function(position) {
+  // console.log(position.coords.latitude, position.coords.longitude)
+  chatData.value.lat = position.coords.latitude
+  chatData.value.lng = position.coords.longitude
 })
 
 onMounted(() => {
-  const chatRoom = document.querySelector('#chatRoom')
-  const busstop = document.querySelector('#busstop')
-  // 나중에 조건걸어서 ban-active할 수 있도록!
-  // const banModal = document.querySelector('#banModal')
-  // const chatRoom = document.querySelector('#chatRoom')
-  // const busstop = document.querySelector('#busstop')
-  // banModal.classList.add('ban')
-  // chatRoom.classList.add('ban-active')
-  // busstop.classList.add('ban-active')
-  
-  // 엔터 모달
-  const enterModal = document.querySelector('#enterModal')
-  enterModal.classList.add('enter-in')
-  enterModal.classList.add('enter')
-  chatRoom.classList.add('chatroom-blur')
-  busstop.classList.add('chatroom-blur')
-  const enterBtns = document.querySelectorAll('.enter-btn .el-button')
-  enterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // const enterInput = document.querySelector('.enter-input')
-      // const payload = {
-      //   userId: chatData.value.userId,
-      //   // message: enterInput.value,
-      // }
-      client.publish({
-        destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/in',
-        body: chatData.value.userId,
-      })
-      // console.log('클릭함')
-      chatRoom.classList.remove('chatroom-blur')
-      busstop.classList.remove('chatroom-blur')
-      enterModal.classList.add('enter-out')
-      enterModal.addEventListener('animationend', () => {
-        enterModal.style = 'position: fixed;transform: scale(0);'
-      })
-    })
-  })
-
+  store.dispatch('chatStore/fetchClient')
   // 소켓
-  const client = new StompJs.Client({
-    brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
-    connectHeaders: {
-      login: "user",
-      passcode: "password",
-    },
-    debug: function (str) {
-      console.log(str);
-    },
-    reconnectDelay: 5000,
-    heartbeatIncoming: 4000,
-    heartbeatOutgoing: 4000,
-  })
+  // const client = new StompJs.Client({
+  //   brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
+  //   connectHeaders: {
+  //     login: "user",
+  //     passcode: "password",
+  //   },
+  //   debug: function (str) {
+  //     console.log(str);
+  //   },
+  //   reconnectDelay: 5000,
+  //   heartbeatIncoming: 4000,
+  //   heartbeatOutgoing: 4000,
+  // })
 
-  client.webSocketFactory = function () {
-    return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
-  }
+  // client.webSocketFactory = function () {
+  //   return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
+  // }
 
-  client.onConnect = function () {
-    client.subscribe(
+  chatData.value.client.onConnect = function () {
+    // 채팅 메세지 구독
+    chatData.value.client.subscribe(
       "/sub/chat/rooms/" + chatData.value.sessionId + "/message",
       message => {
         const payload = JSON.parse(message.body)
         const chatList = document.querySelector('.chat-list')
+        const chatLog = {
+          chatId: payload.chatId,
+          userId: payload.userId,
+          createdTime: payload.createdTime,
+          content: payload.message,
+          like: 0
+        }
+        store.dispatch('chatStore/fetchChatLog', chatLog)
 
         const chattingSide = document.createElement('div')
         const chattingLike = document.createElement('img')
@@ -132,12 +114,29 @@ onMounted(() => {
         chattingLike.src = `${require('../../../../assets/like-outline.png')}`
         chattingLike.alt = 'outline'
         chattingLike.addEventListener('click', e => {
+          // 좋아요 pub
           if (e.target.alt === 'outline') {  // 좋아요 +1
             e.target.src = `${require('../../../../assets/like-filled.png')}`
             e.target.alt = 'filled'
+            const payload = {
+              chatId: chatLog.chatId,
+              count: null,
+            }
+            chatData.value.client.publish({
+              destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/up',
+              body: JSON.stringify(payload),
+            })
           } else {                           // 좋아요 -1
             e.target.src = `${require('../../../../assets/like-outline.png')}`
             e.target.alt = 'outline'
+            const payload = {
+              chatId: chatLog.chatId,
+              count: null,
+            }
+            chatData.value.client.publish({
+              destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/down',
+              body: JSON.stringify(payload),
+            })
           }
         })
         // 시간
@@ -158,7 +157,7 @@ onMounted(() => {
           console.log('남꺼')
           const otherChatWrapper = document.createElement('div')
           otherChatWrapper.classList.add('other-chat-wrapper')
-          const chatIcon = document.createElement('div')
+          const chatIcon = document.createElement('img')
           chatIcon.classList.add('chat-icon')
           const chatContent = document.createElement('div')
           chatContent.classList.add('chat-content')
@@ -166,7 +165,7 @@ onMounted(() => {
           chatNick.classList.add('chat-nick')
           
           // 기분(상태)
-          chatIcon.innerText = 'O'
+          chatIcon.src = `${require('../../../../assets/emo-default.png')}`
           // 닉네임
           chatNick.innerText = '상대닉'
 
@@ -179,30 +178,89 @@ onMounted(() => {
         chatList.scrollTo(0, chatList.scrollHeight)
       }
     )
-    client.subscribe(
+    // 채팅 입/퇴장 구독
+    chatData.value.client.subscribe(
       '/sub/chat/rooms/' + chatData.value.sessionId + '/user',
       message => {
         const payload = JSON.parse(message.body)
-        console.log(payload)
+        console.log(payload, '입/퇴장 구독')
+      }
+    )
+    // 좋아요 구독 -> 됨
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/like',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '좋아요 구독')
+      }
+    )
+    // 실시간 버스 정류장 -> 들어왔을 때 무조건 하나 보내줘야함
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/busStop',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '실시간 버스 정류장 구독')
+      }
+    )
+    // 사용자 하차 정류장
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/outBusStop',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '사용자 하차 정류장 구독')
+      }
+    )
+    // 사용자 감정 상태
+    chatData.value.client.subscribe(
+      '/sub/chat/rooms/' + chatData.value.sessionId + '/emotion',
+      message => {
+        const payload = JSON.parse(message.body)
+        console.log(payload, '사용자 감정 상태 구독')
       }
     )
   }
 
   // 채팅방 입장
-  client.activate()
+  chatData.value.client.activate()
 
-  // 퇴장
-  const chatHeaderBack = document.querySelector('.chat-header-back')
-  chatHeaderBack.addEventListener('click', () => {
-    const payload = {
-      userId: chatData.value.userId,
-      message: null,
-    }
-    client.publish({
-      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
-      body: JSON.stringify(payload)
+  const chatRoom = document.querySelector('#chatRoom')
+  const busstop = document.querySelector('#busstop')
+  // 나중에 조건걸어서 ban-active할 수 있도록!
+  // const banModal = document.querySelector('#banModal')
+  // const chatRoom = document.querySelector('#chatRoom')
+  // const busstop = document.querySelector('#busstop')
+  // banModal.classList.add('ban')
+  // chatRoom.classList.add('ban-active')
+  // busstop.classList.add('ban-active')
+  
+  // 엔터 모달
+  const enterModal = document.querySelector('#enterModal')
+  enterModal.classList.add('enter-in')
+  enterModal.classList.add('enter')
+  chatRoom.classList.add('chatroom-blur')
+  busstop.classList.add('chatroom-blur')
+  const enterBtns = document.querySelectorAll('.enter-btn .el-button')
+  enterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const enterInput = document.querySelector('.enter-input')
+      const payload = {
+        userId: chatData.value.userId,
+        message: enterInput.value,
+      }
+      // console.log(payload)
+      // 입장 pub
+      chatData.value.client.publish({
+        destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/in',
+        body: JSON.stringify(payload),
+      })
+      // console.log('클릭함')
+      chatRoom.classList.remove('chatroom-blur')
+      busstop.classList.remove('chatroom-blur')
+      enterModal.classList.add('enter-out')
+      enterModal.addEventListener('animationend', () => {
+        enterModal.style = 'position: fixed;transform: scale(0);'
+      })
     })
-    client.deactivate()
   })
 
   // 메시지 전송
@@ -212,13 +270,51 @@ onMounted(() => {
       userId: chatData.value.userId,
       message: chatData.value.message,
     }
-    console.log('전송', payload)
-    client.publish({
-      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/message",
-      body: JSON.stringify(payload),
-    })
-    chatData.value.message = ""
+    if (payload.message.length > 0) {
+      console.log('전송', payload)
+      chatData.value.client.publish({
+        destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/message",
+        body: JSON.stringify(payload),
+      })
+      chatData.value.message = ""
+    }
   })
+  
+  // 퇴장 pub
+  const chatHeaderBack = document.querySelector('.chat-header-back')
+  chatHeaderBack.addEventListener('click', () => {
+    const payload = {
+      userId: chatData.value.userId,
+      message: null,
+    }
+    chatData.value.client.publish({
+      destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
+      body: JSON.stringify(payload)
+    })
+    chatData.value.client.deactivate()
+  })
+
+  // 거리벗어나면 강퇴
+  setInterval(() => {
+  const geoData = {
+    sessionId: chatData.value.sessionId,
+    lat: chatData.value.lat,
+    lng: chatData.value.lng
+  }
+  store.dispatch('chatStore/fetchIsAccessible', geoData)
+  // 퇴장 pub
+  // if (chatData.value.isAccessibleCnt > 1) {
+  //   const payload = {
+  //     userId: chatData.value.userId,
+  //     message: null,
+  //   }
+  //   chatData.value.client.publish({
+  //     destination: "/pub/chat/rooms/" + chatData.value.sessionId + "/out",
+  //     body: JSON.stringify(payload)
+  //   })
+  //   chatData.value.client.deactivate()
+  // }
+}, 60000)
 })
 </script>
 <style>
@@ -232,7 +328,7 @@ onMounted(() => {
 .chat-list {
   padding: 1px;
   height: 95%;
-  max-height: 660px;
+  max-height: 657px;
   background-color: #F5F5F5;
   overflow: scroll;
 }
@@ -292,6 +388,7 @@ onMounted(() => {
 }
 .chatting-time {
   font-size: 0.6rem;
+  font-family: Pretendard;
 }
 .chat-input {
   display: flex;

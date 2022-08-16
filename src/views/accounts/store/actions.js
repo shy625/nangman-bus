@@ -6,7 +6,7 @@ import api from '../../../api/api.js'
 export function saveToken({ commit }, token) {
   commit('SET_TOKEN', token)
   localStorage.setItem('token', token)
-  // console.log(token)
+  console.log(token)
   localStorage.setItem('accountUserId', token.id)
   localStorage.setItem('userNickname', token.nickname)
   localStorage.setItem('userBirthday', token.userBirthday)
@@ -54,7 +54,7 @@ export function signup({ commit, dispatch }, credentials) {
     .then(res => {
       // console.log(res.data)
       const token = res.data
-      dispatch('setToken', token)
+      dispatch('saveToken', token)
       dispatch('fetchCurrentUser', token.id)
       router.push({ name: 'main' })
     })
