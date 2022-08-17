@@ -4,6 +4,8 @@ const USER = 'user/'
 const REDIS = 'redis/'
 const REPORTS = 'reports/'
 const BOARDS = 'boards/'
+const RELATIONSHIP = 'relationship/'
+const MAIN = 'main/'
 
 export default {
   reports: {
@@ -26,6 +28,7 @@ export default {
     getrandombus: () => HOST + REDIS + 'getRandomBus',
     fetchCurrentUser: userId => HOST + USER + userId,
     changeIsRouletted: userId => HOST + USER + userId + '/roulette',
+    getMyBuses: () => HOST + MAIN + 'topbus'
   },
   chat: {
     createBoard: () => HOST + BOARDS,
@@ -34,6 +37,7 @@ export default {
 
     getIsAccessible: (sessionId, lat, lng) => HOST + REDIS + 'isAccessibleRoom/' + lat + '/' + lng + '/' + sessionId,
     getRoomInfo: sessionId => HOST + REDIS + 'rooms/' + sessionId,
+    getProfileUserData: () => HOST + RELATIONSHIP,
   }
 //   articles: {
 //     // /articles/

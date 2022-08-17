@@ -43,3 +43,11 @@ export function SET_IS_ACCESSIBLE_CNT_PLUS(state) {
 export function SET_CLIENT(state, client) {
   state.client = client
 }
+
+export function SET_GPS(state, geoData) {
+  state.gps = geoData
+}
+
+export function SET_PROFILE_USER(state, user) {
+  state.profileUser = user
+}

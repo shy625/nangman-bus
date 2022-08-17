@@ -54,3 +54,24 @@ export function isAccessibleCnt(state) {
 export function client(state) {
   return state.client
 }
+
+export function lat(state) {
+  return state.gps.lat
+}
+
+export function lng(state) {
+  return state.gps.lng
+}
+
+export function userList(state) {
+  return state.roomInfo.roomUserInfoList
+}
+
+export function userListLength(state) {
+  return state.roomInfo.roomUserInfoList?.length
+}
+
+export function profileUser(state) {
+  return state.profileUser
+}
+

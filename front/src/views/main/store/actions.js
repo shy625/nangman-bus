@@ -187,3 +187,13 @@ export function changeIsRouletted({ commit }, userId) {
       commit('SET_IS_ROULETTED', true)
     })
 }
+
+export function fetchMainPageBusData() {
+  axios({
+    url: api.main.getMyBuses(),
+    method: 'get'
+  })
+    .then(res => {
+      console.log(res.data)
+    })
+}

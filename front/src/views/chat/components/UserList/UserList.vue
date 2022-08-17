@@ -7,6 +7,7 @@
       <div class="user-count">
         승객&nbsp;<span style="color:#F34949">{{ profileData.countUser }}</span>명
       </div>
+      <!-- 귓속말 -->
       <!-- <div class="option-whisper">
         <img class="whisper-img" src="" alt="귓">
         <div class="whisper-text">귓속말 거부</div>
@@ -37,15 +38,20 @@
           </div>
         </div>
         <div class="test-users">
-          <div class="test-user">
+          <div 
+            class="test-user" 
+            v-for="user in profileData.userList" 
+            :key="user.userId"
+            @click="clickProfile(user)"
+          >
             <div class="test-icon">
-              <img src="../../../../assets/user-pink.png" alt="pink" class="user-icon">
+              <img :src="require(`../../../../assets/user-${profileData.userIcons[user.userId%4]}.png`)" :alt="profileData.userIcons[user.userId%4]" class="user-icon">
             </div>
             <div class="test-name">
-              헤라클레스
+              {{ user.nickName }}
             </div>
           </div>
-          <div class="test-user">
+          <!-- <div class="test-user">
             <div class="test-icon">
               <img src="../../../../assets/user-yellow.png" alt="yellow" class="user-icon">
             </div>
@@ -68,7 +74,7 @@
             <div class="test-name">
               수퍼파워현규몬스터
             </div>
-          </div>
+          </div> -->
         </div>
       </el-scrollbar>
     </div>
@@ -76,34 +82,70 @@
   <ProfileModal></ProfileModal>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 import ProfileModal from './ProfileModal.vue'
 
+const store = useStore()
 const profileData = ref({
-  countUser: 21,
+  userList: computed(() => store.getters['chatStore/userList']),
+  countUser: computed(() => store.getters['chatStore/userListLength']),
+  userIcons: [
+    'pink',
+    'pinker',
+    'red',
+    'yellow',
+  ],
+  sessionId: computed(() => store.getters['chatStore/sessionId'])
 })
 
+const clickProfile = user => {
+  console.log(user)
+  const payload = {
+    user: user,
+    sessionId: profileData.value.sessionId,
+  }
+  store.dispatch('chatStore/fetchProfileUser', payload)
+   
+  const profileContainer = document.querySelector('#profileContainer')
+  const users = document.querySelector('#users')
+  const body = document.querySelector('body')
+  const elCarouselArrows = document.querySelectorAll('.el-carousel__arrow')
+  profileContainer.removeAttribute('class')
+  profileContainer.classList.add('profile-container')
+  users.removeAttribute('class')
+  users.classList.add('users')
+  body.classList.add('profile-active')
+  elCarouselArrows.forEach(arrow => {
+    arrow.disabled = true
+    arrow.classList.add('arrow-profile-active')
+  })
+}
+
 onMounted(() => {
-  const user = document.querySelectorAll('.test-user')
+  // console.log('이벤트리스너 등록')
+  // const user = document.querySelectorAll('.test-user')
   const profileContainer = document.querySelector('#profileContainer')
   const users = document.querySelector('#users')
   const body = document.querySelector('body')
   const elCarouselArrows = document.querySelectorAll('.el-carousel__arrow')
   const profileExit = document.querySelector('.profile-exit')
 
-  user.forEach(u => {
-    u.addEventListener('click', () => {
-      profileContainer.removeAttribute('class')
-      profileContainer.classList.add('profile-container')
-      users.removeAttribute('class')
-      users.classList.add('users')
-      body.classList.add('profile-active')
-      elCarouselArrows.forEach(arrow => {
-        arrow.disabled = true
-        arrow.classList.add('arrow-profile-active')
-      })
-    })
-  })
+  // user.forEach(u => {
+  //   u.addEventListener('click', () => {
+  //     // console.log('이벤트리스너!')
+
+  //     profileContainer.removeAttribute('class')
+  //     profileContainer.classList.add('profile-container')
+  //     users.removeAttribute('class')
+  //     users.classList.add('users')
+  //     body.classList.add('profile-active')
+  //     elCarouselArrows.forEach(arrow => {
+  //       arrow.disabled = true
+  //       arrow.classList.add('arrow-profile-active')
+  //     })
+  //   })
+  // })
   profileExit.addEventListener('click', () => {
     profileContainer.classList.add('out')
     users.classList.add('out')

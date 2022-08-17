@@ -48,15 +48,9 @@ const chatData = ref({
   sessionId: computed(() => store.getters['chatStore/sessionId']),
   isAccessibleCnt: computed(() => store.getters['chatStore/isAccessibleCnt']),
   message: "",
-  lat: 0,
-  lng: 0,
+  lat: computed(() => store.getters['chatStore/lat']),
+  lng: computed(() => store.getters['chatStore/lng']),
   client: computed(() => store.getters['chatStore/client'])
-})
-
-navigator.geolocation.watchPosition(function(position) {
-  // console.log(position.coords.latitude, position.coords.longitude)
-  chatData.value.lat = position.coords.latitude
-  chatData.value.lng = position.coords.longitude
 })
 
 onMounted(() => {
