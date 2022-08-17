@@ -21,7 +21,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService{
 
-    private static final double BUS_CHECK_DIST = 20000.0;
+    private static final double BUS_CHECK_DIST = Integer.MAX_VALUE;
 
     private static final int BUS_INFO_LICENSE_NO = 0;
     private static final int BUS_INFO_ROUTE_ID = 1;
@@ -400,11 +400,13 @@ public class RedisServiceImpl implements RedisService{
         redisTemplate.opsForHash().increment(key, SUBKEY_USER_NUM, 1);
 
         User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
-        LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         boolean isTodayBirth = false;
-        if (userBirth.getMonth().equals(LocalDate.now().getMonth())
-                && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
-            isTodayBirth = true;
+        if (user.getUserBirthday() != null || !user.getUserBirthday().equals("")) {
+            LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (userBirth.getMonth().equals(LocalDate.now().getMonth())
+                    && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
+                isTodayBirth = true;
+            }
         }
         StringBuilder value = new StringBuilder();
         value.append(user.getNickname().getNickname())      // 무조건 있음

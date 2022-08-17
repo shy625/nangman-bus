@@ -1,7 +1,8 @@
-# Vue 3 + Vite
+### 0727
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+레디스용 브렌치 생성
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+생성 이유
+1. 리눅스 환경에서만 Redis가 동작함
+2. 스프링부트에 Redis를 연동하면 로컬에서 무슨 에러가 날 지 모름
+3. 따라서 브렌치를 생성해서 Redis 관련 환경설정은 여기서만 할 예정

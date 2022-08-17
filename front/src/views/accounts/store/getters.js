@@ -7,8 +7,8 @@
 //     authHeader: state => ({ Authorization: `Token ${state.token}`})
 //   },
 // }
-export function isLoggedIn(state) {
-  return !!state.token
+export function isLoggedIn() {
+  return !!localStorage.token
 }
 
 export function currentUser(state) {
@@ -25,4 +25,8 @@ export function authError(state) {
 
 export function authHeader(state) {
   return ({ Authorization: `Token ${state.token}` })
+}
+
+export function accountUserId() {
+  return localStorage.accountUserId
 }
