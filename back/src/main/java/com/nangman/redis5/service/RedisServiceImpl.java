@@ -402,7 +402,7 @@ public class RedisServiceImpl implements RedisService{
 
         User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
         boolean isTodayBirth = false;
-        if (user.getUserBirthday() != null) {
+        if (user.getUserBirthday() != null || !user.getUserBirthday().equals("")) {
             LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (userBirth.getMonth().equals(LocalDate.now().getMonth())
                     && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
