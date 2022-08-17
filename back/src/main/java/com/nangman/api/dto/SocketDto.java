@@ -15,6 +15,7 @@ public class SocketDto {
     }
 
     @ToString
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SubUserInOut {
@@ -51,6 +52,7 @@ public class SocketDto {
     }
 
     @Setter
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SubBusStop {
