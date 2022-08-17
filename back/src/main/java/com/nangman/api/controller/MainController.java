@@ -3,6 +3,7 @@ package com.nangman.api.controller;
 import com.nangman.api.dto.MainDto;
 import com.nangman.api.dto.ReportDto;
 import com.nangman.api.service.MainService;
+import com.nangman.db.entity.User;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,12 @@ public class MainController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<MainDto.Info> loadMain(HttpSession session) {
+        log.info(session);
+        User user = (User) session.getAttribute("User");
+        if (user == null) log.info("user is null..");
+
+        log.info("==================" + user.getId().toString());
         return new ResponseEntity<MainDto.Info>(
-                mainService.getMainPageData(Long.parseLong(session.getId())), HttpStatus.OK);
+                mainService.getMainPageData(user.getId()), HttpStatus.OK);
     }
 }
