@@ -1,10 +1,7 @@
 package com.nangman.api.dto;
 
 import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @ApiModel("Socket model")
 public class SocketDto {
@@ -17,6 +14,7 @@ public class SocketDto {
         private String message;
     }
 
+    @ToString
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SubUserInOut {
