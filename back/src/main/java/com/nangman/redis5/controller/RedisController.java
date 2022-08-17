@@ -40,7 +40,8 @@ public class RedisController {
 
     @GetMapping("/isAccessibleRoom/{lat}/{lng}/{sessionId}")
     public boolean isAccessibleRoom(@PathVariable double lat, @PathVariable double lng, @PathVariable String sessionId) {
-        return redisService.isAccessibleRoom(lat, lng, sessionId);
+        return true;
+//        return redisService.isAccessibleRoom(lat, lng, sessionId);
     }
 
     @GetMapping("/rooms/{sessionId}")
