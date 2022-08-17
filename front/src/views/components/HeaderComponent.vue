@@ -19,13 +19,15 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  background-color: white;
+  z-index: 1;
 }
 .header-logo {
   width: 120px;
-  margin: 20px 0 20px 20px;
+  margin: 20px 0 20px 32px;
 }
 .header-user {
-  width: 40px;
-  margin-right: 20px;
+  width: 32px;
+  margin-right: 32px;
 }
 </style>
