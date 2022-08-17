@@ -35,7 +35,6 @@ const homeData = ref({
 
 onMounted(() => {
   store.dispatch('mainPage/fetchCurrentUser', homeData.value.userId)
-  store.dispatch('mainPage/fetchMainPageBusData')
 })
 </script>
 <style>

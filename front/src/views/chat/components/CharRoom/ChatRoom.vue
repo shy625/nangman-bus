@@ -50,7 +50,8 @@ const chatData = ref({
   message: "",
   lat: computed(() => store.getters['chatStore/lat']),
   lng: computed(() => store.getters['chatStore/lng']),
-  client: computed(() => store.getters['chatStore/client'])
+  client: computed(() => store.getters['chatStore/client']),
+  userList: computed(() => store.getters['chatStore/userList'])
 })
 
 onMounted(() => {
@@ -72,6 +73,15 @@ onMounted(() => {
           like: 0
         }
         store.dispatch('chatStore/fetchChatLog', chatLog)
+
+        let nickName
+        chatData.value.userList.forEach(user => {
+          console.log(user.userId, payload.userId)
+          if (user.userId === payload.userId) {
+            nickName = user.nickName
+            console.log(user.nickName)
+          }
+        })
 
         const chattingSide = document.createElement('div')
         const chattingLike = document.createElement('img')
@@ -142,7 +152,7 @@ onMounted(() => {
           // 기분(상태)
           chatIcon.src = `${require('../../../../assets/emo-default.png')}`
           // 닉네임
-          chatNick.innerText = '상대닉'
+          chatNick.innerText = nickName
 
           otherChatWrapper.append(chatIcon, chatContent)
           chatContent.append(chatNick, chatChatting)
@@ -159,6 +169,59 @@ onMounted(() => {
       message => {
         const payload = JSON.parse(message.body)
         console.log(payload, '입/퇴장 구독')
+
+        let nickName
+        chatData.value.userList.forEach(user => {
+          if (user.userId === payload.userId) {
+            nickName = user.nickName
+          }
+        })
+
+        const chatList = document.querySelector('.chat-list')
+        const chattingSide = document.createElement('div')
+        const chattingLike = document.createElement('img')
+        const chattingTime = document.createElement('div')
+        const chatChatting = document.createElement('div')
+        const chatting = document.createElement('div')
+        chattingSide.classList.add('chatting-side')
+        chattingLike.classList.add('chatting-like')
+        chattingTime.classList.add('chatting-time')
+        chatChatting.classList.add('chat-chatting')
+        chatting.classList.add('chatting')
+
+        // 시간
+        const otherChatWrapper = document.createElement('div')
+        otherChatWrapper.classList.add('other-chat-wrapper')
+        const chatIcon = document.createElement('img')
+        chatIcon.classList.add('chat-icon')
+        const chatContent = document.createElement('div')
+        chatContent.classList.add('chat-content')
+        const chatNick = document.createElement('div')
+        chatNick.classList.add('chat-nick')
+        
+        // 기분(상태)
+        chatIcon.src = `${require('../../../../assets/bus-clicked-horizon.png')}`
+        // 닉네임
+        chatNick.innerText = '낭만기사'
+
+        otherChatWrapper.append(chatIcon, chatContent)
+        chatContent.append(chatNick, chatChatting)
+        chatChatting.append(chatting, chattingSide)
+        chattingSide.append(chattingLike, chattingTime)
+        chatList.append(otherChatWrapper)
+
+        if (payload.inOut === 1) {  // 입장
+          // 채팅 내용
+          if (payload.message) {
+            chatting.innerText = `${nickName} 님이 ${payload.message} 라 외치며 입장하고 있어요!`
+          } else {
+            chatting.innerText = `${nickName} 님이 조용히 입장하고 있어요..!`
+          }
+        }
+        else {
+          chatting.innerText = `${nickName} 님이 낭만버스를 떠났어요.`
+        }
+        chatList.scrollTo(0, chatList.scrollHeight)
       }
     )
     // 좋아요 구독 -> 됨

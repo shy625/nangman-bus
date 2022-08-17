@@ -37,7 +37,7 @@ export default {
 
     getIsAccessible: (sessionId, lat, lng) => HOST + REDIS + 'isAccessibleRoom/' + lat + '/' + lng + '/' + sessionId,
     getRoomInfo: sessionId => HOST + REDIS + 'rooms/' + sessionId,
-    getProfileUserData: () => HOST + RELATIONSHIP,
+    getProfileUserData: userId => HOST + RELATIONSHIP + userId,
   }
 //   articles: {
 //     // /articles/
