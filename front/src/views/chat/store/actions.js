@@ -221,7 +221,7 @@ export function fetchChatLog({ commit }, log) {
 
 export function fetchClient({ commit }) {
   const client = new StompJs.Client({
-    brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
+    brokerURL: "wss://i7a704.p.ssafy.io:8080/socket",
     connectHeaders: {
       login: "user",
       passcode: "password",
@@ -235,7 +235,7 @@ export function fetchClient({ commit }) {
   })
 
   client.webSocketFactory = function () {
-    return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
+    return new SockJS("https://i7a704.p.ssafy.io:8080/socket")
   }
   
   commit('SET_CLIENT', client)
