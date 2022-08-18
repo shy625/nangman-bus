@@ -54,6 +54,8 @@ public interface RedisService {
     // emotion 규칙 정해야됨 0: 무표정 1: 화나요 2: 기분좋아요 3: 우울해요
     void updateMyEmotion(String sessionId, String userId, int emotion);
 
+    Integer getUserEmotion(String sessionId, Long userId);
+
     // 7. createChat(채팅 메시지 전송)
     String createChat(String sessionId, Long userId, String chat, String createdTime);
 

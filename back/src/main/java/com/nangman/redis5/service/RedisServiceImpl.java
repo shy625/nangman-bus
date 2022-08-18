@@ -297,10 +297,24 @@ public class RedisServiceImpl implements RedisService{
         String[] userInfo = value.split(SPLIT_STR);
         userInfo[USER_INFO_STATE] = Integer.toString(emotion);
 
-        String temp = userInfo[USER_INFO_NICKNAME] + SPLIT_STR + userInfo[USER_INFO_BIRTH] + SPLIT_STR + userInfo[USER_INFO_STATE] + SPLIT_STR + userInfo[USER_INFO_BUS_STOP];
+        String temp = userInfo[USER_INFO_NICKNAME] + SPLIT_STR
+                + userInfo[USER_INFO_BIRTH] + SPLIT_STR
+                + userInfo[USER_INFO_STATE] + SPLIT_STR
+                + userInfo[USER_INFO_BUS_STOP];
 
         redisTemplate.opsForHash().put(key, userId, temp);
 
+    }
+
+    @Override
+    public Integer getUserEmotion(String sessionId, Long userId) {
+        String key = sessionId + KEY_ROOM;
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            return 0;
+        }
+        String value = (String) redisTemplate.opsForHash().get(key, userId);
+        String[] userInfo = value.split(SPLIT_STR);
+        return Integer.valueOf(userInfo[USER_INFO_STATE]);
     }
 
     @Override
