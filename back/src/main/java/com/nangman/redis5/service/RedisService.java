@@ -13,6 +13,7 @@ public interface RedisService {
     // 자동으로 되는거
     // 1. updateBusData
     void updateBudData(Bus bus);
+    public void setBUS_CHECK_DIST(double dist);
 
     // 2. createChattingRoom
     void createChattingRoom(Bus bus);
