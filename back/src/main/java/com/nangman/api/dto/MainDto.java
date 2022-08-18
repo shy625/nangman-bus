@@ -18,7 +18,9 @@ public class MainDto {
     @NoArgsConstructor
     public static class Info{
         @ApiModelProperty(name="가장 많이 탄 버스 TOP3", example="Bus Entity 참고")
-        List<Bus> top3;
+        List<BusDto.Info> top3;
+        @ApiModelProperty(name="가장 많이 탄 버스 TOP3의 탑승횟수", example="1,2,3")
+        List<Integer> top3Count;
         @ApiModelProperty(name="가장 최근에 이용한 버스 정보", example="MainDto.RecentBus 참고")
         RecentBus recentBus;
     }
@@ -29,7 +31,7 @@ public class MainDto {
     @NoArgsConstructor
     public static class RecentBus{
         @ApiModelProperty(name="가장 최근에 이용한 버스", example="Bus Entity 참고")
-        Bus bus;
+        BusDto.Info bus;
         @ApiModelProperty(name="하차 이후 쌓인 방명록 갯수", example="1")
         int countBoard;
         @ApiModelProperty(name="버스 이용 시간", example="2021-08-01T16:26:39.098")

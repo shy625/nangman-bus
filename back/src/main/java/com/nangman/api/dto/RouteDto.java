@@ -47,16 +47,19 @@ public class RouteDto {
         @ApiModelProperty(name="도시코드", example="23")
         private int cityCode;
         @ApiModelProperty(name="정류소 정보 리스트", example="BusstopInfo참조")
-        private List<BusstopInfo> busstopInfoList;
+        private List<BusStopInfo> busStopInfoList;
     }
+
     @Setter
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class BusstopInfo{
-        @ApiModelProperty(name="정류장이름", example="숭의역")
+    public static class BusStopInfo {
+        @ApiModelProperty(name="정류장 id", example="1")
+        private Long busStopId;
+        @ApiModelProperty(name="정류장 이름", example="숭의역")
         private String nodeName;
-        @ApiModelProperty(name="정류장순서", example="23")
+        @ApiModelProperty(name="정류장 순서", example="23")
         private int nodeOrd;
     }
 }

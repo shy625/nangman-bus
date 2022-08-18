@@ -24,6 +24,7 @@ public class SocketDto {
         private String message;
     }
 
+    @ToString
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -32,6 +33,7 @@ public class SocketDto {
         private String message;
     }
 
+    @ToString
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -39,6 +41,7 @@ public class SocketDto {
         private Long chatId;
         private Long userId;
         private String message;
+        private Integer emotion;
         private String createdTime;
     }
 

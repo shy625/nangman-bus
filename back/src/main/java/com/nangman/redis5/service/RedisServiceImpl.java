@@ -21,7 +21,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService{
 
-    private static final double BUS_CHECK_DIST = Integer.MAX_VALUE;
+    private static double BUS_CHECK_DIST = Integer.MAX_VALUE;
+    public void setBUS_CHECK_DIST(double dist) {
+        this.BUS_CHECK_DIST = dist;
+    }
 
     private static final int BUS_INFO_LICENSE_NO = 0;
     private static final int BUS_INFO_ROUTE_ID = 1;
@@ -175,21 +178,20 @@ public class RedisServiceImpl implements RedisService{
         List<ChattingRoomDto.ListInfo> list = new ArrayList<>();
         String findAllRoom = "*" + KEY_ROOM;
         Set<String> keys = redisTemplate.keys(findAllRoom);
-
         for(String str : keys) {
             String busValue = (String) redisTemplate.opsForHash().get(str, SUBKEY_BUS_INFO);
 
             String[] busInfo = busValue.split(SPLIT_STR);
             double busLat = Double.parseDouble(busInfo[BUS_INFO_LAT]);
             double busLng = Double.parseDouble(busInfo[BUS_INFO_LNG]);
+            System.out.println(str);
+            System.out.println(busLat + ", " + lat);
+            System.out.println(busLng + ", " + lng);
 
             double dist = distance(lat, lng, busLat, busLng);
-
             if(dist < BUS_CHECK_DIST) {
                 ChattingRoomDto.ListInfo dto = new ChattingRoomDto.ListInfo();
                 dto.setDistance((int) dist);
-                System.out.println(str);
-                System.out.println(redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM));
                 if(redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM) == null) break;
                 dto.setInUsers(Integer.parseInt((String) redisTemplate.opsForHash().get(str, SUBKEY_USER_NUM)));
                 dto.setSessionId(str.replace(KEY_ROOM, ""));
@@ -295,10 +297,24 @@ public class RedisServiceImpl implements RedisService{
         String[] userInfo = value.split(SPLIT_STR);
         userInfo[USER_INFO_STATE] = Integer.toString(emotion);
 
-        String temp = userInfo[USER_INFO_NICKNAME] + SPLIT_STR + userInfo[USER_INFO_BIRTH] + SPLIT_STR + userInfo[USER_INFO_STATE] + SPLIT_STR + userInfo[USER_INFO_BUS_STOP];
+        String temp = userInfo[USER_INFO_NICKNAME] + SPLIT_STR
+                + userInfo[USER_INFO_BIRTH] + SPLIT_STR
+                + userInfo[USER_INFO_STATE] + SPLIT_STR
+                + userInfo[USER_INFO_BUS_STOP];
 
         redisTemplate.opsForHash().put(key, userId, temp);
 
+    }
+
+    @Override
+    public Integer getUserEmotion(String sessionId, Long userId) {
+        String key = sessionId + KEY_ROOM;
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            return 0;
+        }
+        String value = (String) redisTemplate.opsForHash().get(key, String.valueOf(userId));
+        String[] userInfo = value.split(SPLIT_STR);
+        return Integer.valueOf(userInfo[USER_INFO_STATE]);
     }
 
     @Override

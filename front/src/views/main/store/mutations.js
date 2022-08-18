@@ -69,11 +69,11 @@ export function SET_BOARD_COUNT(state, boardCount) {
 }
 
 export function SET_BUS_NUM_SAVE(state, { reportId, busNum }) {
-  // console.log(reportId, busNum)
-  // state.busNumSave.push({
-  //   reportId: reportId,
-  //   busNum: busNum,
-  // })
   state.busNumSave.push(reportId)
   state.busNumSave.push(busNum)
+
+export function SET_MAIN_BUS_DATA(state, busData) {
+  console.log(busData.top3, busData.recentBus)
+  state.top3 = busData.top3
+  state.recentBus = busData.recentBus
 }

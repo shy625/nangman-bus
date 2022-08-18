@@ -2,7 +2,6 @@ package com.nangman.api.service;
 
 import com.nangman.api.dto.SocketDto;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public interface BusService {
