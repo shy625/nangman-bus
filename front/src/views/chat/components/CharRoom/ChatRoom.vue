@@ -173,6 +173,8 @@ onMounted(() => {
     chatData.value.client.subscribe(
       '/sub/chat/rooms/' + chatData.value.sessionId + '/user',
       message => {
+        console.log('입장')
+
         const payload = JSON.parse(message.body)
         console.log(payload, '입/퇴장 구독')
 
@@ -184,40 +186,7 @@ onMounted(() => {
           }
         })
 
-        // 프로필 만들어서 unShift
-        const addUserPayload = {
-          userId: payload.userId,
-          nickName: nickName
-        }
-        store.dispatch('chatStore/addUser', addUserPayload)
-        // 유저 추가
-        const addUser = document.createElement('div')
-        addUser.classList.add('test-user')
-        const addIcon = document.createElement('div')
-        addIcon.classList.add('test-icon')
-        const img = document.createElement('img')
-        // img.src = `${require('../../../../assets/user-pink.png')}`
-        img.src = payload.userId ? require(`../../../../assets/user-${chatData.value.userIcons[payload.userId%4]}.png`) : ''
-        // img.alt = 'yellow'
-        img.alt = chatData.value.userIcons[payload.userId%4]
-        img.classList.add('user-icon')
-        const addName = document.createElement('div')
-        addName.classList.add('test-name')
-        addName.innerText = nickName
-        addUser.addEventListener('click', () => {
-          const payload = {
-            user: payload,
-            sessionId: chatData.value.sessionId,
-          }
-          store.dispatch('chatStore/fetchProfileUser', payload)
-        } )
-
-        const testUsers = document.querySelector('.test-users')
-        addUser.append(addIcon, addName)
-        addIcon.append(img)
-        testUsers.prepend(addUser)
-        addUser.classList.add('add-user')
-
+        // 채팅 입장 알림
         const chatList = document.querySelector('.chat-list')
         const chattingSide = document.createElement('div')
         const chattingLike = document.createElement('img')
@@ -258,9 +227,55 @@ onMounted(() => {
           } else {
             chatting.innerText = `${nickName} 님이 조용히 입장하고 있어요..!`
           }
+
+          // 프로필 추가(상대방만)
+          // 프로필 만들어서 unShift
+          if (chatData.value.userId !== payload.userId) {
+            console.log('남 프로필 추가')
+            const addUserPayload = {
+              userId: payload.userId,
+              nickName: nickName
+            }
+            store.dispatch('chatStore/addUser', addUserPayload)
+            addUser.addEventListener('click', () => {
+              const payload = {
+                user: payload,
+                sessionId: chatData.value.sessionId,
+              }
+              store.dispatch('chatStore/fetchProfileUser', payload)
+            })
+            // 유저 추가
+            const addUser = document.createElement('div')
+            addUser.classList.add('test-user')
+            const addIcon = document.createElement('div')
+            addIcon.classList.add('test-icon')
+            const img = document.createElement('img')
+            // img.src = `${require('../../../../assets/user-pink.png')}`
+            img.src = payload.userId ? require(`../../../../assets/user-${chatData.value.userIcons[payload.userId%4]}.png`) : ''
+            // img.alt = 'yellow'
+            img.alt = chatData.value.userIcons[payload.userId%4]
+            img.classList.add('user-icon')
+            const addName = document.createElement('div')
+            addName.classList.add('test-name')
+            addName.innerText = nickName
+            const testUsers = document.querySelector('.test-users')
+            addUser.append(addIcon, addName)
+            addIcon.append(img)
+            testUsers.prepend(addUser)
+            addUser.classList.add('add-user')
+          }
         }
-        else {
+        else {  // 퇴장
           chatting.innerText = `${nickName} 님이 낭만버스를 떠났어요.`
+          const delUsers = document.querySelectorAll('.test-user')
+          delUsers.forEach(user => {
+            console.log(user.childNodes[1].classList)
+            const delUser = user.childNodes[1]
+            delUser.classList.add('remove-user')
+            delUser.addEventListener('animationend', () => {
+              delUser.remove()
+            })
+          })
         }
         chatList.scrollTo(0, chatList.scrollHeight)
       }

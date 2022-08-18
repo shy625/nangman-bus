@@ -178,9 +178,6 @@ export function addUser({ commit }, payload) {
     userId: payload.userId
   }
   commit('ADD_USER', user)
-    .then(() => {
-      console.log(user)
-    })
 }
 
 export function fetchRoomInfo({ commit, dispatch, getters }, payload) {

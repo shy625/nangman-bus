@@ -44,7 +44,7 @@
           >
             <div 
               class="busstop-name" 
-              @click="clickBusstop"
+              @click="clickBusstop(busstop.busStopId, $event)"
             >
               {{ busstop.nodeName }}
             </div>
@@ -68,19 +68,19 @@ const busData = ref({
   realTimeStation: computed(() => store.getters['chatStore/realTimeStation'])
 })
 
-const clickBusstop = e => {
+const clickBusstop = (busStopId, evnet) => {
   // 하차정류장 지정 디스패치
-  // console.log(e.target.innerText)
-  e.target.classList.add('busstop-pulse')
+  console.log(event.target)
+  evnet.target.classList.add('busstop-pulse')
   setTimeout(() => {
-    e.target.classList.remove('busstop-pulse')
+    evnet.target.classList.remove('busstop-pulse')
   }, 500)
-  e.target.scrollIntoView({ block: 'center', behavior: 'smooth' })  // 타겟 스크롤 포커스! -> 현재 정류장 기준으로!
+  evnet.target.scrollIntoView({ block: 'center', behavior: 'smooth' })  // 타겟 스크롤 포커스! -> 현재 정류장 기준으로!
 
   // 버스 하차 정류장 pub
   const payload = {
     userId: busData.value.userId,
-    busStopId: 12,
+    busStopId: busStopId,
   }
   console.log('하차 전송')
   busData.value.client.publish({

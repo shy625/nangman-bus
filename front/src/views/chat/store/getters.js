@@ -81,12 +81,19 @@ export function realTimeStation(state) {
 
 export function getOffUserList(state) {
   const getOffUserList = []
+  let idx = 0
+  let startUser = ''
   state.roomInfo.roomUserInfoList.forEach(user => {
     console.log(user.outBusStopId, state.realTimeStation.nextId)
     if (user.outBusStopId === state.realTimeStation.nextId) {
+      if (idx === 0) {
+        startUser = user.nickName
+      }
+      idx += 1
       getOffUserList.push(user.nickName)
     }
   })
+  getOffUserList.push(startUser)
   console.log(getOffUserList)
   return getOffUserList
 }
