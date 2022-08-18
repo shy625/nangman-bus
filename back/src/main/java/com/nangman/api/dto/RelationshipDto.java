@@ -17,10 +17,10 @@ public class RelationshipDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request{
-        @ApiModelProperty(name="상대방의 userId", example = "1")
-        public long userId;
         @ApiModelProperty(name="현재 이용중인 채팅룸의 세션id", example = "session_123123124325")
         public String sessionId;
+        @ApiModelProperty(name="상대방의 userId", example = "1")
+        public long targetId;
     }
 
 
