@@ -44,13 +44,13 @@ public class BatchScheduler {
 //        busService.followBuses();
 //    }
 //
-    @Scheduled(cron = "0 0,12 * * * *")
+    @Scheduled(cron = "0 /10 * * * *")
     @Transactional
     public void endPointCheckingSchedule(){
         List<Bus> busList = busRepository.findAll();
         for (Bus bus : busList){
             int isDone = TimeCalculator.getAccessTime(LocalDateTime.now(), bus.getLastModifiedDate());
-            if (bus.getSessionId() != null && isDone > 60 * 3){
+            if (bus.getSessionId() != null && isDone > 60 * 30){
                 ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
                 log.info(chatLog.getSessionId());
                 chatInOutRecordService.forceOut(bus.getSessionId());

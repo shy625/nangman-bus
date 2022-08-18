@@ -2,6 +2,7 @@ package com.nangman.api.controller;
 
 import com.nangman.api.dto.ChatInOutRecordDto;
 import com.nangman.api.dto.SocketDto;
+import com.nangman.api.service.BusService;
 import com.nangman.api.service.ChatInOutRecordService;
 import com.nangman.redis5.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,6 +23,7 @@ public class SocketController {
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
     private final RedisService redisService;
     private final ChatInOutRecordService chatInOutRecordService;
+    private final BusService busService;
 
     // 채팅 입장
     @MessageMapping("/chat/rooms/{sessionId}/in")
@@ -36,6 +35,8 @@ public class SocketController {
         SocketDto.SubUserInOut subUserInOutDto = new SocketDto.SubUserInOut(userId, 1, message);
         log.info("enterChatRoom() " + subUserInOutDto.toString());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", subUserInOutDto);
+        SocketDto.SubBusStop subBusStopDto = busService.getCurrentBusStop(sessionId);
+        sendCurrentBusStop(sessionId, subBusStopDto);
     }
 
     // 채팅 퇴장
@@ -52,13 +53,15 @@ public class SocketController {
     // 채팅 - 일반
     @MessageMapping("/chat/rooms/{sessionId}/message")
     public void sendChatMessage(@DestinationVariable String sessionId, SocketDto.PubChat pubChatDto) {
-        log.info("sendChatMessage() ChatPub - userId : " + pubChatDto.getUserId() + " message : " + pubChatDto.getMessage());
+        log.info("sendChatMessage() " + pubChatDto.toString());
         ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         String createdTime = String.valueOf(zdt.toLocalDateTime());
 //        String createdTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String chatId = redisService.createChat(sessionId, pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
-        SocketDto.SubChat subChatDto = new SocketDto.SubChat(Long.valueOf(chatId), pubChatDto.getUserId(), pubChatDto.getMessage(), createdTime);
-        log.info("sendChatMessage() ChatSub - userId : " + subChatDto.getUserId() + " message : " + subChatDto.getMessage());
+        Integer userEmotion = redisService.getUserEmotion(sessionId, pubChatDto.getUserId());
+        SocketDto.SubChat subChatDto
+                = new SocketDto.SubChat(Long.valueOf(chatId), pubChatDto.getUserId(), pubChatDto.getMessage(), userEmotion, createdTime);
+        log.info("sendChatMessage() " + subChatDto.toString());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/message", subChatDto);
     }
 
@@ -87,7 +90,7 @@ public class SocketController {
 
     // 사용자 하차 정류장 설정
     @MessageMapping("/chat/rooms/{sessionId}/outBusStop")
-    public void setUesrOutBusStop(@DestinationVariable String sessionId, SocketDto.UserOutBusStop userOutBusStopDto) {
+    public void setUserOutBusStop(@DestinationVariable String sessionId, SocketDto.UserOutBusStop userOutBusStopDto) {
         redisService.setOutBusStop(sessionId, userOutBusStopDto.getUserId(), userOutBusStopDto.getBusStopId());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/outBusStop", userOutBusStopDto);
     }
