@@ -238,6 +238,7 @@ onMounted(() => {
       message => {
         const payload = JSON.parse(message.body)
         console.log(payload, '실시간 버스 정류장 구독')
+        store.dispatch('chatStore/fetchRealTimeStation', payload)
       }
     )
     // 사용자 하차 정류장
@@ -246,6 +247,7 @@ onMounted(() => {
       message => {
         const payload = JSON.parse(message.body)
         console.log(payload, '사용자 하차 정류장 구독')
+        store.dispatch('chatStore/fetchGetOffStation', payload)
       }
     )
     // 사용자 감정 상태

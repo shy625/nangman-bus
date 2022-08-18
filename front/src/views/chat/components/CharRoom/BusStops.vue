@@ -4,21 +4,21 @@
       <div class="busstop-mini">
         <div class="busstop-mini-above">
           <div class="busstop-small">
-            인천시청후문
+            {{ busData.realTimeStation.prevName }}
           </div>
           <div class="busstop-icon">
             <span class="busstop-icon-one">></span>
             <span class="busstop-icon-two">></span>
           </div>
           <div class="busstop-big">
-            래미안아파트파이낸셜뉴스
+            {{ busData.realTimeStation.curName }}
           </div>
           <div class="busstop-icon">
             <span class="busstop-icon-one">></span>
             <span class="busstop-icon-two">></span>          
           </div>
           <div class="busstop-small">
-            모래내시장역(3번출구)
+            {{ busData.realTimeStation.nextName }}
           </div>
         </div>
         <div class="busstop-mini-below">
@@ -65,6 +65,7 @@ const busData = ref({
   client: computed(() => store.getters['chatStore/client']),
   userId: computed(() => store.getters['chatStore/userId']),
   sessionId: computed(() => store.getters['chatStore/sessionId']),
+  realTimeStation: computed(() => store.getters['chatStore/realTimeStation'])
 })
 
 const clickBusstop = e => {
@@ -218,6 +219,23 @@ onMounted(() => {
     transform: scale3d(1.05, 1.05, 1.05);
   }
   to {
+    font-weight: normal;
+    transform: scale3d(1, 1, 1);
+  }
+}
+.busstop-pulse-inf {
+  animation: busstopPulseInf 1s infinite;
+}
+@keyframes busstopPulseInf {
+  from {
+    font-weight: normal;
+    transform: scale3d(1, 1, 1);
+  }
+  25% {
+    font-weight: bold;
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  50% {
     font-weight: normal;
     transform: scale3d(1, 1, 1);
   }

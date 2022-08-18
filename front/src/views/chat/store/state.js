@@ -14,6 +14,7 @@ const state = () => ({
   isAccessible: '',
   isAccessibleCnt: 0,
   client: '',
+  realTimeStation: ''
 })
 
 export default state

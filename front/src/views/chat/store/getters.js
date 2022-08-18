@@ -75,3 +75,6 @@ export function profileUser(state) {
   return state.profileUser
 }
 
+export function realTimeStation(state) {
+  return state.realTimeStation
+}

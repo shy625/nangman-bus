@@ -332,3 +332,28 @@ export function fetchProfileUser({ commit }, payload) {
       console.log(res.data)
     })
 }
+
+export function fetchRealTimeStation({ commit }, payload) {
+  const busstops = document.querySelectorAll('.busstop-name')
+  busstops.forEach(stop => {
+    if (stop.innerText === payload.curName) {
+      console.log(stop, payload.curName)
+      stop.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      stop.classList.add('busstop-pulse-inf')
+      setTimeout(() => {
+        stop.classList.remove('busstop-pulse-inf')
+      }, 5000)
+    }
+  })
+
+  const busstopBig = document.querySelector('.busstop-big')
+  busstopBig.classList.add('busstop-pulse')
+  setTimeout(() => {
+    busstopBig.classList.remove('busstop-pulse')
+  }, 500) 
+  commit('SET_REAL_TIME_STATION', payload)
+}
+
+export function fetchGetOffStation({ commit }, payload) {
+  commit('SET_GET_OFF_STATION', payload)
+}

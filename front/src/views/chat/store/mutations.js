@@ -51,3 +51,15 @@ export function SET_GPS(state, geoData) {
 export function SET_PROFILE_USER(state, user) {
   state.profileUser = user
 }
+
+export function SET_REAL_TIME_STATION(state, station) {
+  state.realTimeStation = station
+}
+
+export function SET_GET_OFF_STATION(state, payload) {
+  state.roomInfo.roomUserInfoList.forEach(user => {
+    if (user.userId === payload.userId) {
+      user.outBusStopId = payload.busStopId
+    }
+  })
+}
