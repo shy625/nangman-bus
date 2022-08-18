@@ -42,7 +42,7 @@ public class ChatServiceImpl implements ChatService{
         String reportMsg = "";
         List<ChatDto.MsgLog> msgList = chatLog.getChatLogs();
         Set<User> userList = new HashSet<>();
-
+        List<ChatInOutRecord> roomUserLog = chatInOutRecordRepository.findChatInOutRecordByRoomId(room.getId());
         for (ChatDto.MsgLog item : msgList){
             Chat chat = new Chat();
             User user = userRepository.findByIdAndIsDeletedFalse(Integer.parseInt((item.getUserId()))).get();
@@ -51,13 +51,13 @@ public class ChatServiceImpl implements ChatService{
                 checkBigLike = tempLike;
                 reportMsg = item.getContent();
             }
-            userList.add(user);
             chat.setContent(item.getContent());
             chat.setLikes(tempLike);
             chat = createChat(chat);
             user.addChat(chat);
             room.addChat(chat);
         }
+        for (ChatInOutRecord item : roomUserLog) userList.add(item.getUser());
 
         //report update할 내용 세팅
         report.setContent(reportMsg);

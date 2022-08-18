@@ -10,4 +10,7 @@ public interface ChatInOutRecordService {
     ChatInOutRecordDto.Info insertInRecord(ChatInOutRecordDto.ServiceRequest serviceRequest);
     @Transactional
     ChatInOutRecordDto.Info insertOutRecord(ChatInOutRecordDto.ServiceRequest serviceRequest);
+
+    @Transactional
+    public void forceOut(String sessionId);
 }

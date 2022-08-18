@@ -2,6 +2,7 @@ package com.nangman.common.scheduler;
 
 import com.nangman.api.dto.ChatDto;
 import com.nangman.api.service.BusService;
+import com.nangman.api.service.ChatInOutRecordService;
 import com.nangman.api.service.ChatService;
 import com.nangman.api.service.UserService;
 import com.nangman.common.util.TimeCalculator;
@@ -30,6 +31,7 @@ public class BatchScheduler {
     private final RedisService redisService;
     private final BusRepository busRepository;
     private final ChatService chatService;
+    private final ChatInOutRecordService chatInOutRecordService;
 
     //10초마다 실행
     @Scheduled(cron = "0 0 4 * * *")
@@ -52,6 +54,7 @@ public class BatchScheduler {
                 log.info("=========================BeforeSessionId==========================");
                 log.info(bus.getSessionId());
                 ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
+                chatInOutRecordService.forceOut(bus.getSessionId());
                 log.info("=========================AfterSessionId==========================");
                 log.info(chatLog.getSessionId());
                 chatService.InsertChatLogs(chatLog);

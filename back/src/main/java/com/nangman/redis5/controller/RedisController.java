@@ -1,6 +1,7 @@
 package com.nangman.redis5.controller;
 
 import com.nangman.api.dto.ChatDto;
+import com.nangman.api.service.ChatInOutRecordService;
 import com.nangman.api.service.ChatService;
 import com.nangman.db.entity.Bus;
 import com.nangman.db.repository.BusRepository;
@@ -26,6 +27,7 @@ public class RedisController {
     private final RedisService redisService;
     private final ChatService chatService;
     private final BusRepository busRepository;
+    private final ChatInOutRecordService chatInOutRecordService;
 
     @GetMapping("/")
     public String ok() {
@@ -67,9 +69,15 @@ public class RedisController {
     public void killBus(String sessionId) {
         Bus bus = busRepository.findBusBySessionId(sessionId).get();
         ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
+        chatInOutRecordService.forceOut(bus.getSessionId());
         chatService.InsertChatLogs(chatLog);
         bus.setSessionId(null);
         busRepository.save(bus);
+    }
+
+    @GetMapping("/test/setBusSuchDist/{dist}")
+    public void setBusSuchDist(double dist) {
+        redisService.setBUS_CHECK_DIST(dist);
     }
 
 //    @GetMapping("/test/upLike")

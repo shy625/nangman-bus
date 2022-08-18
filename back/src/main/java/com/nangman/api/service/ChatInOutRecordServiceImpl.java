@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -51,5 +52,17 @@ public class ChatInOutRecordServiceImpl implements ChatInOutRecordService{
         info.setInTime(chatInOutRecord.getInTime());
         info.setOutTime(outTime);
         return info;
+    }
+
+    @Transactional
+    @Override
+    public void forceOut(String sessionId){
+        Room room = roomRepository.findRoomBySessionId(sessionId).get();
+        List<ChatInOutRecord> recordList = room.getChatInOutRecords();
+        for (ChatInOutRecord item : recordList){
+            if (item.getOutTime() == null) item.setOutTime(LocalDateTime.now());
+            chatInOutRecordRepository.save(item);
+        }
+        roomRepository.save(room);
     }
 }

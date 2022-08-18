@@ -21,7 +21,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService{
 
-    private static final double BUS_CHECK_DIST = Integer.MAX_VALUE;
+    private static double BUS_CHECK_DIST = Integer.MAX_VALUE;
+    public void setBUS_CHECK_DIST(double dist) {
+        this.BUS_CHECK_DIST = dist;
+    }
 
     private static final int BUS_INFO_LICENSE_NO = 0;
     private static final int BUS_INFO_ROUTE_ID = 1;

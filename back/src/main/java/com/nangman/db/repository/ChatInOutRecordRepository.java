@@ -14,4 +14,5 @@ public interface ChatInOutRecordRepository extends JpaRepository<ChatInOutRecord
     List<ChatInOutRecord> findChatInOutRecordByUserIdAndRoomId(Long userId, Long roomId);
     Optional<ChatInOutRecord> findTop1ChatInOutRecordByUserIdAndRoomIdOrderByInTimeDesc(Long userId, Long roomId);
     Optional<ChatInOutRecord> findTop1ChatInOutRecordByUserIdOrderByInTimeDesc(Long userId);
+    List<ChatInOutRecord> findChatInOutRecordByRoomId(long roomId);
 }
