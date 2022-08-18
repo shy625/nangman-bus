@@ -9,8 +9,8 @@ const MAIN = 'main/'
 
 export default {
   reports: {
-    reportsList: () => HOST + REPORTS,
-    reportsDetail: (reportsId) => HOST + REPORTS + 'detail/' + reportsId + '/'
+    reportsList: (userId) => HOST + REPORTS + userId + '/',
+    reportsDetail: (userId, reportsId) => HOST + REPORTS + 'detail/' + reportsId + '/' + userId + '/',
   },
   accounts: {
     login: () => HOST + USER + 'login/',

@@ -1,3 +1,5 @@
+// import { busNum } from "@/views/chat/store/getters"
+
 const state = () => ({
   nickname: '',
   mostlyBus: [],
@@ -22,6 +24,6 @@ const state = () => ({
     boardCount: 20, //버스방명록수
   },
   // 보고서id당 버스번호 저장해놔야함
-  busNumSave: {},
+  busNumSave: []
 })
 export default state

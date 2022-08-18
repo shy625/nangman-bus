@@ -17,57 +17,63 @@ export function SET_IS_ROULETTED(state, isRouletted) {
 }
 
 export function SET_ID(state, id) {
-  state.reportDetail.id = id
+  state.reportsDetail.id = id
 }
 
 export function SET_BUS(state, bus) {
-  state.reportDetail.bus = bus
+  state.reportsDetail.bus = bus
 }
 
 export function SET_CREATE_DAY(state, createDay) {
-  state.reportDetail.createDay = createDay
+  state.reportsDetail.createDay = createDay
 }
 
 export function SET_CREATE_TIME(state, createTime) {
-  state.reportDetail.createTime = createTime
+  state.reportsDetail.createTime = createTime
 }
 
 export function SET_CONTENT(state, content) {
-  state.reportDetail.content = content
+  state.reportsDetail.content = content
 }
 
 export function SET_TOTAL_CHAT_COUNT(state, totalChatCount) {
-  state.reportDetail.totalChatCount = totalChatCount
+  state.reportsDetail.totalChatCount = totalChatCount
 }
 
 export function SET_MY_ACCESS_HOUR(state, myAccessHour) {
-  state.reportDetail.myAccessHour = myAccessHour
+  state.reportsDetail.myAccessHour = myAccessHour
 }
 
 export function SET_MY_ACCESS_MINUTE(state, myAccessMinute) {
-  state.reportDetail.myAccessMinute = myAccessMinute
+  state.reportsDetail.myAccessMinute = myAccessMinute
 }
 
 export function SET_TOTAL_USER_COUNT(state, totalUserCount) {
-  state.reportDetail.totalUserCount = totalUserCount
+  state.reportsDetail.totalUserCount = totalUserCount
 }
 
 export function SET_CHAT_PER_MINUTE(state, chatPerMinute) {
-  state.reportDetail.chatPerMinute = chatPerMinute
+  state.reportsDetail.chatPerMinute = chatPerMinute
 }
 
 export function SET_ACCUMULATE_USER_COUNT(state, accumulateUserCount) {
-  state.reportDetail.accumulateUserCount = accumulateUserCount
+  state.reportsDetail.accumulateUserCount = accumulateUserCount
 }
 
 export function SET_PERSONAL_COUNT(state, personalCount) {
-  state.reportDetail.personalCount = personalCount
+  state.reportsDetail.personalCount = personalCount
 }
 
 export function SET_BOARD_COUNT(state, boardCount) {
-  state.reportDetail.boardCount = boardCount
+  state.reportsDetail.boardCount = boardCount
 }
 
-export function SET_BUS_NUM_SAVE(state, reportId, busNum) {
-  state.busNumSave.reportId = busNum
+export function SET_BUS_NUM_SAVE(state, { reportId, busNum }) {
+  // console.log(reportId, busNum)
+  // state.busNumSave.push({
+  //   reportId: reportId,
+  //   busNum: busNum,
+  // })
+  state.busNumSave.push(reportId)
+  state.busNumSave.push(busNum)
 }
