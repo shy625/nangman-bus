@@ -76,6 +76,12 @@ public class RedisController {
         busRepository.save(bus);
     }
 
+    @GetMapping("/test/setBusSuchDist/{dist}")
+    public void setBusSuchDist(double dist) {
+        redisService.setBUS_CHECK_DIST(dist);
+    }
+
+
 //    @GetMapping("/test/upLike")
 //    public void upLike() {
 //        redisService.upLike(testSessionId, "1");
