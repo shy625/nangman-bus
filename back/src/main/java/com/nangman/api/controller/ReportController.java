@@ -33,19 +33,21 @@ import javax.servlet.http.HttpSession;
 public class ReportController {
     private final ReportService reportService;
 
-    @GetMapping("reports")
+    @GetMapping("reports/{userId}")
     @ApiOperation(value = "보고서 리스트 조회", notes = "유저가 참가한 채팅의 낭만보고서들을 리턴")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = ReportDto.class),
             @ApiResponse(code = 404, message = "보고서 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<List<Report>> getReportsByUserId(HttpSession session) {
-        return new ResponseEntity<List<Report>>(
-                reportService.getReportsByUserId(Long.parseLong(session.getId())), HttpStatus.OK);
+    public ResponseEntity<List<ReportDto.Simple>> getReportsByUserId(
+            @PathVariable @ApiParam(value = "조회하는 유저의 id", required = true)long userId
+    ) {
+        return new ResponseEntity<List<ReportDto.Simple>>(
+                reportService.getReportsByUserId(userId), HttpStatus.OK);
     }
 
-    @GetMapping("reports/detail/{reportId}")
+    @GetMapping("reports/detail/{reportId}/{userId}")
     @ApiOperation(value = "보고서 상세 조회", notes = "")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = ReportDto.class),
@@ -53,8 +55,9 @@ public class ReportController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<ReportDto.Info> getReportById(
-            @PathVariable @ApiParam(value = "보고서 id, url 맨 끝에 전달", required = true)long reportId, HttpSession session){
+            @PathVariable @ApiParam(value = "보고서 id, url 맨 끝에 전달", required = true)long reportId,
+            @PathVariable @ApiParam(value = "조회하는 유저의 id", required = true)long userId){
         return new ResponseEntity<ReportDto.Info>(reportService.getReportByIds(
-                new ReportDto.DetailRequest(Long.parseLong(session.getId()), reportId)), HttpStatus.OK);
+                new ReportDto.DetailRequest(userId, reportId)), HttpStatus.OK);
     }
 }
