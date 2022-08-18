@@ -17,36 +17,36 @@
 <script setup>
 import ChatList from './ChatList.vue'
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const store = useStore()
 const data = ref({
-  lat: 0,
-  lng: 0,
+  lat: computed(() => store.getters['chatStore/lat']),
+  lng: computed(() => store.getters['chatStore/lng']),
 })
-function getLocation() {
-  if (navigator.geolocation) { // GPS를 지원하면
-    navigator.geolocation.getCurrentPosition(position => {
-      // console.log(position.coords.latitude, position.coords.longitude)
-      data.value.lat = position.coords.latitude
-      data.value.lng = position.coords.longitude
-    }, error => {
-      console.error(error)
-    }, {
-      enableHighAccuracy: false,
-      maximumAge: 0,
-      timeout: Infinity
-    })
-  } else {
-    alert('GPS를 허용해 주세요.')
-  }
-}
-getLocation()
-navigator.geolocation.watchPosition(function(position) {
-  // console.log(position.coords.latitude, position.coords.longitude)
-  data.value.lat = position.coords.latitude
-  data.value.lng = position.coords.longitude
-})
+// function getLocation() {
+//   if (navigator.geolocation) { // GPS를 지원하면
+//     navigator.geolocation.getCurrentPosition(position => {
+//       // console.log(position.coords.latitude, position.coords.longitude)
+//       data.value.lat = position.coords.latitude
+//       data.value.lng = position.coords.longitude
+//     }, error => {
+//       console.error(error)
+//     }, {
+//       enableHighAccuracy: false,
+//       maximumAge: 0,
+//       timeout: Infinity
+//     })
+//   } else {
+//     alert('GPS를 허용해 주세요.')
+//   }
+// }
+// getLocation()
+// navigator.geolocation.watchPosition(function(position) {
+//   // console.log(position.coords.latitude, position.coords.longitude)
+//   data.value.lat = position.coords.latitude
+//   data.value.lng = position.coords.longitude
+// })
 
 // 채팅리스트 버튼
 const clickChatList = () => {
@@ -65,6 +65,7 @@ const clickChatList = () => {
       // lat: 37.26633,
       // lng: 127.08227,
     }
+    console.log(geoData)
     store.dispatch('chatStore/fetchRooms', geoData)
     chatList.classList.remove('chatlist-out')
     chatList.classList.add('chatlist-active')
