@@ -11,7 +11,6 @@ import java.util.List;
 public class BusDto {
     @Getter
     @Setter
-    @Builder
     @AllArgsConstructor
     public static class Info {
 
