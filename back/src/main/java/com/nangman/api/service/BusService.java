@@ -8,4 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BusService {
     void followBuses();
     public SocketDto.SubBusStop createSubBusStop(long routeId, int currentOrder);
+    SocketDto.SubBusStop getCurrentBusStop(String sessionId);
 }

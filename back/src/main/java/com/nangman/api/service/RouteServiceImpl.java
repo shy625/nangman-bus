@@ -9,7 +9,6 @@ import com.nangman.db.entity.Route;
 import com.nangman.db.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.conn.routing.RouteInfo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -132,14 +131,14 @@ public class RouteServiceImpl implements RouteService{
             routeInfo.setEndBusStop(route.getEndBusStop());
             routeInfo.setStartTime(route.getStartTime());
             routeInfo.setEndTime(route.getEndTime());
-            List<RouteDto.BusstopInfo> busstopInfoList = new ArrayList<>();
+            List<RouteDto.BusStopInfo> busStopInfoList = new ArrayList<>();
             for (BusStop busStop: route.getBusStops()){
-                RouteDto.BusstopInfo busstopInfo = new RouteDto.BusstopInfo();
-                busstopInfo.setNodeName(busStop.getNodeName());
-                busstopInfo.setNodeOrd(busStop.getNodeOrd());
-                busstopInfoList.add(busstopInfo);
+                RouteDto.BusStopInfo busStopInfo = new RouteDto.BusStopInfo();
+                busStopInfo.setNodeName(busStop.getNodeName());
+                busStopInfo.setNodeOrd(busStop.getNodeOrd());
+                busStopInfoList.add(busStopInfo);
             }
-            routeInfo.setBusstopInfoList(busstopInfoList);
+            routeInfo.setBusStopInfoList(busStopInfoList);
 
         }catch(Exception e) {
             e.printStackTrace();
@@ -210,14 +209,15 @@ public class RouteServiceImpl implements RouteService{
         routeInfo.setEndBusStop(route.getEndBusStop());
         routeInfo.setStartTime(route.getStartTime());
         routeInfo.setEndTime(route.getEndTime());
-        List<RouteDto.BusstopInfo> busstopInfoList = new ArrayList<>();
+        List<RouteDto.BusStopInfo> busStopInfoList = new ArrayList<>();
         for (BusStop busStop: route.getBusStops()){
-            RouteDto.BusstopInfo busstopInfo = new RouteDto.BusstopInfo();
-            busstopInfo.setNodeName(busStop.getNodeName());
-            busstopInfo.setNodeOrd(busStop.getNodeOrd());
-            busstopInfoList.add(busstopInfo);
+            RouteDto.BusStopInfo busStopInfo = new RouteDto.BusStopInfo();
+            busStopInfo.setBusStopId(busStop.getId());
+            busStopInfo.setNodeName(busStop.getNodeName());
+            busStopInfo.setNodeOrd(busStop.getNodeOrd());
+            busStopInfoList.add(busStopInfo);
         }
-        routeInfo.setBusstopInfoList(busstopInfoList);
+        routeInfo.setBusStopInfoList(busStopInfoList);
         return routeInfo;
     }
 
@@ -236,14 +236,14 @@ public class RouteServiceImpl implements RouteService{
             routeInfo.setEndBusStop(route.getEndBusStop());
             routeInfo.setStartTime(route.getStartTime());
             routeInfo.setEndTime(route.getEndTime());
-            List<RouteDto.BusstopInfo> busstopInfoList = new ArrayList<>();
+            List<RouteDto.BusStopInfo> busStopInfoList = new ArrayList<>();
             for (BusStop busStop: route.getBusStops()){
-                RouteDto.BusstopInfo busstopInfo = new RouteDto.BusstopInfo();
-                busstopInfo.setNodeName(busStop.getNodeName());
-                busstopInfo.setNodeOrd(busStop.getNodeOrd());
-                busstopInfoList.add(busstopInfo);
+                RouteDto.BusStopInfo busStopInfo = new RouteDto.BusStopInfo();
+                busStopInfo.setNodeName(busStop.getNodeName());
+                busStopInfo.setNodeOrd(busStop.getNodeOrd());
+                busStopInfoList.add(busStopInfo);
             }
-            routeInfo.setBusstopInfoList(busstopInfoList);
+            routeInfo.setBusStopInfoList(busStopInfoList);
             routeInfoList.add(routeInfo);
         }
         return routeInfoList;
