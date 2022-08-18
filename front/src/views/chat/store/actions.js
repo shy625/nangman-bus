@@ -119,7 +119,8 @@ export function fetchIsAccessible({ commit }, geoData) {
     })
 }
 
-export function fetchSessionId({ commit, dispatch }, data) {
+export function fetctSessionIdFromChatList({ commit }, data) {
+  console.log(data)
   axios({
     url: api.chat.getIsAccessible(data.room.sessionId, data.lat, data.lng),
     method: 'get',
@@ -127,8 +128,30 @@ export function fetchSessionId({ commit, dispatch }, data) {
     .then(res => {
       if (res.data) {
         commit('SET_ROOM', data.room)
+        router.push({ name: 'chat', params: { sessionId: data.room.sessionId }})
+      } else {
+        alert('채팅방에 입장할 수 없습니다.')
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+export function fetchSessionId({ dispatch }, data) {
+  axios({
+    url: api.chat.getIsAccessible(data.room.sessionId, data.lat, data.lng),
+    method: 'get',
+  })
+    .then(res => {
+      if (res.data) {
+        // commit('SET_ROOM', data.room)
         // 채팅방 데이터 받기 코드 밑으로!
-        dispatch('fetchRoomInfo', data.room.sessionId)
+        const payload = {
+          sessionId: data.room.sessionId,
+          nickname: data.nickname
+        }
+        dispatch('fetchRoomInfo', payload)
         return true
       } else {
         return false
@@ -146,14 +169,36 @@ export function fetchSessionId({ commit, dispatch }, data) {
     })
 }
 
-export function fetchRoomInfo({ commit }, sessionId) {
+export function addUser({ commit }, payload) {
+  const user = {
+    emotion: 0,
+    isTodayBirth: false,
+    nickname: payload.nickName,
+    outBusStopId: 0,
+    userId: payload.userId
+  }
+  commit('ADD_USER', user)
+}
+
+export function fetchRoomInfo({ commit, dispatch, getters }, payload) {
   axios({
-    url: api.chat.getRoomInfo(sessionId),
+    url: api.chat.getRoomInfo(payload.sessionId),
     method: 'get',
   })
     .then(res => {
-      console.log(res.data)
+      res.data.roomUserInfoList.unshift({
+        emotion: 0,
+        isTodayBirth: false,
+        nickName: payload.nickname,
+        outBusStopId: 0,
+        userId: getters.userId,
+      })
       commit('SET_ROOM_INFO', res.data)
+      return res.data
+    })
+    .then(roomInfo => {
+      // console.log(roomInfo.chatRoomInfo.chatLogs, '챗')
+      dispatch('fetchPreChatLogs', roomInfo.chatRoomInfo.chatLogs)
     })
 }
 
@@ -176,7 +221,7 @@ export function fetchChatLog({ commit }, log) {
 
 export function fetchClient({ commit }) {
   const client = new StompJs.Client({
-    brokerURL: "ws://i7a704.p.ssafy.io:8080/socket",
+    brokerURL: "wss://i7a704.p.ssafy.io:8080/socket",
     connectHeaders: {
       login: "user",
       passcode: "password",
@@ -190,8 +235,136 @@ export function fetchClient({ commit }) {
   })
 
   client.webSocketFactory = function () {
-    return new SockJS("http://i7a704.p.ssafy.io:8080/socket")
+    return new SockJS("https://i7a704.p.ssafy.io:8080/socket")
   }
   
   commit('SET_CLIENT', client)
+}
+
+export function fetchPreChatLogs({ getters }, chatLogs) {
+  const chatList = document.querySelector('.chat-list')
+  chatLogs.forEach(chatLog => {
+    const chattingSide = document.createElement('div')
+    const chattingLike = document.createElement('img')
+    const chattingTime = document.createElement('div')
+    const chatChatting = document.createElement('div')
+    const chatting = document.createElement('div')
+    chattingSide.classList.add('chatting-side')
+    chattingLike.classList.add('chatting-like')
+    chattingTime.classList.add('chatting-time')
+    chatChatting.classList.add('chat-chatting')
+    chatting.classList.add('chatting')
+    // 채팅 내용
+    chatting.innerText = chatLog.content
+    // 좋아요
+    chattingLike.src = `${require('../../../assets/like-outline.png')}`
+    chattingLike.alt = 'outline'
+    chattingLike.addEventListener('click', e => {
+      // 좋아요 pub
+      if (e.target.alt === 'outline') {  // 좋아요 +1
+        e.target.src = `${require('../../../assets/like-filled.png')}`
+        e.target.alt = 'filled'
+        const payload = {
+          chatId: chatLog.chatId,
+          count: null,
+        }
+        getters.client.publish({
+          destination: '/pub/chat/rooms/' + getters.sessionId + '/like/up',
+          body: JSON.stringify(payload),
+        })
+      } else {                           // 좋아요 -1
+        e.target.src = `${require('../../../assets/like-outline.png')}`
+        e.target.alt = 'outline'
+        const payload = {
+          chatId: chatLog.chatId,
+          count: null,
+        }
+        getters.client.publish({
+          destination: '/pub/chat/rooms/' + getters.sessionId + '/like/down',
+          body: JSON.stringify(payload),
+        })
+      }
+    })
+    // 시간
+    chattingTime.innerText = chatLog.createdTime.split('T')[1].slice(0, 5)
+  
+    if (getters.userId === Number(chatLog.userId)) {
+      console.log('내꺼')
+      const myChatWrapper = document.createElement('div')
+      myChatWrapper.classList.add('my-chat-wrapper')
+
+      myChatWrapper.append(chattingSide, chatChatting)
+      chattingSide.append(chattingLike, chattingTime)
+      chatChatting.append(chatting)
+      chatList.append(myChatWrapper)
+    } 
+    else {
+      console.log('남꺼')
+      const otherChatWrapper = document.createElement('div')
+      otherChatWrapper.classList.add('other-chat-wrapper')
+      const chatIcon = document.createElement('img')
+      chatIcon.classList.add('chat-icon')
+      const chatContent = document.createElement('div')
+      chatContent.classList.add('chat-content')
+      const chatNick = document.createElement('div')
+      chatNick.classList.add('chat-nick')
+      
+      // 기분(상태)
+      chatIcon.src = `${require('../../../assets/emo-default.png')}`
+      // 닉네임
+      chatNick.innerText = '상대닉'
+
+      otherChatWrapper.append(chatIcon, chatContent)
+      chatContent.append(chatNick, chatChatting)
+      chatChatting.append(chatting, chattingSide)
+      chattingSide.append(chattingLike, chattingTime)
+      chatList.append(otherChatWrapper)
+    }
+  })
+  chatList.scrollTo(0, chatList.scrollHeight)
+}
+
+export function fetchGPS({ commit }, geoData) {
+  commit('SET_GPS', geoData)
+}
+
+export function fetchProfileUser({ commit }, payload) {
+  commit('SET_PROFILE_USER', payload.user)
+  console.log(payload.user.userId, payload.sessionId, payload)
+  axios({
+    url: api.chat.getProfileUserData(),
+    method: 'get',
+    data: {
+      userId: payload.user.userId,
+      sessionId: payload.sessionId
+    }
+  })
+    .then(res => {
+      console.log(res.data)
+    })
+}
+
+export function fetchRealTimeStation({ commit }, payload) {
+  const busstops = document.querySelectorAll('.busstop-name')
+  busstops.forEach(stop => {
+    if (stop.innerText === payload.curName) {
+      console.log(stop, payload.curName)
+      stop.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      stop.classList.add('busstop-pulse-inf')
+      setTimeout(() => {
+        stop.classList.remove('busstop-pulse-inf')
+      }, 5000)
+    }
+  })
+
+  const busstopBig = document.querySelector('.busstop-big')
+  busstopBig.classList.add('busstop-pulse')
+  setTimeout(() => {
+    busstopBig.classList.remove('busstop-pulse')
+  }, 500) 
+  commit('SET_REAL_TIME_STATION', payload)
+}
+
+export function fetchGetOffStation({ commit }, payload) {
+  commit('SET_GET_OFF_STATION', payload)
 }

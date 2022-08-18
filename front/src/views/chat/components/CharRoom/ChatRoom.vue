@@ -31,13 +31,13 @@
       <div class="chat-send">전송</div>
     </div>
   </div>
-  <!-- <BanModal></BanModal> -->
+  <BanModal></BanModal>
   <EnterModal></EnterModal>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
-// import BanModal from './BanModal.vue'
+import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
@@ -48,15 +48,16 @@ const chatData = ref({
   sessionId: computed(() => store.getters['chatStore/sessionId']),
   isAccessibleCnt: computed(() => store.getters['chatStore/isAccessibleCnt']),
   message: "",
-  lat: 0,
-  lng: 0,
-  client: computed(() => store.getters['chatStore/client'])
-})
-
-navigator.geolocation.watchPosition(function(position) {
-  // console.log(position.coords.latitude, position.coords.longitude)
-  chatData.value.lat = position.coords.latitude
-  chatData.value.lng = position.coords.longitude
+  lat: computed(() => store.getters['chatStore/lat']),
+  lng: computed(() => store.getters['chatStore/lng']),
+  client: computed(() => store.getters['chatStore/client']),
+  userList: computed(() => store.getters['chatStore/userList']),
+  userIcons: [
+    'pink',
+    'pinker',
+    'red',
+    'yellow',
+  ],
 })
 
 onMounted(() => {
@@ -78,6 +79,15 @@ onMounted(() => {
           like: 0
         }
         store.dispatch('chatStore/fetchChatLog', chatLog)
+
+        let nickName
+        chatData.value.userList.forEach(user => {
+          console.log(user.userId, payload.userId)
+          if (user.userId === payload.userId) {
+            nickName = user.nickName
+            console.log(user.nickName)
+          }
+        })
 
         const chattingSide = document.createElement('div')
         const chattingLike = document.createElement('img')
@@ -148,7 +158,7 @@ onMounted(() => {
           // 기분(상태)
           chatIcon.src = `${require('../../../../assets/emo-default.png')}`
           // 닉네임
-          chatNick.innerText = '상대닉'
+          chatNick.innerText = nickName
 
           otherChatWrapper.append(chatIcon, chatContent)
           chatContent.append(chatNick, chatChatting)
@@ -163,8 +173,111 @@ onMounted(() => {
     chatData.value.client.subscribe(
       '/sub/chat/rooms/' + chatData.value.sessionId + '/user',
       message => {
+        console.log('입장')
+
         const payload = JSON.parse(message.body)
         console.log(payload, '입/퇴장 구독')
+
+        let nickName
+        chatData.value.userList.forEach(user => {
+          console.log(user.userId, payload.userId)
+          if (user.userId === payload.userId) {
+            nickName = user.nickName
+          }
+        })
+
+        // 채팅 입장 알림
+        const chatList = document.querySelector('.chat-list')
+        const chattingSide = document.createElement('div')
+        const chattingLike = document.createElement('img')
+        const chattingTime = document.createElement('div')
+        const chatChatting = document.createElement('div')
+        const chatting = document.createElement('div')
+        chattingSide.classList.add('chatting-side')
+        chattingLike.classList.add('chatting-like')
+        chattingTime.classList.add('chatting-time')
+        chatChatting.classList.add('chat-chatting')
+        chatting.classList.add('chatting')
+
+        // 시간
+        const otherChatWrapper = document.createElement('div')
+        otherChatWrapper.classList.add('other-chat-wrapper')
+        const chatIcon = document.createElement('img')
+        chatIcon.classList.add('chat-icon')
+        const chatContent = document.createElement('div')
+        chatContent.classList.add('chat-content')
+        const chatNick = document.createElement('div')
+        chatNick.classList.add('chat-nick')
+        
+        // 기분(상태)
+        chatIcon.src = `${require('../../../../assets/bus-clicked-horizon.png')}`
+        // 닉네임
+        chatNick.innerText = '낭만기사'
+
+        otherChatWrapper.append(chatIcon, chatContent)
+        chatContent.append(chatNick, chatChatting)
+        chatChatting.append(chatting, chattingSide)
+        chattingSide.append(chattingLike, chattingTime)
+        chatList.append(otherChatWrapper)
+
+        if (payload.inOut === 1) {  // 입장
+          // 채팅 내용
+          if (payload.message) {
+            chatting.innerText = `${nickName} 님이 "${payload.message}" 라 외치며 입장하고 있어요!`
+          } else {
+            chatting.innerText = `${nickName} 님이 조용히 입장하고 있어요..!`
+          }
+
+          // 프로필 추가(상대방만)
+          // 프로필 만들어서 unShift
+          if (chatData.value.userId !== payload.userId) {
+            console.log('남 프로필 추가')
+            const addUserPayload = {
+              userId: payload.userId,
+              nickName: nickName
+            }
+            store.dispatch('chatStore/addUser', addUserPayload)
+            addUser.addEventListener('click', () => {
+              const payload = {
+                user: payload,
+                sessionId: chatData.value.sessionId,
+              }
+              store.dispatch('chatStore/fetchProfileUser', payload)
+            })
+            // 유저 추가
+            const addUser = document.createElement('div')
+            addUser.classList.add('test-user')
+            const addIcon = document.createElement('div')
+            addIcon.classList.add('test-icon')
+            const img = document.createElement('img')
+            // img.src = `${require('../../../../assets/user-pink.png')}`
+            img.src = payload.userId ? require(`../../../../assets/user-${chatData.value.userIcons[payload.userId%4]}.png`) : ''
+            // img.alt = 'yellow'
+            img.alt = chatData.value.userIcons[payload.userId%4]
+            img.classList.add('user-icon')
+            const addName = document.createElement('div')
+            addName.classList.add('test-name')
+            addName.innerText = nickName
+            const testUsers = document.querySelector('.test-users')
+            addUser.append(addIcon, addName)
+            addIcon.append(img)
+            testUsers.prepend(addUser)
+            addUser.classList.add('add-user')
+          }
+        }
+        else {  // 퇴장
+          chatting.innerText = `${nickName} 님이 낭만버스를 떠났어요.`
+          const delUsers = document.querySelectorAll('.test-user')
+          delUsers.forEach(user => {
+            console.log(user.childNodes[1].classList)
+            const delUser = user.childNodes[1]
+            delUser.classList.add('remove-user')
+            delUser.addEventListener('animationend', () => {
+              delUser.remove()
+            })
+          })
+        }
+        chatList.scrollTo(0, chatList.scrollHeight)
       }
     )
     // 좋아요 구독 -> 됨
@@ -181,6 +294,7 @@ onMounted(() => {
       message => {
         const payload = JSON.parse(message.body)
         console.log(payload, '실시간 버스 정류장 구독')
+        store.dispatch('chatStore/fetchRealTimeStation', payload)
       }
     )
     // 사용자 하차 정류장
@@ -189,6 +303,7 @@ onMounted(() => {
       message => {
         const payload = JSON.parse(message.body)
         console.log(payload, '사용자 하차 정류장 구독')
+        store.dispatch('chatStore/fetchGetOffStation', payload)
       }
     )
     // 사용자 감정 상태
@@ -207,12 +322,8 @@ onMounted(() => {
   const chatRoom = document.querySelector('#chatRoom')
   const busstop = document.querySelector('#busstop')
   // 나중에 조건걸어서 ban-active할 수 있도록!
-  // const banModal = document.querySelector('#banModal')
   // const chatRoom = document.querySelector('#chatRoom')
   // const busstop = document.querySelector('#busstop')
-  // banModal.classList.add('ban')
-  // chatRoom.classList.add('ban-active')
-  // busstop.classList.add('ban-active')
   
   // 엔터 모달
   const enterModal = document.querySelector('#enterModal')
@@ -294,6 +405,12 @@ onMounted(() => {
       body: JSON.stringify(payload)
     })
     chatData.value.client.deactivate()
+
+    // 퇴장 모달
+    const banModal = document.querySelector('#banModal')
+    banModal.classList.add('ban')
+    chatRoom.classList.add('ban-active')
+    busstop.classList.add('ban-active')
   }
 }, 60000)
 })
