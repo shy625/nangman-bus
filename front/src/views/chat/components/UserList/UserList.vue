@@ -98,13 +98,15 @@ const profileData = ref({
   ],
   sessionId: computed(() => store.getters['chatStore/sessionId']),
   realTimeStation: computed(() => store.getters['chatStore/realTimeStations']),
-  getOffList: computed(() => store.getters['chatStore/getOffUserList']) 
+  getOffList: computed(() => store.getters['chatStore/getOffUserList']),
+  userId: computed(() => store.getters['chatStore/userId'])
 })
 
 const clickProfile = user => {
   console.log(user)
   const payload = {
-    user: user,
+    userId: profileData.value.userId,
+    target: user,
     sessionId: profileData.value.sessionId,
   }
   store.dispatch('chatStore/fetchProfileUser', payload)

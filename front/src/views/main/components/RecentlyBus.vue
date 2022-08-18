@@ -8,14 +8,21 @@
     </div>
     <div class="mostlybus-box">
       <div class="mostlybus-content">
-        <!-- 가장 최근에 탔던 <노선> 버스에 방명록이 <갯수>개 추가됐어요! -->
-        지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
-        <span class="mostlybus-status">아주 시끌벅적하네요!</span>
+        <span class="mostlybus-data">{{ busData.recentBus.takenTime?.split(' ')[0].slice(5, 7) }}</span> 월 <span class="mostlybus-data">{{ busData.recentBus.takenTime?.split(' ')[0].slice(8, 10)}}</span> 일에 탔던
+        <span class="mostlybus-data">{{ busData.recentBus.bus?.nodeName }}</span> 지나는 <span class="mostlybus-data">{{ busData.recentBus.bus?.routeNo }}</span>번 버스에요,<br>
+        방명록이 <span class="mostlybus-data">{{ busData.recentBus.countBoard }}</span>개 추가됐어요!
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
+const busData = ref({
+  recentBus: computed(() => store.getters['mainPage/recentBus'])
+})
 
 </script>
 <style>

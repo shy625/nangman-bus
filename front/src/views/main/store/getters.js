@@ -79,3 +79,15 @@ export function reportsDetailBoardCount(state) {
 export function busNumSave(state) {
   return state.busNumSave
 }
+
+export function top3(state) {
+  return state.top3
+}
+
+export function recentBus(state) {
+  return state.recentBus
+}
+
+export function top3Count(state) {
+  return state.top3Count
+}
