@@ -4,6 +4,9 @@ const state = () => ({
   recentlyBus: [],
   randomBus: [],
   isRouletted: '',
+  recentBus: {},
+  top3: [],
+  top3Count: 0,
 
   // 낭만보고서 들어갈 내용
   reportsDetail: {
@@ -12,7 +15,7 @@ const state = () => ({
     createDay: '2022-08-11', //보고서작성날짜
     createTime: '22:24:00', //보고서작성시간
     content: '저 오늘 첫 출근이에요 힘내라고 빔 좀 쏴주세요 비이이이임~~!!!!', //좋아요많이받은채팅
-    totalChatCount: 500, //총채팅수
+    totalChatCount: 800, //총채팅수
     myAccessHour: 1, //접속시간
     myAccessMinute: 15, //접속분
     totalUserCount: 40, //이용유저수

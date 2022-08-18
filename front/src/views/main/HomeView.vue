@@ -10,8 +10,8 @@
           </div>
           <img src="../../assets/bus-clicked-horizon.png" alt="unclickedBus" class="welcome-chaticon-img">
         </div>
-        <MostlyBus></MostlyBus>
         <RecentlyBus></RecentlyBus>
+        <MostlyBus></MostlyBus>
         <RandomBus></RandomBus>
       </el-scrollbar>
     </div>
