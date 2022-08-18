@@ -13,6 +13,7 @@ public interface RedisService {
     // 자동으로 되는거
     // 1. updateBusData
     void updateBudData(Bus bus);
+    public void setBUS_CHECK_DIST(double dist);
 
     // 2. createChattingRoom
     void createChattingRoom(Bus bus);
@@ -52,6 +53,8 @@ public interface RedisService {
     // 5. updateMyEmotion(사용자 감정 상태 수정)
     // emotion 규칙 정해야됨 0: 무표정 1: 화나요 2: 기분좋아요 3: 우울해요
     void updateMyEmotion(String sessionId, String userId, int emotion);
+
+    Integer getUserEmotion(String sessionId, Long userId);
 
     // 7. createChat(채팅 메시지 전송)
     String createChat(String sessionId, Long userId, String chat, String createdTime);

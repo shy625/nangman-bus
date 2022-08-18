@@ -48,7 +48,6 @@ public class BusServiceImpl implements BusService{
 
     private final BusStopRepository busStopRepository;
 
-
     @Override
     @Transactional
     public void followBuses() {
@@ -57,7 +56,7 @@ public class BusServiceImpl implements BusService{
         for (Route route : routeList){
             String code = route.getCode();
             int cityCode = route.getCityCode();
-            String BASE_URL = "http://apis.data.go.kr/1613000/BusLcInfoInqireService/getRouteAcctoBusLcList?" +
+            String BASE_URL = "https://apis.data.go.kr/1613000/BusLcInfoInqireService/getRouteAcctoBusLcList?" +
                     "serviceKey=" + serviceKey +
                     "&pageNo=" + pageNo +
                     "&numOfRows=" + numOfRows +
@@ -152,4 +151,5 @@ public class BusServiceImpl implements BusService{
         }
         return subBusStop;
     }
+
 }
