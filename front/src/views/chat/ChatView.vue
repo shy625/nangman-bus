@@ -42,29 +42,23 @@ const chatViewData = ref({
   busId: computed(() => store.getters['chatStore/busId']),
   busNum: computed(() => store.getters['chatStore/busNum']),
   sessionId: computed(() => store.getters['chatStore/sessionId']),
-  lat: 0,
-  lng: 0
-})
-navigator.geolocation.watchPosition(function(position) {
-  // console.log(position.coords.latitude, position.coords.longitude)
-  chatViewData.value.lat = position.coords.latitude
-  chatViewData.value.lng = position.coords.longitude
+  lat: computed(() => store.getters['chatStore/lat']),
+  lng: computed(() => store.getters['chatStore/lng']),
+  nickname: computed(() => store.getters['mainPage/nickname'])
 })
 
 onMounted(() => {
-  navigator.geolocation.getCurrentPosition(position => {
-    console.log(position)
-    // 채팅창에서 새로고침할 경우, 채팅방 정보 다시 요청
-    const payload = {
-      room: { sessionId: chatViewData.value.sessionId },
-      lat: position.coords.latitude,
-      lng: position.coords.longitude,
-      // lat: 37.49797,
-      // lng: 127.02763,
-    }
-    // console.log(payload)
-    store.dispatch('chatStore/fetchSessionId', payload)
-  })
+  // 채팅창에서 새로고침할 경우, 채팅방 정보 다시 요청
+  const payload = {
+    room: { sessionId: chatViewData.value.sessionId },
+    lat: chatViewData.value.lat,
+    lng: chatViewData.value.lng,
+    nickname: chatViewData.value.nickname,
+    // lat: 37.49797,
+    // lng: 127.02763,
+  }
+  store.dispatch('chatStore/fetchSessionId', payload)
+
 
   const leftBtn = document.querySelector('.el-carousel__arrow--left')
   leftBtn.addEventListener('click', () => {

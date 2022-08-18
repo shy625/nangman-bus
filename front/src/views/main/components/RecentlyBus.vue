@@ -8,6 +8,7 @@
     </div>
     <div class="mostlybus-box">
       <div class="mostlybus-content">
+        <!-- 가장 최근에 탔던 <노선> 버스에 방명록이 <갯수>개 추가됐어요! -->
         지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
         <span class="mostlybus-status">아주 시끌벅적하네요!</span>
       </div>

@@ -54,3 +54,46 @@ export function isAccessibleCnt(state) {
 export function client(state) {
   return state.client
 }
+
+export function lat(state) {
+  return state.gps.lat
+}
+
+export function lng(state) {
+  return state.gps.lng
+}
+
+export function userList(state) {
+  return state.roomInfo.roomUserInfoList
+}
+
+export function userListLength(state) {
+  return state.roomInfo.roomUserInfoList?.length
+}
+
+export function profileUser(state) {
+  return state.profileUser
+}
+
+export function realTimeStation(state) {
+  return state.realTimeStation
+}
+
+export function getOffUserList(state) {
+  const getOffUserList = []
+  let idx = 0
+  let startUser = ''
+  state.roomInfo.roomUserInfoList.forEach(user => {
+    console.log(user.outBusStopId, state.realTimeStation.nextId)
+    if (user.outBusStopId === state.realTimeStation.nextId) {
+      if (idx === 0) {
+        startUser = user.nickName
+      }
+      idx += 1
+      getOffUserList.push(user.nickName)
+    }
+  })
+  getOffUserList.push(startUser)
+  console.log(getOffUserList)
+  return getOffUserList
+}

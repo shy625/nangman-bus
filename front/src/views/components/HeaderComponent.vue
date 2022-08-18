@@ -3,12 +3,17 @@
     <router-link :to="{ name: 'main' }">
       <img src="../../assets/logo.png" alt="nangmanLogo" class="header-logo">
     </router-link>
-    <router-link to="">
+    <router-link to="" @click="clickLogout">
       <img src="../../assets/user-yellow.png" alt="userIcon" class="header-user">
     </router-link>
   </div>  
 </template>
 <script setup>
+import { useStore } from 'vuex'
+const store = useStore()
+const clickLogout = () => {
+  store.dispatch('accounts/logout')
+}
 </script>
 <style>
 .header {
