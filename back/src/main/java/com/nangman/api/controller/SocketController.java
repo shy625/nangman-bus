@@ -2,8 +2,8 @@ package com.nangman.api.controller;
 
 import com.nangman.api.dto.ChatInOutRecordDto;
 import com.nangman.api.dto.SocketDto;
-import com.nangman.api.service.BusService;
 import com.nangman.api.service.ChatInOutRecordService;
+import com.nangman.api.service.SocketService;
 import com.nangman.redis5.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class SocketController {
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
     private final RedisService redisService;
     private final ChatInOutRecordService chatInOutRecordService;
-    private final BusService busService;
+    private final SocketService socketService;
 
     // 채팅 입장
     @MessageMapping("/chat/rooms/{sessionId}/in")
@@ -35,7 +35,7 @@ public class SocketController {
         SocketDto.SubUserInOut subUserInOutDto = new SocketDto.SubUserInOut(userId, 1, message);
         log.info("enterChatRoom() " + subUserInOutDto.toString());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", subUserInOutDto);
-        SocketDto.SubBusStop subBusStopDto = busService.getCurrentBusStop(sessionId);
+        SocketDto.SubBusStop subBusStopDto = socketService.getCurrentBusStop(sessionId);
         sendCurrentBusStop(sessionId, subBusStopDto);
     }
 
