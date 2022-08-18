@@ -212,7 +212,7 @@ onMounted(() => {
 @keyframes busstopPulse {
   from {
     font-weight: normal;
-    transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 12);
   }
   50% {
     font-weight: bold;
@@ -228,15 +228,15 @@ onMounted(() => {
 }
 @keyframes busstopPulseInf {
   from {
-    font-weight: normal;
-    transform: scale3d(1, 1, 1);
-  }
-  25% {
     font-weight: bold;
-    transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1, 1, 1);
   }
   50% {
     font-weight: normal;
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  100% {
+    font-weight: bold;
     transform: scale3d(1, 1, 1);
   }
 }

@@ -31,13 +31,13 @@
       <div class="chat-send">전송</div>
     </div>
   </div>
-  <!-- <BanModal></BanModal> -->
+  <BanModal></BanModal>
   <EnterModal></EnterModal>
 </template>
 <script setup>
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
-// import BanModal from './BanModal.vue'
+import BanModal from './BanModal.vue'
 import EnterModal from './EnterModal.vue'
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
@@ -322,12 +322,8 @@ onMounted(() => {
   const chatRoom = document.querySelector('#chatRoom')
   const busstop = document.querySelector('#busstop')
   // 나중에 조건걸어서 ban-active할 수 있도록!
-  // const banModal = document.querySelector('#banModal')
   // const chatRoom = document.querySelector('#chatRoom')
   // const busstop = document.querySelector('#busstop')
-  // banModal.classList.add('ban')
-  // chatRoom.classList.add('ban-active')
-  // busstop.classList.add('ban-active')
   
   // 엔터 모달
   const enterModal = document.querySelector('#enterModal')
@@ -409,6 +405,12 @@ onMounted(() => {
       body: JSON.stringify(payload)
     })
     chatData.value.client.deactivate()
+
+    // 퇴장 모달
+    const banModal = document.querySelector('#banModal')
+    banModal.classList.add('ban')
+    chatRoom.classList.add('ban-active')
+    busstop.classList.add('ban-active')
   }
 }, 60000)
 })

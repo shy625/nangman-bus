@@ -14,11 +14,12 @@ export function saveToken({ commit }, token) {
 }
 export function removeToken({ commit }) {
   commit('SET_TOKEN', '')
-  localStorage.setItem('token', '')
-  localStorage.setItem('acoountUserId', '')
-  localStorage.setItem('userNickname', '')
-  localStorage.setItem('userBirthday', '')
-  localStorage.setItem('useremail', '')
+  localStorage.removeItem('token')
+  localStorage.removeItem('acoountUserId')
+  localStorage.removeItem('userNickname')
+  localStorage.removeItem('userBirthday')
+  localStorage.removeItem('useremail')
+  localStorage.removeItem('sessionID')
 }
 
 export function login({ commit, dispatch }, credentials) {
@@ -67,6 +68,7 @@ export function signup({ commit, dispatch }, credentials) {
 }
 
 export function logout({ getters, dispatch }) {
+  console.log('logout')
   axios({
     url: api.accounts.logout(),
     method: 'post',
@@ -75,7 +77,7 @@ export function logout({ getters, dispatch }) {
     .then(() => {
       dispatch('removeToken')
       alert('성공적으로 로그아웃되었습니다.')
-      router.push({ name: 'login' })
+      router.push({ name: 'main' })
     })
     .catch(err => {
       console.error(err.response)

@@ -38,6 +38,9 @@ export function SET_IS_ACCESSIBLE(state, data) {
 
 export function SET_IS_ACCESSIBLE_CNT_PLUS(state) {
   state.isAccessibleCnt += 1
+  if (state.isAccessibleCnt > 2) {
+    state.isAccessibleCnt = 0
+  }
 }
 
 export function SET_CLIENT(state, client) {
