@@ -44,7 +44,7 @@ public class BatchScheduler {
 //        busService.followBuses();
 //    }
 //
-    @Scheduled(cron = "0 0,12 * * * *")
+    @Scheduled(cron = "0 /10 * * * *")
     @Transactional
     public void endPointCheckingSchedule(){
         List<Bus> busList = busRepository.findAll();

@@ -61,7 +61,7 @@ public class MainServiceImpl implements MainService{
             List<Board> boardList = boardRepository.findBoardByBusIdOrderByCreatedDateDesc(info.getRecentBus().getBus().getId());
             for (int i = 0; i < boardList.size(); i++) {
                 Board board = boardList.get(i);
-                if (timeKey.isBefore(board.getCreatedDate())) break;
+                if (!timeKey.isBefore(board.getCreatedDate())) break;
                 countBoard++;
             }
         }
