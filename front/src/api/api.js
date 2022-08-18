@@ -16,6 +16,7 @@ export default {
     login: () => HOST + USER + 'login/',
     logout: () => HOST + USER + 'logout/',
     signup: () => HOST + USER,
+    getUserInfo: userId => HOST + USER + userId,
 
     // get: 유저정보 조회, post: 오늘의 닉네임 제공, delete: 회원 탈퇴
     currentUserInfo: (userid) => HOST + USER + userid + '/',

@@ -180,6 +180,11 @@ export function addUser({ commit }, payload) {
   commit('ADD_USER', user)
 }
 
+// export function removeUser({ commit }, payload) {
+//   let user = ''
+
+// }
+
 export function fetchRoomInfo({ commit, dispatch, getters }, payload) {
   axios({
     url: api.chat.getRoomInfo(payload.sessionId),
@@ -364,4 +369,14 @@ export function fetchRealTimeStation({ commit }, payload) {
 
 export function fetchGetOffStation({ commit }, payload) {
   commit('SET_GET_OFF_STATION', payload)
+}
+
+export function fetchChatNickName({ commit }, userId) {
+  axios({
+    url: api.accounts.getUserInfo(userId),
+    method: 'get',
+  })
+    .then(res => {
+      commit('SET_CHAT_NICKNAME', res.data.nickname)
+    })
 }
