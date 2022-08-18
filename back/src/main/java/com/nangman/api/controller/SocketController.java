@@ -34,6 +34,7 @@ public class SocketController {
         chatInOutRecordService.insertInRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, userId));
         redisService.joinRoom(sessionId, userId);
         SocketDto.SubUserInOut subUserInOutDto = new SocketDto.SubUserInOut(userId, 1, message);
+        log.info("enterChatRoom() " + subUserInOutDto.toString());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", subUserInOutDto);
     }
 
@@ -44,6 +45,7 @@ public class SocketController {
         chatInOutRecordService.insertOutRecord(new ChatInOutRecordDto.ServiceRequest(sessionId, userId));
         redisService.exitRoom(sessionId, userId);
         SocketDto.SubUserInOut subUserInOutDto = new SocketDto.SubUserInOut(userId, 2, null);
+        log.info("enterChatRoom() " + subUserInOutDto.toString());
         template.convertAndSend("/sub/chat/rooms/" + sessionId + "/user", subUserInOutDto);
     }
 

@@ -21,7 +21,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService{
 
-    private static final double BUS_CHECK_DIST = 20000.0;
+    private static final double BUS_CHECK_DIST = Integer.MAX_VALUE;
 
     private static final int BUS_INFO_LICENSE_NO = 0;
     private static final int BUS_INFO_ROUTE_ID = 1;
@@ -79,6 +79,7 @@ public class RedisServiceImpl implements RedisService{
     public void updateBudData(Bus bus) {
         //현규가 버스 entity 업데이트하면 ㄱ
         String keyRoom = bus.getSessionId() + KEY_ROOM;
+        if(!redisTemplate.hasKey(keyRoom)) return;
         StringBuilder createBusInfo = new StringBuilder();
         createBusInfo.append(bus.getLicenseNo())
                 .append(SPLIT_STR)
@@ -401,7 +402,7 @@ public class RedisServiceImpl implements RedisService{
 
         User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
         boolean isTodayBirth = false;
-        if (user.getUserBirthday() != null) {
+        if (user.getUserBirthday() != null || !user.getUserBirthday().equals("")) {
             LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (userBirth.getMonth().equals(LocalDate.now().getMonth())
                     && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
