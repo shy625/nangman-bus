@@ -197,5 +197,6 @@ export function fetchMainPageBusData(context, userId) {
   })
     .then(res => {
       console.log(res.data)
+      
     })
 }
