@@ -19,6 +19,8 @@ public class MainDto {
     public static class Info{
         @ApiModelProperty(name="가장 많이 탄 버스 TOP3", example="Bus Entity 참고")
         List<BusDto.Info> top3;
+        @ApiModelProperty(name="가장 많이 탄 버스 TOP3의 탑승횟수", example="1,2,3")
+        List<Integer> top3Count;
         @ApiModelProperty(name="가장 최근에 이용한 버스 정보", example="MainDto.RecentBus 참고")
         RecentBus recentBus;
     }

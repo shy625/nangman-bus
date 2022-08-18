@@ -33,6 +33,7 @@ public class MainServiceImpl implements MainService{
         List<Report> reportList = new ArrayList<>();
         Map<String, Integer> countLicense = new HashMap<String, Integer>();
         MainDto.Info info = new MainDto.Info();
+        info.setTop3Count(new ArrayList<>());
         info.setRecentBus(new MainDto.RecentBus());
         info.setTop3(new ArrayList<>());
         for (UserReport userReport : userReportList){
@@ -46,6 +47,7 @@ public class MainServiceImpl implements MainService{
         for (int i = 0; i < 3 && i < keySet.size(); i++) {
             Bus bus = busRepository.findBusByLicenseNo(keySet.get(i)).get();
             info.getTop3().add(new BusDto.Info(bus));
+            info.getTop3Count().add(countLicense.get(keySet.get(i)));
         }
         Optional<ChatInOutRecord> nullChecker = chatInOutRecordRepository.findTop1ChatInOutRecordByUserIdOrderByInTimeDesc(userId);
         ChatInOutRecord history;
@@ -59,7 +61,7 @@ public class MainServiceImpl implements MainService{
             List<Board> boardList = boardRepository.findBoardByBusIdOrderByCreatedDateDesc(info.getRecentBus().getBus().getId());
             for (int i = 0; i < boardList.size(); i++) {
                 Board board = boardList.get(i);
-                if (timeKey.isBefore(board.getCreatedDate())) break;
+                if (!timeKey.isBefore(board.getCreatedDate())) break;
                 countBoard++;
             }
         }
