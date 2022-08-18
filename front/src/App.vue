@@ -7,6 +7,31 @@
 </template>
 
 <script setup>
+import { useStore } from 'vuex'
+
+const store = useStore()
+const getGps = () => {
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        console.log(position)
+        const payload = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        store.dispatch('chatStore/fetchGPS', payload)
+      }, err => {
+        console.log(err)
+      })
+  } else {
+    alert('GPS를 허용해 주세요.')
+  }
+}
+
+getGps()
+setInterval(() => {
+  getGps()
+}, 60000);
+
 
 </script>
 

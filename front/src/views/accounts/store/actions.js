@@ -14,11 +14,12 @@ export function saveToken({ commit }, token) {
 }
 export function removeToken({ commit }) {
   commit('SET_TOKEN', '')
-  localStorage.setItem('token', '')
-  localStorage.setItem('acoountUserId', '')
-  localStorage.setItem('userNickname', '')
-  localStorage.setItem('userBirthday', '')
-  localStorage.setItem('useremail', '')
+  localStorage.removeItem('token')
+  localStorage.removeItem('acoountUserId')
+  localStorage.removeItem('userNickname')
+  localStorage.removeItem('userBirthday')
+  localStorage.removeItem('useremail')
+  localStorage.removeItem('sessionID')
 }
 
 export function login({ commit, dispatch }, credentials) {
@@ -34,6 +35,7 @@ export function login({ commit, dispatch }, credentials) {
       router.push({ name: 'main' })
     })
     .catch(err => {
+      alert('이메일 혹은 비밀번호를 확인해 주세요.')
       console.error(err.response.data)
       commit('SET_AUTH_ERROR', err.response.data)
     })
@@ -59,12 +61,14 @@ export function signup({ commit, dispatch }, credentials) {
       router.push({ name: 'main' })
     })
     .catch(err => {
+      alert('비밀번호는 8 ~ 16 길이로 입력해 주세요.')
       console.error(err.response.data)
       commit('SET_AUTH_ERROR', err.response.data)
     })
 }
 
 export function logout({ getters, dispatch }) {
+  console.log('logout')
   axios({
     url: api.accounts.logout(),
     method: 'post',
@@ -73,7 +77,7 @@ export function logout({ getters, dispatch }) {
     .then(() => {
       dispatch('removeToken')
       alert('성공적으로 로그아웃되었습니다.')
-      router.push({ name: 'login' })
+      router.push({ name: 'main' })
     })
     .catch(err => {
       console.error(err.response)

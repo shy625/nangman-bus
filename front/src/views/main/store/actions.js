@@ -158,6 +158,8 @@ export function fetchCurrentUser({ commit, getters, dispatch }, userId) {
       commit('SET_CURRENT_USER', res.data)
     })
     .then(() => {
+      dispatch('fetchMainPageBusData', userId)
+
       if (getters.isRouletted === false) {
         const rouletteContainer = document.querySelector('.roulette-container')
         const home = document.querySelector('.home')
@@ -185,5 +187,16 @@ export function changeIsRouletted({ commit }, userId) {
   })
     .then(() => {
       commit('SET_IS_ROULETTED', true)
+    })
+}
+
+export function fetchMainPageBusData(context, userId) {
+  axios({
+    url: api.main.getMyBuses(userId),
+    method: 'get'
+  })
+    .then(res => {
+      console.log(res.data)
+      
     })
 }
