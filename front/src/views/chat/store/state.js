@@ -14,7 +14,8 @@ const state = () => ({
   isAccessible: '',
   isAccessibleCnt: 0,
   client: '',
-  realTimeStation: ''
+  realTimeStation: '',
+  chatNickName: '',
 })
 
 export default state
