@@ -131,7 +131,7 @@ const credentials = ref({
   useremail: "",
   password1: "",
   password2: "",
-  userbirthday: "",
+  userbirthday: null,
 });
 
 const signup = function (event) {
@@ -140,7 +140,7 @@ const signup = function (event) {
     useremail: event.target.useremail.value,
     password1: event.target.password1.value,
     password2: event.target.password2.value,
-    userbirthday: event.target.userbirthday.value,
+    userbirthday: null,
   };
   // console.log(event.target.useremail.value)
   store.dispatch("accounts/signup", credentials);
