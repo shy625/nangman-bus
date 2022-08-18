@@ -13,8 +13,8 @@
       <div v-for="(bus, index) in buses.randomBus" :key="index">
         <div class="mostlybus-content">
           지금 <span class="mostlybus-data">{{bus.nodeName}}</span> 지나는 <span class="mostlybus-data">{{bus.routeNumber}}번</span> 버스는요,<br>
-          <span v-if="bus.type==0" >조금 <span>어색</span>해요!</span>
-          <span v-else > <span>시끌벅적</span>해요!</span>
+          <span v-if="bus.type==0" >조금 <span class="mostlybus-data">어색</span>해요!</span>
+          <span v-else > <span class="mostlybus-data">시끌벅적</span>해요!</span>
         </div>
       </div>
     </div>

@@ -4,6 +4,9 @@ const state = () => ({
   recentlyBus: [],
   randomBus: [],
   isRouletted: '',
+  recentBus: {},
+  top3: [],
+  top3Count: 0,
 
   // 낭만보고서 들어갈 내용
   reportsDetail: {
