@@ -312,7 +312,7 @@ public class RedisServiceImpl implements RedisService{
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
             return 0;
         }
-        String value = (String) redisTemplate.opsForHash().get(key, userId);
+        String value = (String) redisTemplate.opsForHash().get(key, String.valueOf(userId));
         String[] userInfo = value.split(SPLIT_STR);
         return Integer.valueOf(userInfo[USER_INFO_STATE]);
     }
