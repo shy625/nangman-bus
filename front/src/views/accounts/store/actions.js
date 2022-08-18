@@ -48,6 +48,7 @@ export function signup({ commit, dispatch }, credentials) {
     password: (credentials.password1 === credentials.password2) ? credentials.password1 : null, // 1, 2 확인하고 보내주김
     userBirthday: credentials.userbirthday,
   }
+  console.log(credentials.userBirthday)
   axios({
     url: api.accounts.signup(),
     method: 'post',
