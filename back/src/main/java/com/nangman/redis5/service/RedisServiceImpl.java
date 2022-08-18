@@ -422,7 +422,7 @@ public class RedisServiceImpl implements RedisService{
 //        log.info("joinRoom() user : " + user);
         boolean isTodayBirth = false;
         log.info("joinRoom() user.getUserBirthday : " + user.getUserBirthday());
-        if (user.getUserBirthday() != null || !user.getUserBirthday().equals("")) {
+        if (user.getUserBirthday() != null && !user.getUserBirthday().equals("")) {
             LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (userBirth.getMonth().equals(LocalDate.now().getMonth())
                     && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
