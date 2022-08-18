@@ -70,3 +70,7 @@ export function SET_GET_OFF_STATION(state, payload) {
 export function ADD_USER(state, user) {
   state.roomInfo.roomUserInfoList.unshift(user)
 }
+
+export function SET_CHAT_NICKNAME(state, nickName) {
+  state.chatNickName = nickName
+}

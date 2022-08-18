@@ -97,3 +97,7 @@ export function getOffUserList(state) {
   console.log(getOffUserList)
   return getOffUserList
 }
+
+export function chatNickName(state) {
+  return state.chatNickName
+}

@@ -35,6 +35,8 @@
   <EnterModal></EnterModal>
 </template>
 <script setup>
+import axios from 'axios'
+import api from '../../../../api/api.js'
 import BusStops from './BusStops.vue'
 import ChatEmos from './ChatEmos.vue'
 import BanModal from './BanModal.vue'
@@ -58,6 +60,13 @@ const chatData = ref({
     'red',
     'yellow',
   ],
+  emos: [  // 0: 무표정, 1: 화남, 2: 기쁨, 3: 우울
+    `${require('../../../../assets/emo-default.png')}`,
+    `${require('../../../../assets/emo-angry.png')}`,
+    `${require('../../../../assets/emo-happy.png')}`,
+    `${require('../../../../assets/emo-blue.png')}`,
+  ],
+  // chatNickName: computed(() => store.getters['chatStore/chatNickName']),
 })
 
 onMounted(() => {
@@ -80,93 +89,105 @@ onMounted(() => {
         }
         store.dispatch('chatStore/fetchChatLog', chatLog)
 
-        let nickName
-        chatData.value.userList.forEach(user => {
-          console.log(user.userId, payload.userId)
-          if (user.userId === payload.userId) {
-            nickName = user.nickName
-            console.log(user.nickName)
-          }
+        axios({
+          url: api.accounts.getUserInfo(payload.userId),
+          method: 'get',
         })
-
-        const chattingSide = document.createElement('div')
-        const chattingLike = document.createElement('img')
-        const chattingTime = document.createElement('div')
-        const chatChatting = document.createElement('div')
-        const chatting = document.createElement('div')
-        chattingSide.classList.add('chatting-side')
-        chattingLike.classList.add('chatting-like')
-        chattingTime.classList.add('chatting-time')
-        chatChatting.classList.add('chat-chatting')
-        chatting.classList.add('chatting')
-        // 채팅 내용
-        chatting.innerText = payload.message
-        // 좋아요
-        chattingLike.src = `${require('../../../../assets/like-outline.png')}`
-        chattingLike.alt = 'outline'
-        chattingLike.addEventListener('click', e => {
-          // 좋아요 pub
-          if (e.target.alt === 'outline') {  // 좋아요 +1
-            e.target.src = `${require('../../../../assets/like-filled.png')}`
-            e.target.alt = 'filled'
-            const payload = {
-              chatId: chatLog.chatId,
-              count: null,
-            }
-            chatData.value.client.publish({
-              destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/up',
-              body: JSON.stringify(payload),
+          .then(res => {
+            console.log(res.data)
+            const nickName =  res.data.nickname
+            return nickName
+          })
+          .then(nickName => {
+            const chattingSide = document.createElement('div')
+            const chattingLike = document.createElement('img')
+            const chattingTime = document.createElement('div')
+            const chatChatting = document.createElement('div')
+            const chatting = document.createElement('div')
+            chattingSide.classList.add('chatting-side')
+            chattingLike.classList.add('chatting-like')
+            chattingTime.classList.add('chatting-time')
+            chatChatting.classList.add('chat-chatting')
+            chatting.classList.add('chatting')
+            // 채팅 내용
+            chatting.innerText = payload.message
+            // 좋아요
+            chattingLike.src = `${require('../../../../assets/like-outline.png')}`
+            chattingLike.alt = 'outline'
+            chattingLike.addEventListener('click', e => {
+              // 좋아요 pub
+              if (e.target.alt === 'outline') {  // 좋아요 +1
+                e.target.src = `${require('../../../../assets/like-filled.png')}`
+                e.target.alt = 'filled'
+                const payload = {
+                  chatId: chatLog.chatId,
+                  count: null,
+                }
+                chatData.value.client.publish({
+                  destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/up',
+                  body: JSON.stringify(payload),
+                })
+              } else {                           // 좋아요 -1
+                e.target.src = `${require('../../../../assets/like-outline.png')}`
+                e.target.alt = 'outline'
+                const payload = {
+                  chatId: chatLog.chatId,
+                  count: null,
+                }
+                chatData.value.client.publish({
+                  destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/down',
+                  body: JSON.stringify(payload),
+                })
+              }
             })
-          } else {                           // 좋아요 -1
-            e.target.src = `${require('../../../../assets/like-outline.png')}`
-            e.target.alt = 'outline'
-            const payload = {
-              chatId: chatLog.chatId,
-              count: null,
+            // 시간
+            chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
+
+            console.log('받음', payload)
+            if (payload.userId === chatData.value.userId) {
+              console.log('내꺼')
+              const myChatWrapper = document.createElement('div')
+              myChatWrapper.classList.add('my-chat-wrapper')
+
+              myChatWrapper.append(chattingSide, chatChatting)
+              chattingSide.append(chattingLike, chattingTime)
+              chatChatting.append(chatting)
+              chatList.append(myChatWrapper)
+            } 
+            else {
+              console.log('남꺼')
+              const otherChatWrapper = document.createElement('div')
+              otherChatWrapper.classList.add('other-chat-wrapper')
+              const chatIcon = document.createElement('img')
+              chatIcon.classList.add('chat-icon')
+              const chatContent = document.createElement('div')
+              chatContent.classList.add('chat-content')
+              const chatNick = document.createElement('div')
+              chatNick.classList.add('chat-nick')
+              
+              // 기분(상태)
+              chatIcon.src = chatData.value.emos[payload.emotion]
+              // 닉네임
+              chatNick.innerText = nickName
+
+              otherChatWrapper.append(chatIcon, chatContent)
+              chatContent.append(chatNick, chatChatting)
+              chatChatting.append(chatting, chattingSide)
+              chattingSide.append(chattingLike, chattingTime)
+              chatList.append(otherChatWrapper)
             }
-            chatData.value.client.publish({
-              destination: '/pub/chat/rooms/' + chatData.value.sessionId + '/like/down',
-              body: JSON.stringify(payload),
-            })
-          }
-        })
-        // 시간
-        chattingTime.innerText = payload.createdTime.split('T')[1].slice(0, 5)
+            chatList.scrollTo(0, chatList.scrollHeight)
+              })
+          .catch(err => console.log(err))
+        // chatData.value.userList.forEach(user => {
+        //   console.log(user.userId, payload.userId)
+        //   if (user.userId === payload.userId) {
+        //     nickName = user.nickName
+        //     console.log(user.nickName)
+        //   }
+        // })
 
-        console.log('받음', payload)
-        if (payload.userId === chatData.value.userId) {
-          console.log('내꺼')
-          const myChatWrapper = document.createElement('div')
-          myChatWrapper.classList.add('my-chat-wrapper')
 
-          myChatWrapper.append(chattingSide, chatChatting)
-          chattingSide.append(chattingLike, chattingTime)
-          chatChatting.append(chatting)
-          chatList.append(myChatWrapper)
-        } 
-        else {
-          console.log('남꺼')
-          const otherChatWrapper = document.createElement('div')
-          otherChatWrapper.classList.add('other-chat-wrapper')
-          const chatIcon = document.createElement('img')
-          chatIcon.classList.add('chat-icon')
-          const chatContent = document.createElement('div')
-          chatContent.classList.add('chat-content')
-          const chatNick = document.createElement('div')
-          chatNick.classList.add('chat-nick')
-          
-          // 기분(상태)
-          chatIcon.src = `${require('../../../../assets/emo-default.png')}`
-          // 닉네임
-          chatNick.innerText = nickName
-
-          otherChatWrapper.append(chatIcon, chatContent)
-          chatContent.append(chatNick, chatChatting)
-          chatChatting.append(chatting, chattingSide)
-          chattingSide.append(chattingLike, chattingTime)
-          chatList.append(otherChatWrapper)
-        }
-        chatList.scrollTo(0, chatList.scrollHeight)
       }
     )
     // 채팅 입/퇴장 구독
@@ -178,106 +199,123 @@ onMounted(() => {
         const payload = JSON.parse(message.body)
         console.log(payload, '입/퇴장 구독')
 
-        let nickName
-        chatData.value.userList.forEach(user => {
-          console.log(user.userId, payload.userId)
-          if (user.userId === payload.userId) {
-            nickName = user.nickName
-          }
+        // store.dispatch('chatStore/fetchChatNickName', payload.userId)
+
+        // let nickName
+        axios({
+          url: api.accounts.getUserInfo(payload.userId),
+          method: 'get',
         })
-
-        // 채팅 입장 알림
-        const chatList = document.querySelector('.chat-list')
-        const chattingSide = document.createElement('div')
-        const chattingLike = document.createElement('img')
-        const chattingTime = document.createElement('div')
-        const chatChatting = document.createElement('div')
-        const chatting = document.createElement('div')
-        chattingSide.classList.add('chatting-side')
-        chattingLike.classList.add('chatting-like')
-        chattingTime.classList.add('chatting-time')
-        chatChatting.classList.add('chat-chatting')
-        chatting.classList.add('chatting')
-
-        // 시간
-        const otherChatWrapper = document.createElement('div')
-        otherChatWrapper.classList.add('other-chat-wrapper')
-        const chatIcon = document.createElement('img')
-        chatIcon.classList.add('chat-icon')
-        const chatContent = document.createElement('div')
-        chatContent.classList.add('chat-content')
-        const chatNick = document.createElement('div')
-        chatNick.classList.add('chat-nick')
-        
-        // 기분(상태)
-        chatIcon.src = `${require('../../../../assets/bus-clicked-horizon.png')}`
-        // 닉네임
-        chatNick.innerText = '낭만기사'
-
-        otherChatWrapper.append(chatIcon, chatContent)
-        chatContent.append(chatNick, chatChatting)
-        chatChatting.append(chatting, chattingSide)
-        chattingSide.append(chattingLike, chattingTime)
-        chatList.append(otherChatWrapper)
-
-        if (payload.inOut === 1) {  // 입장
-          // 채팅 내용
-          if (payload.message) {
-            chatting.innerText = `${nickName} 님이 "${payload.message}" 라 외치며 입장하고 있어요!`
-          } else {
-            chatting.innerText = `${nickName} 님이 조용히 입장하고 있어요..!`
-          }
-
-          // 프로필 추가(상대방만)
-          // 프로필 만들어서 unShift
-          if (chatData.value.userId !== payload.userId) {
-            console.log('남 프로필 추가')
-            const addUserPayload = {
-              userId: payload.userId,
-              nickName: nickName
-            }
-            store.dispatch('chatStore/addUser', addUserPayload)
-            addUser.addEventListener('click', () => {
-              const payload = {
-                user: payload,
-                sessionId: chatData.value.sessionId,
-              }
-              store.dispatch('chatStore/fetchProfileUser', payload)
-            })
-            // 유저 추가
-            const addUser = document.createElement('div')
-            addUser.classList.add('test-user')
-            const addIcon = document.createElement('div')
-            addIcon.classList.add('test-icon')
-            const img = document.createElement('img')
-            // img.src = `${require('../../../../assets/user-pink.png')}`
-            img.src = payload.userId ? require(`../../../../assets/user-${chatData.value.userIcons[payload.userId%4]}.png`) : ''
-            // img.alt = 'yellow'
-            img.alt = chatData.value.userIcons[payload.userId%4]
-            img.classList.add('user-icon')
-            const addName = document.createElement('div')
-            addName.classList.add('test-name')
-            addName.innerText = nickName
-            const testUsers = document.querySelector('.test-users')
-            addUser.append(addIcon, addName)
-            addIcon.append(img)
-            testUsers.prepend(addUser)
-            addUser.classList.add('add-user')
-          }
-        }
-        else {  // 퇴장
-          chatting.innerText = `${nickName} 님이 낭만버스를 떠났어요.`
-          const delUsers = document.querySelectorAll('.test-user')
-          delUsers.forEach(user => {
-            console.log(user.childNodes[1].classList)
-            const delUser = user.childNodes[1]
-            delUser.classList.add('remove-user')
-            delUser.addEventListener('animationend', () => {
-              delUser.remove()
-            })
+          .then(res => {
+            console.log(res.data)
+            const nickName =  res.data.nickname
+            return nickName
           })
-        }
-        chatList.scrollTo(0, chatList.scrollHeight)
+          .then(nickName => {
+            
+            // 채팅 입장 알림
+            const chatList = document.querySelector('.chat-list')
+            const chattingSide = document.createElement('div')
+            const chattingLike = document.createElement('img')
+            const chattingTime = document.createElement('div')
+            const chatChatting = document.createElement('div')
+            const chatting = document.createElement('div')
+            chattingSide.classList.add('chatting-side')
+            chattingLike.classList.add('chatting-like')
+            chattingTime.classList.add('chatting-time')
+            chatChatting.classList.add('chat-chatting')
+            chatting.classList.add('chatting')
+    
+            // 시간
+            const otherChatWrapper = document.createElement('div')
+            otherChatWrapper.classList.add('other-chat-wrapper')
+            const chatIcon = document.createElement('img')
+            chatIcon.classList.add('chat-icon')
+            const chatContent = document.createElement('div')
+            chatContent.classList.add('chat-content')
+            const chatNick = document.createElement('div')
+            chatNick.classList.add('chat-nick')
+            
+            // 기분(상태)
+            chatIcon.src = `${require('../../../../assets/bus-clicked-horizon.png')}`
+            // 닉네임
+            chatNick.innerText = '낭만기사'
+    
+            otherChatWrapper.append(chatIcon, chatContent)
+            chatContent.append(chatNick, chatChatting)
+            chatChatting.append(chatting, chattingSide)
+            chattingSide.append(chattingLike, chattingTime)
+            chatList.append(otherChatWrapper)
+    
+            if (payload.inOut === 1) {  // 입장
+              // 채팅 내용
+              if (payload.message) {
+                chatting.innerText = `${nickName} 님이 "${payload.message}" 라 외치며 입장하고 있어요!`
+              } else {
+                chatting.innerText = `${nickName} 님이 조용히 입장하고 있어요..!`
+              }
+    
+              // 프로필 추가(상대방만)
+              // 프로필 만들어서 unShift
+              if (chatData.value.userId !== payload.userId) {
+                console.log('남 프로필 추가')
+                const addUserPayload = {
+                  userId: payload.userId,
+                  nickName: nickName
+                }
+                store.dispatch('chatStore/addUser', addUserPayload)
+                const addUser = document.createElement('div')
+                addUser.addEventListener('click', () => {
+                  const payload = {
+                    user: payload,
+                    sessionId: chatData.value.sessionId,
+                  }
+                  store.dispatch('chatStore/fetchProfileUser', payload)
+                })
+                // 유저 추가
+                addUser.classList.add('test-user')
+                const addIcon = document.createElement('div')
+                addIcon.classList.add('test-icon')
+                const img = document.createElement('img')
+                // img.src = `${require('../../../../assets/user-pink.png')}`
+                img.src = payload.userId ? require(`../../../../assets/user-${chatData.value.userIcons[payload.userId%4]}.png`) : ''
+                // img.alt = 'yellow'
+                img.alt = chatData.value.userIcons[payload.userId%4]
+                img.classList.add('user-icon')
+                const addName = document.createElement('div')
+                addName.classList.add('test-name')
+                addName.innerText = nickName
+                const testUsers = document.querySelector('.test-users')
+                addUser.append(addIcon, addName)
+                addIcon.append(img)
+                testUsers.prepend(addUser)
+                addUser.classList.add('add-user')
+              }
+            }
+            else {  // 퇴장
+              chatting.innerText = `${nickName} 님이 낭만버스를 떠났어요.`
+              const delUsers = document.querySelectorAll('.test-user')
+              delUsers.forEach(user => {
+                console.log(user.childNodes[1])
+                const delUser = user.childNodes[1]
+                if (delUser.innerText === nickName) {
+                  delUser.classList.add('remove-user')
+                  delUser.addEventListener('animationend', () => {
+                    delUser.remove()
+                  })
+                }
+              })
+            }
+            chatList.scrollTo(0, chatList.scrollHeight)
+          })
+          .catch(err => console.log(err))
+        // chatData.value.userList.forEach(user => {
+        //   console.log(user.userId, payload.userId)
+        //   if (user.userId === payload.userId) {
+        //     nickName = user.nickName
+        //   }
+        // })
+
       }
     )
     // 좋아요 구독 -> 됨
