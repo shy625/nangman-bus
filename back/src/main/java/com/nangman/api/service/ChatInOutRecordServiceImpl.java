@@ -53,7 +53,6 @@ public class ChatInOutRecordServiceImpl implements ChatInOutRecordService{
         info.setOutTime(outTime);
         return info;
     }
-
     @Transactional
     @Override
     public void forceOut(String sessionId){

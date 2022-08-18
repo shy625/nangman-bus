@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface ReportService {
-    List<Report> getReportsByUserId(long userId);
+    List<ReportDto.Simple> getReportsByUserId(long userId);
     ReportDto.Info getReportByIds(ReportDto.DetailRequest detailRequest);
 
     @Transactional

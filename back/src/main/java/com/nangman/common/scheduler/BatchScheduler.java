@@ -34,16 +34,16 @@ public class BatchScheduler {
     private final ChatInOutRecordService chatInOutRecordService;
 
     //10초마다 실행
-    @Scheduled(cron = "0 0 4 * * *")
-    public void nicknameSchedule() {
-        userService.updateUserNickname();
-    }
-
-    @Scheduled(cron = "10 * * * * *")
-    public void busLoggingSchedule() {
-        busService.followBuses();
-    }
-
+//    @Scheduled(cron = "0 0 4 * * *")
+//    public void nicknameSchedule() {
+//        userService.updateUserNickname();
+//    }
+//
+//    @Scheduled(cron = "10 * * * * *")
+//    public void busLoggingSchedule() {
+//        busService.followBuses();
+//    }
+//
     @Scheduled(cron = "0 0,12 * * * *")
     @Transactional
     public void endPointCheckingSchedule(){
@@ -51,12 +51,9 @@ public class BatchScheduler {
         for (Bus bus : busList){
             int isDone = TimeCalculator.getAccessTime(LocalDateTime.now(), bus.getLastModifiedDate());
             if (bus.getSessionId() != null && isDone > 60 * 3){
-                log.info("=========================BeforeSessionId==========================");
-                log.info(bus.getSessionId());
                 ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
-                chatInOutRecordService.forceOut(bus.getSessionId());
-                log.info("=========================AfterSessionId==========================");
                 log.info(chatLog.getSessionId());
+                chatInOutRecordService.forceOut(bus.getSessionId());
                 chatService.InsertChatLogs(chatLog);
                 bus.setSessionId(null);
                 busRepository.save(bus);

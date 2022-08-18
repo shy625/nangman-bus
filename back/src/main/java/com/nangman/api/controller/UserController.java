@@ -96,10 +96,6 @@ public class UserController {
 			// 유효한 패스워드가 맞는 경우, 어트리뷰트, 세션 반환 및 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
 
 			session.setAttribute("User", user);
-			log.info(session.getId());
-			log.info(user.getUseremail());
-			log.info(user.getPassword());
-
 			Cookie cookie = new Cookie("user", user.getUseremail());
 			cookie.setPath("/"); // 도메인 기준 쿠키 생성
 			cookie.setMaxAge(24*60*60*365); // 쿠키 만료기한 365일

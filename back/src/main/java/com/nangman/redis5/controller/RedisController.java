@@ -25,9 +25,9 @@ import java.util.List;
 public class RedisController {
 
     private final RedisService redisService;
-    private final ChatService chatService;
     private final BusRepository busRepository;
     private final ChatInOutRecordService chatInOutRecordService;
+    private final ChatService chatService;
 
     @GetMapping("/")
     public String ok() {
@@ -73,11 +73,6 @@ public class RedisController {
         chatService.InsertChatLogs(chatLog);
         bus.setSessionId(null);
         busRepository.save(bus);
-    }
-
-    @GetMapping("/test/setBusSuchDist/{dist}")
-    public void setBusSuchDist(double dist) {
-        redisService.setBUS_CHECK_DIST(dist);
     }
 
 //    @GetMapping("/test/upLike")
