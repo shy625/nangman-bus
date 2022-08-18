@@ -329,15 +329,12 @@ export function fetchGPS({ commit }, geoData) {
 }
 
 export function fetchProfileUser({ commit }, payload) {
-  commit('SET_PROFILE_USER', payload.user)
-  console.log(payload.user.userId, payload.sessionId, payload)
+  commit('SET_PROFILE_USER', payload.target)
+  console.log(payload.target.userId, payload.sessionId, payload)
   axios({
-    url: api.chat.getProfileUserData(),
+    // userId, sessionId, targetId
+    url: api.chat.getProfileUserData(payload.userId, payload.sessionId, payload.target.userId),
     method: 'get',
-    data: {
-      userId: payload.user.userId,
-      sessionId: payload.sessionId
-    }
   })
     .then(res => {
       console.log(res.data)

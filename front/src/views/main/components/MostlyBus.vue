@@ -6,25 +6,32 @@
       </div>
       <hr class="mostlybus-title-line">
     </div>
-    <div class="mostlybus-box">
-      <div class="mostlybus-content">
-        <!-- 지금까지 <갯수>번 탔던 <날짜>에 탔던 <노선> 버스에 방명록이 <갯수>개 추가됐어요! -->
+    <div class="mostlybus-box" v-if="busData.top3.length">
+      <div v-for="(bus, idx) in busData.top3" :key="idx">
+        <div class="mostlybus-content">
+          지금까지 <span class="mostlybus-data">{{ busData.top3Count[idx]}}</span> 탔던 <span class="mostlybus-data">{{ bus.routeNo }}</span>번 버스는 <span class="mostlybus-data">{{ bus.nodeName }}</span>에 있어요!
+        </div>
+      </div>
+      <!-- <div class="mostlybus-content">
         지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
         <span class="mostlybus-status">아주 시끌벅적하네요!</span>
       </div>
       <div class="mostlybus-content">
         지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
         <span class="mostlybus-status">아주 시끌벅적하네요!</span>
-      </div>
-      <div class="mostlybus-content">
-        지금 <span class="mostlybus-data">양재IC</span> 지나는 <span class="mostlybus-data">5100번</span> 버스는요,<br>
-        <span class="mostlybus-status">아주 시끌벅적하네요!</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script setup>
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 
+const store = useStore()
+const busData = ref({
+  top3: computed(() => store.getters['mainPage/top3']),
+  top3Count: computed(() => store.getters['mainPage/top3Count'])
+})
 </script>
 <style>
 .mostlybus {
