@@ -4,9 +4,9 @@
       <div class="modal-profile">
         <div class="profile-exit">X</div>
         <div class="modal-profile-title">
-          <img src="../../../../assets/user-pink.png" class="modal-profile-icon" style="height: 80px;width:80px">
+          <img :src="profileData.user.userId ? require(`../../../../assets/user-${profileData.userIcons[profileData.user.userId%4]}.png`) : ''" class="modal-profile-icon" style="height: 80px;width:80px">
           <div class="modal-profile-nick">
-            <div class="modal-profile-nickname">헤라클레스</div>
+            <div class="modal-profile-nickname">{{ profileData.user.nickName }}</div>
             <div class="modal-profile-birth"></div>
           </div>
         </div>
@@ -66,16 +66,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-// import { useStore } from 'vuex'
+import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 
-// const store = useStore()
+const store = useStore()
 const profileData = ref({
+  user: computed(() => store.getters['chatStore/profileUser']),
+  userId: computed(() => store.getters['chatStore/profileUserId']),
   countNumTogether: 13,
   countMonthlyUsed: 19,
   inHour: 1,
   inMinute: 23,
   getoffRoute: '경남아너스빌 11단지',
+  userIcons: [
+  'pink',
+  'pinker',
+  'red',
+  'yellow',
+  ]
 })
 
 onMounted(() => {

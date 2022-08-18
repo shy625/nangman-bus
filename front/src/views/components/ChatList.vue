@@ -48,11 +48,10 @@ import { useStore } from "vuex"
 const store = useStore()
 const data = ref({
   rooms: computed(() => store.getters['chatStore/rooms']),
-  lat: 0,
-  lng: 0,
+  lat: computed(() => store.getters['chatStore/lat']),
+  lng: computed(() => store.getters['chatStore/lng']),
 })
 
-getLocation()
 // 37.49797, 127.02763
 function getRooms(lat, lng) {
   const chatListRefresh = document.querySelector('.chatlist-title-refresh')
@@ -75,24 +74,6 @@ function getRooms(lat, lng) {
   })
 }
 
-function getLocation() {
-  if (navigator.geolocation) { // GPS를 지원하면
-    navigator.geolocation.getCurrentPosition(position => {
-      // console.log(position.coords.latitude, position.coords.longitude)
-      data.value.lat = position.coords.latitude
-      data.value.lng = position.coords.longitude
-    }, error => {
-      console.error(error)
-    }, {
-      enableHighAccuracy: false,
-      maximumAge: 0,
-      timeout: Infinity
-    })
-  } else {
-    alert('GPS를 허용해 주세요.')
-  }
-}
-
 const clickBusGetIn = room => {
   console.log(room)
   const geoData = {
@@ -108,14 +89,8 @@ const clickBusGetIn = room => {
     // lat: 37.26633,
     // lng: 127.08227
   }
-  store.dispatch('chatStore/fetchSessionId', geoData)
+  store.dispatch('chatStore/fetctSessionIdFromChatList', geoData)
 }
-// 위치바뀌면 감지
-navigator.geolocation.watchPosition(function(position) {
-  // console.log(position.coords.latitude, position.coords.longitude)
-  data.value.lat = position.coords.latitude
-  data.value.lng = position.coords.longitude
-})
 
 </script>
 <style>

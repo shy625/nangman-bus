@@ -4,21 +4,21 @@
       <div class="busstop-mini">
         <div class="busstop-mini-above">
           <div class="busstop-small">
-            인천시청후문
+            {{ busData.realTimeStation.prevName }}
           </div>
           <div class="busstop-icon">
             <span class="busstop-icon-one">></span>
             <span class="busstop-icon-two">></span>
           </div>
           <div class="busstop-big">
-            래미안아파트파이낸셜뉴스
+            {{ busData.realTimeStation.curName }}
           </div>
           <div class="busstop-icon">
             <span class="busstop-icon-one">></span>
             <span class="busstop-icon-two">></span>          
           </div>
           <div class="busstop-small">
-            모래내시장역(3번출구)
+            {{ busData.realTimeStation.nextName }}
           </div>
         </div>
         <div class="busstop-mini-below">
@@ -44,7 +44,7 @@
           >
             <div 
               class="busstop-name" 
-              @click="clickBusstop"
+              @click="clickBusstop(busstop.busStopId, $event)"
             >
               {{ busstop.nodeName }}
             </div>
@@ -65,21 +65,22 @@ const busData = ref({
   client: computed(() => store.getters['chatStore/client']),
   userId: computed(() => store.getters['chatStore/userId']),
   sessionId: computed(() => store.getters['chatStore/sessionId']),
+  realTimeStation: computed(() => store.getters['chatStore/realTimeStation'])
 })
 
-const clickBusstop = e => {
+const clickBusstop = (busStopId, evnet) => {
   // 하차정류장 지정 디스패치
-  // console.log(e.target.innerText)
-  e.target.classList.add('busstop-pulse')
+  console.log(event.target)
+  evnet.target.classList.add('busstop-pulse')
   setTimeout(() => {
-    e.target.classList.remove('busstop-pulse')
+    evnet.target.classList.remove('busstop-pulse')
   }, 500)
-  e.target.scrollIntoView({ block: 'center', behavior: 'smooth' })  // 타겟 스크롤 포커스! -> 현재 정류장 기준으로!
+  evnet.target.scrollIntoView({ block: 'center', behavior: 'smooth' })  // 타겟 스크롤 포커스! -> 현재 정류장 기준으로!
 
   // 버스 하차 정류장 pub
   const payload = {
     userId: busData.value.userId,
-    busStopId: 12,
+    busStopId: busStopId,
   }
   console.log('하차 전송')
   busData.value.client.publish({
@@ -211,7 +212,7 @@ onMounted(() => {
 @keyframes busstopPulse {
   from {
     font-weight: normal;
-    transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 12);
   }
   50% {
     font-weight: bold;
@@ -219,6 +220,23 @@ onMounted(() => {
   }
   to {
     font-weight: normal;
+    transform: scale3d(1, 1, 1);
+  }
+}
+.busstop-pulse-inf {
+  animation: busstopPulseInf 1s infinite;
+}
+@keyframes busstopPulseInf {
+  from {
+    font-weight: bold;
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    font-weight: normal;
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  100% {
+    font-weight: bold;
     transform: scale3d(1, 1, 1);
   }
 }
