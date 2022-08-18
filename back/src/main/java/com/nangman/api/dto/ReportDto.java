@@ -1,8 +1,6 @@
 package com.nangman.api.dto;
 
-import com.nangman.db.entity.Board;
-import com.nangman.db.entity.Report;
-import com.nangman.db.entity.Room;
+import com.nangman.db.entity.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,7 +10,10 @@ import lombok.Setter;
 import org.apache.http.HttpStatus;
 
 import javax.persistence.OneToOne;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @ApiModel("Report model")
@@ -31,6 +32,36 @@ public class ReportDto {
     }
 
 
+    @Setter
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Simple{
+        @ApiModelProperty(name="레포트 id", example="1")
+        private long id;
+        @ApiModelProperty(name="방명록 작성일", example="2022-08-08(YYYY-MM-DD)")
+        private String createDay;
+        @ApiModelProperty(name="방명록 작성시간", example="12:34:12(HH:mm:ss)")
+        private String createTime;
+        @ApiModelProperty(name="노선번호", example="N3321")
+        private String routeNo;
+        @ApiModelProperty(name="가장 많은 좋아요를 받은 채팅", example="1")
+        private String content;
+
+        @ApiModelProperty(name="채팅에 참가한 유저id 리스트", example="1")
+        private List<Long> userIdList;
+        public Simple(Report report) {
+            this.id = report.getId();
+            this.createDay = report.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            this.createTime = report.getCreatedDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+            this.routeNo = report.getRoom().getBus().getRouteNo();
+            this.content = report.getContent();
+            this.userIdList = new ArrayList<>();
+            for (UserReport userReport : report.getUserReports())
+                userIdList.add(userReport.getUser().getId());
+        }
+
+    }
     @Setter
     @Getter
     @NoArgsConstructor
@@ -68,18 +99,19 @@ public class ReportDto {
         private int myAccessMinute;
 
         @ApiModelProperty(name="채팅방 분당 화력", example="30")
-        private int chatPerMinute;
+        private double chatPerMinute;
 
         @ApiModelProperty(name="낭만보고서 작성일", example="2022-08-08(YYYY-MM-DD)")
         private String createDay;
 
         @ApiModelProperty(name="낭만보고서 작성시간", example="12:34:12(HH:mm:ss)")
         private String createTime;
-        public Info(Report report, int accessTime, int chatPerMinute, int personalCount) {
+        public Info(Report report, int accessTime, double chatPerMinute, int personalCount) {
             this.id = report.getId();
             this.content = report.getContent();
             this.totalChatCount = report.getTotalChatCount();
             this.totalUserCount = report.getTotalUserCount();
+            this.averageTime = report.getAverageTime();
             this.myAccessHour = accessTime / 3600;
             this.myAccessMinute = (accessTime % 3600) / 60;
             this.chatPerMinute = chatPerMinute;

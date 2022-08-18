@@ -31,23 +31,24 @@ public class ReportServiceImpl implements ReportService{
     private final UserRepository userRepository;
     @Override
     @Transactional(readOnly = true)
-    public List<Report> getReportsByUserId(long userId) {
-        List<Report> reports = new ArrayList<>();
+    public List<ReportDto.Simple> getReportsByUserId(long userId) {
+        List<ReportDto.Simple> simpleList = new ArrayList<>();
         List<UserReport> userReports = userReportRepository.findUserReportsByUserIdOrderByCreatedDateDesc(userId);
 
         for (int i = 0; i < userReports.size(); i++){
             Report report = userReports.get(i).getReport();
-            reports.add(report);
+            ReportDto.Simple item = new ReportDto.Simple(report);
+            simpleList.add(item);
         }
 
-        return reports;
+        return simpleList;
     }
 
     @Override
     @Transactional(readOnly = true)
     public ReportDto.Info getReportByIds(ReportDto.DetailRequest detailRequest) {
         Report report = reportRepository.findReportById(detailRequest.getReportId()).get();
-        int chatPerMinute = (int)(report.getTotalChatCount() / (report.getAverageTime() / 60));
+        double chatPerMinute = report.getTotalChatCount() / (report.getAverageTime() / 60.0);
         int accessTime = 0;
         List<ChatInOutRecord> chatInOutRecordList = chatInOutRecordRepository
                 .findChatInOutRecordByUserIdAndRoomId(

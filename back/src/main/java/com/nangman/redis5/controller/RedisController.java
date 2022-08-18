@@ -1,5 +1,10 @@
 package com.nangman.redis5.controller;
 
+import com.nangman.api.dto.ChatDto;
+import com.nangman.api.service.ChatInOutRecordService;
+import com.nangman.api.service.ChatService;
+import com.nangman.db.entity.Bus;
+import com.nangman.db.repository.BusRepository;
 import com.nangman.redis5.dto.*;
 import com.nangman.redis5.service.RedisService;
 import io.swagger.annotations.Api;
@@ -20,6 +25,9 @@ import java.util.List;
 public class RedisController {
 
     private final RedisService redisService;
+    private final BusRepository busRepository;
+    private final ChatInOutRecordService chatInOutRecordService;
+    private final ChatService chatService;
 
     @GetMapping("/")
     public String ok() {
@@ -40,7 +48,8 @@ public class RedisController {
 
     @GetMapping("/isAccessibleRoom/{lat}/{lng}/{sessionId}")
     public boolean isAccessibleRoom(@PathVariable double lat, @PathVariable double lng, @PathVariable String sessionId) {
-        return redisService.isAccessibleRoom(lat, lng, sessionId);
+        return true;
+//        return redisService.isAccessibleRoom(lat, lng, sessionId);
     }
 
     @GetMapping("/rooms/{sessionId}")
@@ -56,6 +65,22 @@ public class RedisController {
     public List<String> getSessionList() {
         return redisService.getSessionList();
     }
+
+    @GetMapping("/test/killBus/{sessionId}")
+    public void killBus(String sessionId) {
+        Bus bus = busRepository.findBusBySessionId(sessionId).get();
+        ChatDto.ChatLog chatLog = redisService.deleteChattingRoom(bus.getSessionId());
+        chatInOutRecordService.forceOut(bus.getSessionId());
+        chatService.InsertChatLogs(chatLog);
+        bus.setSessionId(null);
+        busRepository.save(bus);
+    }
+
+    @GetMapping("/test/setBusSuchDist/{dist}")
+    public void setBusSuchDist(double dist) {
+        redisService.setBUS_CHECK_DIST(dist);
+    }
+
 
 //    @GetMapping("/test/upLike")
 //    public void upLike() {
