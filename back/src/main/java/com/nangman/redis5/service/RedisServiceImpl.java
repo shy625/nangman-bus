@@ -419,7 +419,7 @@ public class RedisServiceImpl implements RedisService{
         redisTemplate.opsForHash().increment(key, SUBKEY_USER_NUM, 1);
 
         User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
-        log.info("joinRoom() user : " + user);
+//        log.info("joinRoom() user : " + user);
         boolean isTodayBirth = false;
         log.info("joinRoom() user.getUserBirthday : " + user.getUserBirthday());
         if (user.getUserBirthday() != null || !user.getUserBirthday().equals("")) {
