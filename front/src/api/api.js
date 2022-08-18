@@ -1,4 +1,4 @@
-const HOST = 'http://i7a704.p.ssafy.io:8080/api/'
+const HOST = 'https://i7a704.p.ssafy.io:8080/api/'
 
 const USER = 'user/'
 const REDIS = 'redis/'
@@ -28,7 +28,7 @@ export default {
     getrandombus: () => HOST + REDIS + 'getRandomBus',
     fetchCurrentUser: userId => HOST + USER + userId,
     changeIsRouletted: userId => HOST + USER + userId + '/roulette',
-    getMyBuses: () => HOST + MAIN + 'topbus'
+    getMyBuses: (userId) => HOST + MAIN + 'topbus/' + userId
   },
   chat: {
     createBoard: () => HOST + BOARDS,
@@ -37,7 +37,7 @@ export default {
 
     getIsAccessible: (sessionId, lat, lng) => HOST + REDIS + 'isAccessibleRoom/' + lat + '/' + lng + '/' + sessionId,
     getRoomInfo: sessionId => HOST + REDIS + 'rooms/' + sessionId,
-    getProfileUserData: userId => HOST + RELATIONSHIP + userId,
+    getProfileUserData: (userId, sessionId, targetId) => HOST + RELATIONSHIP + userId + '/' + sessionId + '/' + targetId
   }
 //   articles: {
 //     // /articles/
