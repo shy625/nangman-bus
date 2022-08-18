@@ -96,7 +96,9 @@ const profileData = ref({
     'red',
     'yellow',
   ],
-  sessionId: computed(() => store.getters['chatStore/sessionId'])
+  sessionId: computed(() => store.getters['chatStore/sessionId']),
+  realTimeStation: computed(() => store.getters['chatStore/realTimeStations']),
+  getOffList: computed(() => store.getters['chatStore/getOffUserList']) 
 })
 
 const clickProfile = user => {

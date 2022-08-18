@@ -51,7 +51,13 @@ const chatData = ref({
   lat: computed(() => store.getters['chatStore/lat']),
   lng: computed(() => store.getters['chatStore/lng']),
   client: computed(() => store.getters['chatStore/client']),
-  userList: computed(() => store.getters['chatStore/userList'])
+  userList: computed(() => store.getters['chatStore/userList']),
+  userIcons: [
+    'pink',
+    'pinker',
+    'red',
+    'yellow',
+  ],
 })
 
 onMounted(() => {
@@ -172,10 +178,45 @@ onMounted(() => {
 
         let nickName
         chatData.value.userList.forEach(user => {
+          console.log(user.userId, payload.userId)
           if (user.userId === payload.userId) {
             nickName = user.nickName
           }
         })
+
+        // 프로필 만들어서 unShift
+        const addUserPayload = {
+          userId: payload.userId,
+          nickName: nickName
+        }
+        store.dispatch('chatStore/addUser', addUserPayload)
+        // 유저 추가
+        const addUser = document.createElement('div')
+        addUser.classList.add('test-user')
+        const addIcon = document.createElement('div')
+        addIcon.classList.add('test-icon')
+        const img = document.createElement('img')
+        // img.src = `${require('../../../../assets/user-pink.png')}`
+        img.src = payload.userId ? require(`../../../../assets/user-${chatData.value.userIcons[payload.userId%4]}.png`) : ''
+        // img.alt = 'yellow'
+        img.alt = chatData.value.userIcons[payload.userId%4]
+        img.classList.add('user-icon')
+        const addName = document.createElement('div')
+        addName.classList.add('test-name')
+        addName.innerText = nickName
+        addUser.addEventListener('click', () => {
+          const payload = {
+            user: payload,
+            sessionId: chatData.value.sessionId,
+          }
+          store.dispatch('chatStore/fetchProfileUser', payload)
+        } )
+
+        const testUsers = document.querySelector('.test-users')
+        addUser.append(addIcon, addName)
+        addIcon.append(img)
+        testUsers.prepend(addUser)
+        addUser.classList.add('add-user')
 
         const chatList = document.querySelector('.chat-list')
         const chattingSide = document.createElement('div')
@@ -213,7 +254,7 @@ onMounted(() => {
         if (payload.inOut === 1) {  // 입장
           // 채팅 내용
           if (payload.message) {
-            chatting.innerText = `${nickName} 님이 ${payload.message} 라 외치며 입장하고 있어요!`
+            chatting.innerText = `${nickName} 님이 "${payload.message}" 라 외치며 입장하고 있어요!`
           } else {
             chatting.innerText = `${nickName} 님이 조용히 입장하고 있어요..!`
           }

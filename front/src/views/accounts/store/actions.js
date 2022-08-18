@@ -34,6 +34,7 @@ export function login({ commit, dispatch }, credentials) {
       router.push({ name: 'main' })
     })
     .catch(err => {
+      alert('이메일 혹은 비밀번호를 확인해 주세요.')
       console.error(err.response.data)
       commit('SET_AUTH_ERROR', err.response.data)
     })
@@ -59,6 +60,7 @@ export function signup({ commit, dispatch }, credentials) {
       router.push({ name: 'main' })
     })
     .catch(err => {
+      alert('비밀번호는 8 ~ 16 길이로 입력해 주세요.')
       console.error(err.response.data)
       commit('SET_AUTH_ERROR', err.response.data)
     })

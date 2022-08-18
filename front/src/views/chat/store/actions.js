@@ -169,6 +169,20 @@ export function fetchSessionId({ dispatch }, data) {
     })
 }
 
+export function addUser({ commit }, payload) {
+  const user = {
+    emotion: 0,
+    isTodayBirth: false,
+    nickname: payload.nickName,
+    outBusStopId: 0,
+    userId: payload.userId
+  }
+  commit('ADD_USER', user)
+    .then(() => {
+      console.log(user)
+    })
+}
+
 export function fetchRoomInfo({ commit, dispatch, getters }, payload) {
   axios({
     url: api.chat.getRoomInfo(payload.sessionId),
