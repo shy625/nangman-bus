@@ -24,6 +24,13 @@
 
 ## 빌드 및 배포 가이드
 
+### 빌드 및 배포 시 특이사항
+
+- 벡엔드 빌드 및 배포 진행 전 로컬 등에 Redis 설치 및 연결 필요
+- 프론트 배포에 NGINX 사용 시 SSL 적용 필요
+
+<br>
+
 1. 해당 Gitlab 레포의 master 브랜치를 clone
     ```bash
     git clone https://lab.ssafy.com/s07-webmobile1-sub2/S07P12A704.git
@@ -109,4 +116,15 @@
 
 ## DB dump
 
+- 공공 API를 사용하여 실 데이터를 받아오기 때문에 별도 데이터 dump 필요 X
+- 대신 버스 등록을 위한 설정 필요
+    1. 네이버 지도에서 등록하고자 하는 버스 번호와 지역 정보 확인
+    2. 아래 스웨거 페이지 접속   
+        https://i7a704.p.ssafy.io:8080/swagger-ui/#
+    3. Route Controller에서 `[POST] /api/route/` api에 지역이름과 버스 번호를 입력하고 노선 추가
+    4. 추가한 노선에 대한 정보가 자동으로 DB에 저장되고, 연결된 채팅방 세션이 Redis에 생성
+    5. 자신 위치 주변으로 확인되는 등록한 버스 채팅방 확인 및 서비스 이용
+
 ## 시연 시나리오
+
+README의 주요 화면 소개 참고
