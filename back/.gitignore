@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 !**/src/main/resources/application.properties
 
-*.p12
 
 *.log
 *.gz
