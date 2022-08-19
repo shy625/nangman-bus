@@ -7,6 +7,7 @@ const state = () => ({
   rooms: [],
   roomInfo: {},
   profileUser: {},
+  profileModal: {},
 
   gps: { lat: 0, lng: 0 },
 
