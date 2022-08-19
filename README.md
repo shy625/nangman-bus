@@ -67,7 +67,7 @@
 
 ## DB ERD
 
-[DB ERD](/img/DB_ERD.png)
+![DB ERD](/img/DB_ERD.png)
 
 ## 개발 환경 및 빌드 방법
 
