@@ -83,21 +83,44 @@ export function getOffUserList(state) {
   const getOffUserList = []
   let idx = 0
   let startUser = ''
-  state.roomInfo.roomUserInfoList.forEach(user => {
+  state.roomInfo.roomUserInfoList?.forEach(user => {
     console.log(user.outBusStopId, state.realTimeStation.nextId)
     if (user.outBusStopId === state.realTimeStation.nextId) {
       if (idx === 0) {
         startUser = user.nickName
       }
+      const getOff = {
+        nickName: user.nickName,
+        idx: idx,
+      }
+      getOffUserList.push(getOff)
       idx += 1
-      getOffUserList.push(user.nickName)
     }
   })
-  getOffUserList.push(startUser)
+  getOffUserList.push({ nickName: startUser, idx: getOffUserList.length })
   console.log(getOffUserList)
   return getOffUserList
 }
 
 export function chatNickName(state) {
   return state.chatNickName
+}
+
+export function profileModal(state) {
+  return state.profileModal
+}
+
+export function profileBusStop(state) {
+  const busstops = state.roomInfo.busStopInfoList
+  for (let i=0; i<busstops?.length; i++) {
+    if (Number(busstops[i].busStopId) === state.profileUser.outBusStopId) {
+      return busstops[i].nodeName
+    }
+  }
+  // state.roomInfo.busStopInfoList?.forEach(busstop => {
+  //   console.log(Number(busstop.busStopId), state.profileUser.outBusStopId, Number(busstop.busStopId) === state.profileUser.outBusStopId)
+  //   if (Number(busstop.busStopId) === state.profileUser.outBusStopId) {
+  //     return busstop.nodeName
+  //   }
+  // })
 }

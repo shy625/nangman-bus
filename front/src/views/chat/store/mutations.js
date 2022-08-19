@@ -74,3 +74,7 @@ export function ADD_USER(state, user) {
 export function SET_CHAT_NICKNAME(state, nickName) {
   state.chatNickName = nickName
 }
+
+export function SET_PROFILE_MODAL(state, user) {
+  state.profileModal = user
+}
