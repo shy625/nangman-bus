@@ -59,6 +59,16 @@
 
 ![낭만보고서](/img/%EB%82%AD%EB%A7%8C%EB%B3%B4%EA%B3%A0%EC%84%9C.gif)
 
+## 화면 명세서
+
+[[Figma] 화면 명세서](https://www.figma.com/file/4rzHAVeWwRwnkkThxS7m2i/nangman-BUS?node-id=96%3A2)
+
+![화면명세서](/img/%ED%99%94%EB%A9%B4%EB%AA%85%EC%84%B8%EC%84%9C.png)
+
+## DB ERD
+
+[DB ERD](/img/DB_ERD.png)
+
 ## 개발 환경 및 빌드 방법
 
 exec 폴더 내용 참고
