@@ -5,14 +5,14 @@
     </router-link>
     <div class="detail-header-cover">
       <div class="detail-header-title">
-        <span class="detail-header-number">{{ busNum }}번</span> 낭만버스
+        <span class="detail-header-number">{{ detailHeader.busNum }}번</span> 낭만버스
       </div>
       <div class="detail-header-date">
-        {{ day.substr(0, 4) }}년 
-        {{ day.substr(5, 2)>9 ? day.substr(5, 2) : day.substr(6, 1) }}월 
-        {{ day.substr(8, 2) }}일 
-        {{ time.substr(0, 2) }}시 
-        {{ time.substr(3, 2) }}분
+        {{ detailHeader.day.substr(0, 4) }}년 
+        {{ detailHeader.day.substr(5, 2)>9 ? detailHeader.day.substr(5, 2) : detailHeader.day.substr(6, 1) }}월 
+        {{ detailHeader.day.substr(8, 2) }}일 
+        {{ detailHeader.time.substr(0, 2) }}시 
+        {{ detailHeader.time.substr(3, 2) }}분
       </div>
     </div>
   </div>
@@ -20,14 +20,20 @@
 </template>
 <script setup>
 import { useStore } from 'vuex'
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
   const store = useStore()
   // const busNum = store.getters.reportsDetailBus
-  const busNum = computed(() => store.getters['mainPage/reportsDetailBus'])
-  const day = computed(() => store.getters['mainPage/reportsDetailCreateDay'])
-  const time = computed(() => store.getters['mainPage/reportsDetailCreateTime'])
-  console.log(busNum)
+  // const busNum = computed(() => store.getters['mainPage/reportsDetailBus'])
+  // const day = computed(() => store.getters['mainPage/reportsDetailCreateDay'])
+  // const time = computed(() => store.getters['mainPage/reportsDetailCreateTime'])
+
+  const detailHeader = ref({
+    busNum: computed(() => store.getters['mainPage/reportsDetailBus']),
+    day: computed(() => store.getters['mainPage/reportsDetailCreateDay']),
+    time: computed(() => store.getters['mainPage/reportsDetailCreateTime']),
+  })
+  // console.log(busNum)
 // onBeforeMount(() => {
 // })
 // 만약 store.getters.뭐시기 가 안되면
