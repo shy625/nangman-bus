@@ -21,17 +21,12 @@
             <div class="cover-title">
               "저 이번에 내려요"
             </div>
-            <div class="list-cover">
-              <div class="getoff-list">
-                <div class="getoff-user">
-                  헤라클레스
-                </div>
-                <div class="getoff-user">
-                  가우르구라
-                </div>
-                <!-- 맨위 사람과 같은 사람 한번더 넣어줘야 자연스럽게 돔 -->
-                <div class="getoff-user">
-                  헤라클레스
+            <div class="list-cover" v-if="profileData.getOffList">
+              <div v-for="getOff in profileData.getOffList" :key="getOff">
+                <div class="getoff-list">
+                  <div class="getoff-user">
+                    {{ getOff.nickName }}
+                  </div>
                 </div>
               </div>
             </div>

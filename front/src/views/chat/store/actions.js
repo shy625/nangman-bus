@@ -173,12 +173,17 @@ export function addUser({ commit }, payload) {
   const user = {
     emotion: 0,
     isTodayBirth: false,
-    nickname: payload.nickName,
+    nickName: payload.nickName,
     outBusStopId: 0,
     userId: payload.userId
   }
   commit('ADD_USER', user)
 }
+
+// export function removeUser({ commit }, payload) {
+//   let user = ''
+
+// }
 
 export function fetchRoomInfo({ commit, dispatch, getters }, payload) {
   axios({
@@ -338,6 +343,7 @@ export function fetchProfileUser({ commit }, payload) {
   })
     .then(res => {
       console.log(res.data)
+      commit('SET_PROFILE_MODAL', res.data)
     })
 }
 
@@ -364,4 +370,14 @@ export function fetchRealTimeStation({ commit }, payload) {
 
 export function fetchGetOffStation({ commit }, payload) {
   commit('SET_GET_OFF_STATION', payload)
+}
+
+export function fetchChatNickName({ commit }, userId) {
+  axios({
+    url: api.accounts.getUserInfo(userId),
+    method: 'get',
+  })
+    .then(res => {
+      commit('SET_CHAT_NICKNAME', res.data.nickname)
+    })
 }
