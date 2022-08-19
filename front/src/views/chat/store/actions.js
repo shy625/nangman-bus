@@ -173,7 +173,7 @@ export function addUser({ commit }, payload) {
   const user = {
     emotion: 0,
     isTodayBirth: false,
-    nickname: payload.nickName,
+    nickName: payload.nickName,
     outBusStopId: 0,
     userId: payload.userId
   }
@@ -343,6 +343,7 @@ export function fetchProfileUser({ commit }, payload) {
   })
     .then(res => {
       console.log(res.data)
+      commit('SET_PROFILE_MODAL', res.data)
     })
 }
 

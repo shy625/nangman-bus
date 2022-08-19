@@ -296,7 +296,7 @@ onMounted(() => {
               chatting.innerText = `${nickName} 님이 낭만버스를 떠났어요.`
               const delUsers = document.querySelectorAll('.test-user')
               delUsers.forEach(user => {
-                console.log(user.childNodes[1])
+                console.log(user.childNodes[1].innerText)
                 const delUser = user.childNodes[1]
                 if (delUser.innerText === nickName) {
                   delUser.classList.add('remove-user')

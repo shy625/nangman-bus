@@ -6,7 +6,7 @@
         <div class="modal-profile-title">
           <img :src="profileData.user.userId ? require(`../../../../assets/user-${profileData.userIcons[profileData.user.userId%4]}.png`) : ''" class="modal-profile-icon" style="height: 80px;width:80px">
           <div class="modal-profile-nick">
-            <div class="modal-profile-nickname">{{ profileData.user.nickName }}</div>
+            <div class="modal-profile-nickname">{{ profileData.user?.nickName }}</div>
             <div class="modal-profile-birth"></div>
           </div>
         </div>
@@ -17,7 +17,7 @@
           <div class="modal-profile-detail">
             <div class="profile-detail-title">나와<br>함께한 시간</div>
             <div>
-              <span class="profile-detail-content">{{ profileData.countNumTogether}}</span><span>회</span>
+              <span class="profile-detail-content">{{ profileData.profileModal?.countNumTogether}}</span><span>회</span>
             </div>
             <div class="profile-tooltip">
               함께 낭만채팅을 이용한 횟수에요.
@@ -26,7 +26,7 @@
           <div class="modal-profile-detail">
             <div class="profile-detail-title">한달 간<br>이 버스를 탄 횟수</div>
             <div>
-              <span class="profile-detail-content">{{ profileData.countMonthlyUsed }}</span><span>회</span>
+              <span class="profile-detail-content">{{ profileData.profileModal?.countMonthlyUsed }}</span><span>회</span>
             </div>
             <div class="profile-tooltip">
               한달 간 이 버스에서 낭만채팅을 이용한 횟수에요.
@@ -37,11 +37,11 @@
             <div>
               <!-- v-if 시간 값 없으면 안나오게 -->
               <span class="profile-detail-content">
-                {{ profileData.inHour }}
+                {{ profileData.profileModal?.inHour }}
               </span>
               <span>시간</span>
               <span class="profile-detail-content">
-                {{ profileData.inMinute }}
+                {{ profileData.profileModal?.inMinute }}
               </span>
               <span>분</span>
             </div>
@@ -52,8 +52,10 @@
           <div class="modal-profile-detail">
             <div class="profile-detail-title">내릴<br>정류장</div>
             <div>
-              <span v-if="!profileData.getoffRoute" class="profile-detail-content" style="font-style: italic">선택하지 않았어요</span>
-              <span v-else class="profile-detail-content">{{ profileData.getoffRoute }}</span>
+              <span v-if="!profileData.user?.outBusStopId" class="profile-detail-content" style="font-style: italic">선택하지 않았어요</span>
+              <span v-else class="profile-detail-content">
+                {{ profileData.profileBusStop }}
+                </span>
             </div>
             <div class="profile-tooltip">
               선택한 하차 정류장이에요.
@@ -73,18 +75,21 @@ const store = useStore()
 const profileData = ref({
   user: computed(() => store.getters['chatStore/profileUser']),
   userId: computed(() => store.getters['chatStore/profileUserId']),
-  countNumTogether: 13,
-  countMonthlyUsed: 19,
-  inHour: 1,
-  inMinute: 23,
-  getoffRoute: '경남아너스빌 11단지',
+  // countNumTogether: 13,
+  // countMonthlyUsed: 19,
+  // inHour: 1,
+  // inMinute: 23,
+  // getoffRoute: '경남아너스빌 11단지',
   userIcons: [
   'pink',
   'pinker',
   'red',
   'yellow',
-  ]
-})
+  ],
+  profileModal: computed(() => store.getters['chatStore/profileModal']),
+  busstopInfos: computed(() => store.getters['chatStore/busstopInfos']),
+  profileBusStop: computed(() => store.getters['chatStore/profileBusStop'])
+  })
 
 onMounted(() => {
   const profileHint = document.querySelector('.profile-hint')
