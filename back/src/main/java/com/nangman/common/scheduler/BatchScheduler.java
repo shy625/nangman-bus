@@ -33,17 +33,16 @@ public class BatchScheduler {
     private final ChatService chatService;
     private final ChatInOutRecordService chatInOutRecordService;
 
-    //10초마다 실행
-//    @Scheduled(cron = "0 0 4 * * *")
-//    public void nicknameSchedule() {
-//        userService.updateUserNickname();
-//    }
-//
-//    @Scheduled(cron = "10 * * * * *")
-//    public void busLoggingSchedule() {
-//        busService.followBuses();
-//    }
-//
+    @Scheduled(cron = "0 0 4 * * *")
+    public void nicknameSchedule() {
+        userService.updateUserNickname();
+    }
+
+    @Scheduled(cron = "10 * * * * *")
+    public void busLoggingSchedule() {
+        busService.followBuses();
+    }
+
     @Scheduled(cron = "* */10 * * * *")
     @Transactional
     public void endPointCheckingSchedule(){
