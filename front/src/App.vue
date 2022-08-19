@@ -33,8 +33,18 @@ setInterval(() => {
 }, 60000);
 
 
+document.title = ("낭만버스")
+// var link = document.querySelector("link[rel~='icon']");
+// console.log(link)
+// if (!link) {
+//     link = document.createElement('link');
+//     link.rel = 'icon';
+//     link.type = 'image/icon'
+//     document.getElementsByTagName('head')[0].appendChild(link);
+// }
+// link.href = require('./assets/bus-clicked-icon.ico');
+// console.log(link)
 </script>
-
 <style>
 @font-face {
   font-family:'BMHANNAAir';
