@@ -9,6 +9,7 @@ import com.nangman.db.repository.RouteRepository;
 import com.nangman.db.repository.UserRepository;
 import com.nangman.redis5.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RedisServiceImpl implements RedisService{
 
     private static double BUS_CHECK_DIST = Integer.MAX_VALUE;
@@ -417,8 +419,10 @@ public class RedisServiceImpl implements RedisService{
         redisTemplate.opsForHash().increment(key, SUBKEY_USER_NUM, 1);
 
         User user = userRepository.findByIdAndIsDeletedFalse(userId).get();
+//        log.info("joinRoom() user : " + user);
         boolean isTodayBirth = false;
-        if (user.getUserBirthday() != null || !user.getUserBirthday().equals("")) {
+        log.info("joinRoom() user.getUserBirthday : " + user.getUserBirthday());
+        if (user.getUserBirthday() != null && !user.getUserBirthday().equals("")) {
             LocalDate userBirth = LocalDate.parse(user.getUserBirthday(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (userBirth.getMonth().equals(LocalDate.now().getMonth())
                     && userBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
